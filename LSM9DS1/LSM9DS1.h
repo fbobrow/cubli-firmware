@@ -72,7 +72,7 @@ enum mag_scale
     MAG_SCALE_16G = 0b11
 };
 
-// LSM9DS1 sensor class
+// LSM9DS1 class
 class LSM9DS1
 {
     public:

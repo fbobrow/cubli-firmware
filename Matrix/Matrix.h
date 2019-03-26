@@ -4,29 +4,29 @@
 #include "stdlib.h"
 #include "math.h"
 
-/** Matrix class */
+// Matrix class 
 class Matrix
 {
 public:
-    /** Constructors */
+    // Constructors 
     Matrix();
     Matrix(int, int);
-    /** Destructor */
+    // Destructor 
     ~Matrix();
-    /** Assignment */
+    // Assignment 
     Matrix& operator=(const Matrix&);
-    /** Cell data */
+    // Cell data 
     float& operator()(int, int);
-    /** Parameters */
+    // Parameters 
     int rows, cols;
     float **data;
 private:
-    /** Memmory managment **/
+    // Memmory managment
     void allocate_memmory();
     void deallocate_memmory();
 };
 
-/** Math operators */
+// Math operators 
 Matrix operator+(const Matrix&, const Matrix&);
 Matrix operator-(const Matrix&, const Matrix&);
 Matrix operator-(const Matrix&);
@@ -35,18 +35,18 @@ Matrix operator*(float, const Matrix&);
 Matrix operator*(const Matrix&, float);
 Matrix operator/(const Matrix&, float);
 
-/** Matriz algebra */
+// Matriz algebra 
 Matrix eye(int, int = 0);
 Matrix zeros(int, int = 0);
 Matrix transpose(const Matrix&);
 Matrix inverse(const Matrix&);
 float trace(const Matrix&);
 
-/** Vector algebra **/
+// Vector algebra
 Matrix cross(const Matrix&, const Matrix&);
 float norm(const Matrix&);
 
-/** Orientation algebra **/
+// Orientation algebra
 Matrix dcm2quat(const Matrix&);
 
 #endif
