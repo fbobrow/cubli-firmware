@@ -12,7 +12,7 @@ int main() {
         imu.read();
             pc.printf("Acc [m/s^2]: %4.2f | %4.2f | %4.2f \n", imu.ax, imu.ay, imu.az);
             pc.printf("Gyr [rad/s]: %4.2f | %4.2f | %4.2f \n", imu.gx, imu.gy, imu.gz);
-            pc.printf("Mag   [muT]: %4.2f | %4.2f | %4.2f \n\n", imu.mx, imu.my, imu.mz);
+            pc.printf("Mag    [uT]: %4.2f | %4.2f | %4.2f \n\n", imu.mx, imu.my, imu.mz);
         wait(0.1);
     }
 }

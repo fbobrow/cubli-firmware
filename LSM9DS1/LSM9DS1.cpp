@@ -1,19 +1,18 @@
 #include "LSM9DS1.h"
 
-/** Class constructor */
+// Class constructor 
 LSM9DS1::LSM9DS1(PinName sda, PinName scl) : i2c(sda, scl)
 {
 }
 
-/** Try to initialize sensor (return true if succeed and false if failed) */
+// Initialize sensor
 bool LSM9DS1::init()
 {
     // Setup I2C bus
     setup_i2c();
-
     // Test I2C bus
     if (test_i2c()) {
-        // Setup accelerometer and gyroscope configurations
+        // Setup gyroscope, accelerometer and magnetometer
         setup_gyr();
         setup_acc();
         setup_mag();
@@ -23,7 +22,7 @@ bool LSM9DS1::init()
     }
 }
 
-/** Read sensor data */
+// Read sensor data 
 void LSM9DS1::read()
 {
     // Read accelerometer and gyroscope data
@@ -32,14 +31,14 @@ void LSM9DS1::read()
     read_mag();
 }
 
-/** Setup I2C bus */
+// Setup I2C bus 
 void LSM9DS1::setup_i2c()
 {
     // Setup I2C bus frequency to 100kHz
     i2c.frequency(400000);
 }
 
-/** Test I2C bus */
+// Test I2C bus 
 bool LSM9DS1::test_i2c()
 {   
     // Register addresses
@@ -48,7 +47,7 @@ bool LSM9DS1::test_i2c()
     // Data that we're going to read
     char data_acc_gyr[1];
     char data_mag[1];
-    
+
     // Point to register address
     i2c.write(LSM9DS1_ADDRESS_ACC_GYR, reg_acc_gyr, 1);
     // Read data from this address
@@ -67,7 +66,7 @@ bool LSM9DS1::test_i2c()
     }
 }
 
-/** Setup gyroscope configurations (full-scale range) */
+// Setup gyroscope configurations (full-scale range) 
 void LSM9DS1::setup_gyr(gyr_scale g_scale)
 {
     // Register address and data that will be writed
@@ -79,18 +78,20 @@ void LSM9DS1::setup_gyr(gyr_scale g_scale)
     // Adjust resolution [rad/s / bit] accordingly to choose scale
     switch (g_scale) {
         case GYR_SCALE_245DPS:
-            g_res = 0.00875f*PI/180.0f;
+            g_res = 8.75f;
             break;
         case GYR_SCALE_500DPS:
-            g_res = 0.01750f*PI/180.0f;
+            g_res = 17.50f;
             break;
         case GYR_SCALE_2000DPS:
-            g_res = 0.0700f*PI/180.0f;
+            g_res = 70.0f;
             break;
     }
+    // Convert resolution to SI (mdps / bit -> rad/s / bit)
+    g_res = (g_res*1.0e-3f)*PI/180.0f;
 }
 
-/** Setup accelerometer configurations (full-scale range) */
+// Setup accelerometer configurations (full-scale range) 
 void LSM9DS1::setup_acc(acc_scale a_scale)
 {
     // Register address and data that will be writed
@@ -99,60 +100,54 @@ void LSM9DS1::setup_acc(acc_scale a_scale)
     // Point to register address and write data
     i2c.write(LSM9DS1_ADDRESS_ACC_GYR, reg_data, 2);
 
-    // Adjust resolution [m/s^2 / bit] accordingly to choose scale (g)
+    // Adjust resolution [mg / bit] accordingly to choosed scale
     switch (a_scale) {
         case ACC_SCALE_2G:
-            a_res = 0.000061f*GRAVITY;
+            a_res = 0.061f;
             break;
         case ACC_SCALE_4G:
-            a_res = 0.000122f*GRAVITY;
+            a_res = 0.122f;
             break;
         case ACC_SCALE_8G:
-            a_res = 0.000244f*GRAVITY;
+            a_res = 0.244f;
             break;
         case ACC_SCALE_16G:
-            a_res = 0.000732f*GRAVITY;
+            a_res = 0.732f;
             break;
     }
+    // Convert resolution to SI (mg / bit -> m/s^2 / bit)
+    a_res = (a_res*1.0e-3f)*GRAVITY;
 }
 
-/** Setup gyroscope configurations (full-scale range) */
+// Setup magnetometer configurations (full-scale range) 
 void LSM9DS1::setup_mag(mag_scale m_scale)
 {
     // Register address and data that will be writed
-    /*char reg_data[2] = {CTRL_REG2_M, (0b0 << 7) | (m_scale << 5) | 0b00000};
-    
-    // Point to register address and write data
-    i2c.write(LSM9DS1_ADDRESS_MAG, reg_data, 2);*/
-    
-    char cmd[4] = {
-        CTRL_REG1_M,
-        0x10,       // Default data rate, xy axes mode, and temp comp
-        m_scale << 5, // Set mag scale
-        0           // Enable I2C, write only SPI, not LP mode, Continuous conversion mode
-    };
+    char cmd[4] = {CTRL_REG1_M, 0x10, m_scale << 5, 0 };
 
     // Write the data to the mag control registers
     i2c.write(LSM9DS1_ADDRESS_MAG, cmd, 4);
 
-    // Adjust resolution [gauss / bit] accordingly to choosed scale
+    // Adjust resolution [mgauss / bit] accordingly to choosed scale
     switch (m_scale) {
         case MAG_SCALE_4G:
-            m_res = 0.014f;
+            m_res = 0.14f;
             break;
         case MAG_SCALE_8G:
-            m_res = 0.029f;
+            m_res = 0.29f;
             break;
         case MAG_SCALE_12G:
-            m_res = 0.043f;
+            m_res = 0.43f;
             break;
         case MAG_SCALE_16G:
-            m_res = 0.058f;
+            m_res = 0.58f;
             break;
     }
+    // Convert resolution to SI (mgauss / bit -> uT / bit)
+    m_res = ((m_res*1.0e-3f)*1.0e-4f)*1e6f;
 }
 
-/** Read gyroscope data */
+// Read gyroscope data 
 void LSM9DS1::read_gyr()
 {
     // LSM9DS1 I2C bus address
@@ -177,7 +172,7 @@ void LSM9DS1::read_gyr()
     gz = gz_raw * g_res;
 }
 
-/** Read accelerometer output data */
+// Read accelerometer output data 
 void LSM9DS1::read_acc()
 {
     // LSM9DS1 I2C bus address
@@ -202,7 +197,7 @@ void LSM9DS1::read_acc()
     az = -az_raw * a_res;
 }
 
-/** Read magnetometer output data */
+// Read magnetometer output data 
 void LSM9DS1::read_mag()
 {
     // LSM9DS1 I2C bus address
@@ -221,7 +216,7 @@ void LSM9DS1::read_mag()
     int16_t mx_raw = data[0] | ( data[1] << 8 );
     int16_t my_raw = data[2] | ( data[3] << 8 );
     int16_t mz_raw = data[4] | ( data[5] << 8 );
-    // Convert to SI units [m/s^2]
+    // Convert to SI units [uT]
     mx = -mx_raw * m_res;
     my = -my_raw * m_res;
     mz = mz_raw * m_res;
