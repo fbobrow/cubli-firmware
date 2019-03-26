@@ -289,7 +289,7 @@ Matrix dcm2quat(const Matrix& R)
         if ((R.data[1][1] > R.data[0][0]) && (R.data[1][1] > R.data[2][2])) {
             float sqdip1 = sqrt(R.data[1][1] - R.data[0][0] - R.data[2][2] + 1.0f );
             q.data[2][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0 ) {
+            if ( sqdip1 != 0.0f ) {
                 sqdip1 = 0.5f/sqdip1;
             }
             q.data[0][0] = (R.data[2][0] - R.data[0][2])*sqdip1;
@@ -298,7 +298,7 @@ Matrix dcm2quat(const Matrix& R)
         } else if (R.data[2][2] > R.data[0][0]) {
             float sqdip1 = sqrt(R.data[2][2] - R.data[0][0] - R.data[1][1] + 1.0f );
             q.data[3][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0 ) {
+            if ( sqdip1 != 0.0f ) {
                 sqdip1 = 0.5f/sqdip1;
             }
             q.data[0][0] = (R.data[0][1] - R.data[1][0])*sqdip1;
@@ -307,7 +307,7 @@ Matrix dcm2quat(const Matrix& R)
         } else {
             float sqdip1 = sqrt(R.data[0][0] - R.data[1][1] - R.data[2][2] + 1.0f );
             q.data[1][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0 ) {
+            if ( sqdip1 != 0.0f ) {
                 sqdip1 = 0.5f/sqdip1;
             }
             q.data[0][0] = (R.data[1][2] - R.data[2][1])*sqdip1;

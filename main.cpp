@@ -51,7 +51,7 @@ int main()
                 tim.reset();
                 pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
                 //pc.printf("%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
-                pc.printf("%f,%f\n",dt_est*1000.0,dt_print*1000.0);
+                pc.printf("%f,%f\n",dt_est*1000.0f,dt_print*1000.0f);
                 dt_print = tim.read();
             }
         }
