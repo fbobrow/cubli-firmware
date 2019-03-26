@@ -23,6 +23,9 @@ Matrix::~Matrix()
 
 Matrix& Matrix::operator=(const Matrix& m)
 {
+    if (this == &m) {
+        return *this;
+    }
     // Re-allocate memmory (in case size is different)
     if (rows != m.rows || cols != m.cols) {
         deallocate_memmory();
@@ -48,8 +51,10 @@ float& Matrix::operator()(int r, int c)
 void Matrix::allocate_memmory()
 {
     data = (float **)malloc(rows * sizeof(float *));
+    //data = new float*[rows];
     for (int i = 0; i < rows; i++) {
         data[i] = (float *)malloc(cols * sizeof(float));
+        //data[i] = new float[cols];
     }
 }
 
@@ -57,8 +62,10 @@ void Matrix::deallocate_memmory()
 {
     for (int i = 0; i < rows; i++) {
         free(data[i]);
+        //delete [] data[i];
     }
     free(data);
+    //delete [] data;
 }
 
 Matrix operator+(const Matrix& A, const Matrix& B)
