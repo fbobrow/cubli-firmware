@@ -9,8 +9,7 @@ class Matrix
 {
 public:
     // Constructors 
-    Matrix();
-    Matrix(int, int);
+    Matrix(int = 1, int = 1);
     // Destructor 
     ~Matrix();
     // Assignment 

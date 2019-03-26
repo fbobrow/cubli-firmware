@@ -1,16 +1,5 @@
 #include "Matrix.h"
 
-Matrix::Matrix()
-{
-    // Set matrix size
-    rows = 1;
-    cols = 1;
-    // Allocate memory
-    allocate_memmory();
-    // Initialize data
-    data[0][0] = 0.0f;
-}
-
 Matrix::Matrix(int r, int c)
 {
     // Set matrix size
@@ -115,14 +104,16 @@ Matrix operator*(const Matrix& A, const Matrix& B)
     for (int i = 0; i < A.rows; i++) {
         for (int j = 0; j < B.cols; j++) {
             for (int k = 0; k < A.cols; k++) {
-                if((A.data[i][k] != 0.0f) && (B.data[k][j] != 0.0f)) {
-                    if(A.data[i][k] == 1.0f) {
-                        C.data[i][j] += B.data[k][j];
-                    } else if (B.data[k][j] == 0.0f) {
-                        C.data[i][j] += A.data[i][k];
-                    } else {
-                        C.data[i][j] += A.data[i][k]*B.data[k][j];
-                    }
+                if(A.data[i][k] != 0.0f) {
+					if(B.data[k][j] != 0.0f) {
+						if(A.data[i][k] == 1.0f) {
+							C.data[i][j] += B.data[k][j];
+						} else if (B.data[k][j] == 1.0f) {
+							C.data[i][j] += A.data[i][k];
+						} else {
+							C.data[i][j] += A.data[i][k]*B.data[k][j];
+						}
+					}
                 }
             }
         }
