@@ -6,7 +6,7 @@ AttitudeEstimator att_est;
 Serial pc(SERIAL_TX, SERIAL_RX);
 
 // MATLAB comand
-int command;
+char command;
 
 Timer tim;
 Ticker tic_est;
@@ -28,7 +28,7 @@ int main()
 {
     pc.baud(230400);  
     att_est.init();
-    tic_est.attach(&callback_est, 0.005);
+    tic_est.attach(&callback_est, 0.01);
     tic_print.attach(&callback_print, 0.5);
 
     tim.start();
@@ -45,12 +45,13 @@ int main()
             dt_est = tim.read();
         }
         if (pc.readable()) {
-            pc.scanf("%d",&command);
-            if (command == 1) {
+            command = pc.getc();
+            //pc.scanf("%d",&command);
+            if (command == 'p') {
                 tim.reset();
                 pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
                 //pc.printf("%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
-                //pc.printf("%f,%f\n",dt_est*1000.0,dt_print*1000.0);
+                pc.printf("%f,%f\n",dt_est*1000.0,dt_print*1000.0);
                 dt_print = tim.read();
             }
         }
