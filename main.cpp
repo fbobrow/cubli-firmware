@@ -1,29 +1,63 @@
 #include "mbed.h"
-#include "LSM9DS1.h"
+#include "AttitudeEstimator.h"
 
 DigitalOut led(LED1);
-LSM9DS1 imu(PB_7,PB_6);
-Serial pc(USBTX,USBRX,NULL,230400);
+AttitudeEstimator att_est;
+Serial pc(SERIAL_TX, SERIAL_RX);
 
-Thread sensors;
+// MATLAB comand
+int command;
 
-void sensors_thread()
+Timer tim;
+Ticker tic_est;
+Ticker tic_print;
+
+bool flag_est = false;
+bool flag_print = false;
+
+void callback_est()
 {
-    while(true)
-    {
-        imu.read();
-        wait(0.5);
-    }
+    flag_est = true;
+}
+void callback_print()
+{
+    flag_print = true;
 }
 
-int main() {
-    sensors.start(callback(sensors_thread));
-    imu.init();
-    while(true) {
-        led = !led;
-        pc.printf("Acc [m/s^2]: %4.2f | %4.2f | %4.2f \n", imu.ax, imu.ay, imu.az);
-        pc.printf("Gyr [rad/s]: %4.2f | %4.2f | %4.2f \n", imu.gx, imu.gy, imu.gz);
-        pc.printf("Mag    [uT]: %4.2f | %4.2f | %4.2f \n\n", imu.mx, imu.my, imu.mz);
-        wait(0.1);
+int main()
+{
+    pc.baud(230400);  
+    att_est.init();
+    tic_est.attach(&callback_est, 0.005);
+    tic_print.attach(&callback_print, 0.5);
+
+    tim.start();
+    float dt_est = 0.0;
+    float dt_print = 0.0;
+    
+    while (true) 
+    {
+        if (flag_est) 
+        {
+            flag_est = false;
+            tim.reset();
+            att_est.estimate();
+            dt_est = tim.read();
+        }
+        if (pc.readable()) {
+            pc.scanf("%d",&command);
+            if (command == 1) {
+                tim.reset();
+                pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
+                //pc.printf("%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
+                //pc.printf("%f,%f\n",dt_est*1000.0,dt_print*1000.0);
+                dt_print = tim.read();
+            }
+        }
+        if (flag_print)
+        {
+            flag_print = false;
+            led = !led;
+        }
     }
 }
