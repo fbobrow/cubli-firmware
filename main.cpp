@@ -1,64 +1,61 @@
 #include "mbed.h"
 #include "AttitudeEstimator.h"
 
+// Mbed objects
 DigitalOut led(LED1);
-AttitudeEstimator att_est;
 Serial pc(SERIAL_TX, SERIAL_RX);
+
+// Estimator object
+AttitudeEstimator att_est;
 
 // MATLAB comand
 char command;
 
-Timer tim;
+// Ticker
 Ticker tic_est;
-Ticker tic_print;
+Ticker tic_blink;
 
+// Flags
 bool flag_est = false;
-bool flag_print = false;
+bool flag_blink = false;
 
+
+// Estimator callback
 void callback_est()
 {
     flag_est = true;
 }
-void callback_print()
+
+// Blink callback
+void callback_blink()
 {
-    flag_print = true;
+    flag_blink = true;
 }
 
+// Main program
 int main()
 {
     pc.baud(230400);  
     att_est.init();
     tic_est.attach(&callback_est, 0.01);
-    tic_print.attach(&callback_print, 0.5);
-
-    tim.start();
-    float dt_est = 0.0;
-    float dt_print = 0.0;
-    
+    tic_blink.attach(&callback_blink, 0.5);
     while (true) 
     {
+        if (flag_blink)
+        {
+            flag_blink = false;
+            led = !led;
+        }
         if (flag_est) 
         {
             flag_est = false;
-            tim.reset();
             att_est.estimate();
-            dt_est = tim.read();
         }
         if (pc.readable()) {
             command = pc.getc();
-            //pc.scanf("%d",&command);
             if (command == 'p') {
-                tim.reset();
                 pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
-                //pc.printf("%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
-                pc.printf("%f,%f\n",dt_est*1000.0f,dt_print*1000.0f);
-                dt_print = tim.read();
             }
-        }
-        if (flag_print)
-        {
-            flag_print = false;
-            led = !led;
         }
     }
 }
