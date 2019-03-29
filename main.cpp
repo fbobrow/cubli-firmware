@@ -1,11 +1,9 @@
 #include "mbed.h"
 #include "AttitudeEstimator.h"
 
-// Mbed objects
+// Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX);
-
-// Estimator object
 AttitudeEstimator att_est;
 
 // MATLAB comand
@@ -20,13 +18,11 @@ bool flag_est = false;
 bool flag_blink = false;
 
 
-// Estimator callback
+// Callbacks
 void callback_est()
 {
     flag_est = true;
 }
-
-// Blink callback
 void callback_blink()
 {
     flag_blink = true;
