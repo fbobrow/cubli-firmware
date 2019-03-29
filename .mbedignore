@@ -1,0 +1,14 @@
+mbed-os/rtos/*
+mbed-os/features/cellular/
+mbed-os/features/FEATURE_CLIENT/*
+mbed-os/features/FEATURE_COMMON_PAL/*
+mbed-os/features/FEATURE_UVISOR/*
+mbed-os/features/frameworks/*
+mbed-os/features/net/*
+mbed-os/features/netsocket/*
+mbed-os/features/nanostack/*
+mbed-os/features/nvstore/*
+mbed-os/features/storage/*
+mbed-os/features/device_key/*
+mbed-os/features/lorawan/*
+mbed-os/features/lwipstack/*

@@ -12,7 +12,7 @@ void AttitudeEstimator::init()
     // Initialize IMU sensor object
     imu.init();
     //
-    dt = 0.01f;
+    dt = 0.005f;
     dt_2 = dt/2.0f;
     //
     q = eye(4,1);

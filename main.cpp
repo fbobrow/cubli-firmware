@@ -33,7 +33,7 @@ int main()
 {
     pc.baud(230400);  
     att_est.init();
-    tic_est.attach(&callback_est, 0.01);
+    tic_est.attach(&callback_est, 0.005);
     tic_blink.attach(&callback_blink, 0.5);
     while (true) 
     {
