@@ -2,15 +2,15 @@
 #define AttitudeEstimator_h
 
 #include "mbed.h"
-#include "Matrix.h"
-#include "LSM9DS1.h"
+#include "src/drivers/lsm9ds1.h"
+#include "src/utils/matrix.h"
 
 // Attitude estimator class
 class AttitudeEstimator
 {
   public:
     // Class constructor
-    AttitudeEstimator();
+    AttitudeEstimator(float frequency);
     // Initialize class
     void init();
     // Estimation step (predict and correct/update with extended Kalman filter)

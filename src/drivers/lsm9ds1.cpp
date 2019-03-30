@@ -1,4 +1,4 @@
-#include "LSM9DS1.h"
+#include "lsm9ds1.h"
 
 // Class constructor 
 LSM9DS1::LSM9DS1(PinName sda, PinName scl) : i2c(sda, scl)

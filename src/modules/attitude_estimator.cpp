@@ -1,9 +1,11 @@
 #include "mbed.h"
-#include "AttitudeEstimator.h"
+#include "attitude_estimator.h"
 
 // Class constructor
-AttitudeEstimator::AttitudeEstimator() : /*imu(A4,A5)*/ imu(PB_7,PB_6)
+AttitudeEstimator::AttitudeEstimator(float frequency) : /*imu(A4,A5)*/ imu(PB_7,PB_6)
 {
+    dt = 1.0f/frequency;
+    dt_2 = dt/2.0f;
 }
 
 // Initialize class
@@ -11,9 +13,6 @@ void AttitudeEstimator::init()
 {
     // Initialize IMU sensor object
     imu.init();
-    //
-    dt = 0.005f;
-    dt_2 = dt/2.0f;
     //
     q = eye(4,1);
     omega = zeros(3,1);
