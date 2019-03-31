@@ -18,6 +18,9 @@ void AttitudeEstimator::init()
     omega = zeros(3,1);
     // Initialize matrices
     x = eye(7,1);
+    x(5,1) = 0.008985;
+    x(6,1) = -0.078963;
+    x(7,1) = 0.040693;
     z = zeros(4,1);
     A = eye(7);
     B = zeros(7,3);

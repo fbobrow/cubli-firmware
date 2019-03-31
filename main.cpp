@@ -4,7 +4,7 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX);
-AttitudeEstimator att_est(200);
+AttitudeEstimator att_est(250);
 
 // MATLAB comand
 char command;
@@ -36,7 +36,7 @@ int main()
 {
     pc.baud(230400);  
     att_est.init();
-    tic_est.attach(&callback_est, 0.005);
+    tic_est.attach(&callback_est, 1.0/250);
     tic_blink.attach(&callback_blink, 0.5);
     tim.start();
     while (true) 

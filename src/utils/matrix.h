@@ -8,7 +8,7 @@
 class Matrix
 {
 public:
-    // Constructors 
+    // Constructors
     Matrix(int = 1, int = 1);
     // Destructor 
     ~Matrix();
