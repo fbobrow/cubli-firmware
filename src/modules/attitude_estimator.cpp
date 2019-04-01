@@ -1,4 +1,3 @@
-#include "mbed.h"
 #include "attitude_estimator.h"
 
 // Class constructor

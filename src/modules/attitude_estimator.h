@@ -1,9 +1,9 @@
-#ifndef AttitudeEstimator_h
-#define AttitudeEstimator_h
+#ifndef attitude_estimator_h
+#define attitude_estimator_h
 
 #include "mbed.h"
-#include "src/drivers/lsm9ds1.h"
-#include "src/utils/matrix.h"
+#include "drivers/lsm9ds1.h"
+#include "utils/matrix.h"
 
 // Attitude estimator class
 class AttitudeEstimator

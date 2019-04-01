@@ -1,3 +1,3 @@
-#include "lsm9ds1.h"
-#include "attitude_estimator.h"
-#include "matrix.h"
+#include "drivers/lsm9ds1.h"
+#include "utils/matrix.h"
+#include "modules/attitude_estimator.h"

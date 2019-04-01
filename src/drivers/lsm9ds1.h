@@ -1,5 +1,5 @@
-#ifndef LSM9DS1_h
-#define LSM9DS1_h
+#ifndef lsm9ds1_h
+#define lsm9ds1_h
 
 #include "mbed.h"
 
