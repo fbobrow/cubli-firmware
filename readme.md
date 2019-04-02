@@ -22,12 +22,9 @@ This project was developed in [Mbed Studio](https://os.mbed.com/studio/), howeve
 
 ## Compiling
 
-The project was developed for the [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board from [STMicroeletronics](https://www.st.com/content/st_com/en.html). 
-*** Main System-on-Chip: STM32F405RG
-CPU: 168 MHz ARM Cortex M4 with single-precision FPU
-RAM: 192 KB SRAM
-nRF51822 radio and power management MCU
-MPU9250 Accel / Gyro / Mag
-LPS25H barometer
+The project was developed for the [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board from [STMicroeletronics](https://www.st.com/content/st_com/en.html):
+* ARM®32-bit Cortex®-M4 CPU
+* ARM®32-bit Cortex®-M4 CPU
+* ARM®32-bit Cortex®-M4 CPU
 
 You should choose this board as ```target``` or adapt the project according to the chosen board.
