@@ -13,17 +13,17 @@ The source code is organized as follows:
 
 ```
 ./                              | Root
- main.cpp                       | Main program
+ main.cpp                       | Main program source code
  + src                          | Source files
  |  + drivers                   | Drivers files
-    |   lsm9ds1.h               | Encoders header
-    |   lsm9ds1.cpp             | Encoders source code
+    |   lsm9ds1.h               | LSM9DS1 IMU header
+    |   lsm9ds1.cpp             | LSM9DS1 IMU source code
  |  + modules                   | Modules files
-    |   attitude_estimator.h    | Estimator header
-    |   attitude_estimator.cpp  | Estimator source code
- |  + utils                     | Modules files
-    |   matrix.h                | Estimator header
-    |   matrix.cpp              | Estimator source code
+    |   attitude_estimator.h    | Attitude estimator header
+    |   attitude_estimator.cpp  | Attitude estimator source code
+ |  + utils                     | Utility files
+    |   matrix.h                | Matrix class header
+    |   matrix.cpp              | Matrix class source code
 ```
 
 ## Importing
