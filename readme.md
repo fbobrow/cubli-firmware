@@ -13,18 +13,16 @@ You can import this project directly to [Mbed Studio](https://os.mbed.com/studio
 
 ### Mbed Studio
 
-1. Install [Mbed Studio](https://os.mbed.com/studio/)
-2. Open Mbed Studio
-3. Click on ```File```>```Import Program...```
+1. Install and open [Mbed Studio](https://os.mbed.com/studio/)
+2. Click on ```File```>```Import Program...```
 4. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```URL``` and then click ```Add Program```
 
 ### Mbed Online Compiler
 
 1. Open [Mbed Online Compiler](https://ide.mbed.com/)
-2. Click on ```Import```
-3. Click on ```Click here to import from URL```
-4. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```Source URL:``` and then click ```Import```
+2. Click on ```Import```>```Click here to import from URL```
+3. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```Source URL:``` and then click ```Import```
 
-## Compiling
+## Building
 
-You should choose the ```NUCLEO-L432KC``` platform as ```Target``` or adapt the project according to the any other Mbed compatible board.
+You should choose the ```NUCLEO-L432KC``` platform as ```Target``` while builging the project or adapt it to your Mbed compatible board.
