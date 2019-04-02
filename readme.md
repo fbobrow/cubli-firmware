@@ -7,6 +7,25 @@ It was developed with [Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-
 * 256 KB Flash
 * 64 KB SRAM
 
+## Source code
+
+The source code is organized as follows:
+
+```
+./                              | Root
+ main.cpp                       | Main program
+ + src                          | Source files
+ |  + drivers                   | Drivers files
+    |   lsm9ds1.h               | Encoders header
+    |   lsm9ds1.cpp             | Encoders source code
+ |  + modules                   | Modules files
+    |   attitude_estimator.h    | Estimator header
+    |   attitude_estimator.cpp  | Estimator source code
+ |  + utils                     | Modules files
+    |   matrix.h                | Estimator header
+    |   matrix.cpp              | Estimator source code
+```
+
 ## Importing
 
 You can import this project directly to [Mbed Studio](https://os.mbed.com/studio/) or [Mbed Online Compiler](https://ide.mbed.com/).
