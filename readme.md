@@ -13,3 +13,4 @@ You can
 1. Install Mbed Studio
 2. Open Mbed Studio
 3. Click on ```File```>```Import Program...```
+4. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```URL``` and then click ```Add Program```
