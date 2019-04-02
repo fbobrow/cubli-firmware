@@ -2,7 +2,7 @@
 
 This project contains the source code for the firmware used in the Cubli project of a PhD Thesis.
 
-It was developed with Mbed OS for the 
+It was developed with [Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-source operating system for platforms using ARM microcontrollers.
 
 ## Importing
 
@@ -25,4 +25,4 @@ You can import the source code to Mbed Online Compiler, Mbed Studio or any other
 
 ## Compiling
 
-Select ```NUCLEO L432KC``` board
+ for the [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html)
