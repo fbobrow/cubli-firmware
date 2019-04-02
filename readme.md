@@ -24,7 +24,7 @@ The source code is organized as follows:
  |  + utils                     | Utility files
     |   matrix.h                | Matrix class header
     |   matrix.cpp              | Matrix class source code
- + mbed-os                      | ARM Mbed OS source files (automatically downloaded when project is imported)
+ + mbed-os                      | ARM Mbed OS source files (automatically imported)
 ```
 
 ## Importing
