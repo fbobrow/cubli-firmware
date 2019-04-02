@@ -1,10 +1,15 @@
 # Cubli Firmware  
 
-This repository contains the source code for the firmware utilized in the Cubli project of a PhD Thesis. It was developed with [Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-source operating system for platforms using ARM microcontrollers.
+This repository contains the source code for the firmware utilized in the Cubli project of a PhD Thesis. 
+
+It was developed with [Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-source operating system targeting the [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board:
+* ARM®32-bit Cortex®-M4 CPU
+* 256 KB Flash
+* 64 KB SRAM
 
 ## Importing
 
-This project was developed in [Mbed Studio](https://os.mbed.com/studio/), however you can also import it to [Mbed Online Compiler](https://ide.mbed.com/) or some other IDE.
+You can import this project directly to [Mbed Studio](https://os.mbed.com/studio/) or [Mbed Online Compiler](https://ide.mbed.com/).
 
 ### Mbed Studio
 
@@ -22,9 +27,4 @@ This project was developed in [Mbed Studio](https://os.mbed.com/studio/), howeve
 
 ## Compiling
 
-The project was developed for the [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board from [STMicroeletronics](https://www.st.com/content/st_com/en.html):
-* ARM®32-bit Cortex®-M4 CPU
-* ARM®32-bit Cortex®-M4 CPU
-* ARM®32-bit Cortex®-M4 CPU
-
-You should choose this board as ```target``` or adapt the project according to the chosen board.
+You should choose the ```NUCLEO-L432KC``` platform as ```Target``` or adapt the project according to the any other Mbed compatible board.
