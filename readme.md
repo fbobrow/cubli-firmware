@@ -20,7 +20,7 @@ You can import this project directly to [Mbed Studio](https://os.mbed.com/studio
 ### Mbed Online Compiler
 
 1. Open [Mbed Online Compiler](https://ide.mbed.com/)
-2. Click on ```Import```>```Click here to import from URL```
+2. Click on ```Import```>```Click here``` to import from URL
 3. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```Source URL:``` and then click ```Import```
 
 ## Building
