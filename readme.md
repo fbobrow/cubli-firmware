@@ -2,7 +2,7 @@
 
 This repository contains the source code for the firmware utilized in the Cubli project of a PhD Thesis. 
 
-It was developed with ARM [Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-source operating system targeting the STM32 [NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board:
+It was developed with [ARM Mbed OS](https://www.mbed.com/en/platform/mbed-os/) open-source operating system targeting the [STM32 NUCLEO-L432KC](https://www.st.com/en/evaluation-tools/nucleo-l432kc.html) development board:
 * 80MHz ARM®32-bit Cortex®M4
 * 256 KB Flash
 * 64 KB SRAM
