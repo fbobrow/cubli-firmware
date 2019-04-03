@@ -35,7 +35,7 @@ You can import this project directly to [Mbed Studio](https://os.mbed.com/studio
 
 1. Install and open [Mbed Studio](https://os.mbed.com/studio/)
 2. Click on ```File```>```Import Program...```
-4. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```URL``` and then click ```Add Program```
+3. Paste ```https://github.com/fbobrow/cubli-firmware/``` under ```URL``` and then click ```Add Program```
 
 ### Mbed Online Compiler
 
