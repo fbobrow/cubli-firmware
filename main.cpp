@@ -4,40 +4,48 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX);
-AttitudeEstimator att_est(250);
+LSM9DS1 imu(PB_7,PB_6);
+Estimator estimator(250);
 
 // MATLAB comand
 char command;
 
 // Ticker
-Ticker tic_est;
 Ticker tic_blink;
-Timer tim;
+Ticker tic_imu;
+Ticker tic_estimator;
 
 // Flags
-bool flag_est = false;
 bool flag_blink = false;
+bool flag_imu = false;
+bool flag_estimator = false;
 
 
 // Callbacks
-void callback_est()
-{
-    flag_est = true;
-}
 void callback_blink()
 {
     flag_blink = true;
 }
+void callback_imu()
+{
+    flag_imu = true;
+}
+void callback_estimator()
+{
+    flag_estimator = true;
+}
 
+Timer tim;
 float dt;
 
 // Main program
 int main()
 {
-    pc.baud(230400);  
-    att_est.init();
-    tic_est.attach(&callback_est, 1.0/250);
+    pc.baud(230400);
+    imu.init();  
     tic_blink.attach(&callback_blink, 0.5);
+    tic_imu.attach(&callback_imu, 1.0/250);
+    tic_estimator.attach(&callback_estimator, 1.0/250);
     tim.start();
     while (true) 
     {
@@ -46,17 +54,22 @@ int main()
             flag_blink = false;
             led = !led;
         }
-        if (flag_est) 
+        if (flag_imu)
         {
-            flag_est = false;
+            flag_imu = false;
+        }
+        if (flag_estimator) 
+        {
+            flag_estimator = false;
             tim.reset();
-            att_est.estimate();
+            imu.read();
+            estimator.update(imu.gx,imu.gy,imu.gz,imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
             dt = tim.read();
         }
         if (pc.readable()) {
             command = pc.getc();
             if (command == 'p') {
-                //pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
+                //pc.printf("%f,%f,%f,%f\n",estimator.q(1,1),estimator.q(2,1),estimator.q(3,1),estimator.q(4,1));
                 pc.printf("%.2fms\n",dt*1000.0f);
             }
         }
