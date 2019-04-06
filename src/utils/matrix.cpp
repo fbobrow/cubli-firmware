@@ -52,6 +52,13 @@ float& Matrix::operator()(int r, int c)
     return data[r-1][c-1];
 }
 
+// Cell data 
+const float Matrix::operator()(int r, int c) const
+{
+    // Return cell data
+    return data[r-1][c-1];
+}
+
 // Memmory managment
 void Matrix::allocate_memmory()
 {

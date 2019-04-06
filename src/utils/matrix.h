@@ -16,6 +16,7 @@ class Matrix
         Matrix& operator=(const Matrix& A);
         // Cell data 
         float& operator()(int r, int c);
+        const float operator()(int r, int c) const;
         // Parameters 
         int rows, cols;
         float **data;
