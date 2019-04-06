@@ -1,13 +1,14 @@
 #include "ekf.h"
 
 // Class constructor
-ExtendedKalmanFilter::ExtendedKalmanFilter(float freq)
+ExtendedKalmanFilter::ExtendedKalmanFilter(float freq, float u_var, float z_var)
 {
     // Initialize state vector x and error covariance matrix P
-    x = zeros(7,1);
+    x = eye(7,1);
     P = eye(7);
     // Initialize state noise covariance matrix Q and measurement noise covariance matrix R
-    R = 4.2e-4*eye(4);
+    Q = u_var*eye(3);
+    R = z_var*eye(4);
     // Initialize time interval dt and dt/2 (to avoid double arithmetic)
     dt = 1.0f/freq;
     dt_2 = dt/2.0f;

@@ -1,7 +1,7 @@
 #include "estimator.h"
 
 
-Estimator::Estimator(float freq) : ekf(freq)
+Estimator::Estimator(float freq) : ekf(freq,2.4e-6f,4.2e-4f)
 {
     //
     dt = 1.0f/freq;
@@ -20,7 +20,7 @@ Estimator::Estimator(float freq) : ekf(freq)
     b_my = -8.9233f;
     b_mz = 11.8958f;
     //
-    q = zeros(4,1);
+    q = eye(4,1);
     omega = zeros(3,1);
 }
 

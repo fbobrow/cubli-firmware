@@ -3,8 +3,8 @@
 
 // Objects
 DigitalOut led(LED1);
-Serial pc(SERIAL_TX, SERIAL_RX);
-LSM9DS1 imu(PB_7,PB_6);
+Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
+LSM9DS1 imu(D4,D5);
 Estimator estimator(250);
 
 // MATLAB comand
@@ -41,7 +41,6 @@ float dt;
 // Main program
 int main()
 {
-    pc.baud(230400);
     imu.init();  
     tic_blink.attach(&callback_blink, 0.5);
     tic_imu.attach(&callback_imu, 1.0/250);
@@ -69,8 +68,9 @@ int main()
         if (pc.readable()) {
             command = pc.getc();
             if (command == 'p') {
-                //pc.printf("%f,%f,%f,%f\n",estimator.q(1,1),estimator.q(2,1),estimator.q(3,1),estimator.q(4,1));
-                pc.printf("%.2fms\n",dt*1000.0f);
+                pc.printf("%f,%f,%f,%f\n",estimator.q(1,1),estimator.q(2,1),estimator.q(3,1),estimator.q(4,1));
+                //pc.printf("%f,%f,%f,%f,%f,%f,%f,%f,%f\n",imu.gx,imu.gy,imu.gz,imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
+                //pc.printf("%.2fms\n",dt*1000.0f);
             }
         }
     }

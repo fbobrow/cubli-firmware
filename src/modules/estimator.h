@@ -18,14 +18,14 @@ class Estimator
   private:
     //
     ExtendedKalmanFilter ekf;
-    // Time interval
-    float dt, dt_2;
     //
     float f_ax, f_ay, f_az;
     float b_ax, b_ay, b_az;
     //
     float f_mx, f_my, f_mz;
     float b_mx, b_my, b_mz;
+    // Time interval
+    float dt, dt_2;
 };
 
 #endif

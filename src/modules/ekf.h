@@ -9,7 +9,7 @@ class ExtendedKalmanFilter
 {
   public:
     // Class constructor
-    ExtendedKalmanFilter(float freq);
+    ExtendedKalmanFilter(float freq, float u_var, float z_var);
     // Prediction and correction steps
     void predict(const Matrix& u);
     void correct(const Matrix& z);
