@@ -46,9 +46,5 @@ float trace(const Matrix& A);
 Matrix cross(const Matrix& u, const Matrix& v);
 float norm(const Matrix& u);
 
-// Orientation algebra
-Matrix dcm2quat(const Matrix& R);
-Matrix triad(const Matrix& u, const Matrix& v);
-
 #endif
 

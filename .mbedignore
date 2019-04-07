@@ -1,2 +1,3 @@
+examples/*
 mbed-os/rtos/*
 mbed-os/features/*

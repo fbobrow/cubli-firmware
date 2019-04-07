@@ -3,6 +3,7 @@
 
 #include "mbed.h"
 #include "modules/ekf.h"
+#include "modules/triad.h"
 #include "utils/matrix.h"
 
 // Attitude estimator class
@@ -18,6 +19,8 @@ class Estimator
   private:
     //
     ExtendedKalmanFilter ekf;
+    //
+    Triad triad;
     //
     float f_ax, f_ay, f_az;
     float b_ax, b_ay, b_az;
