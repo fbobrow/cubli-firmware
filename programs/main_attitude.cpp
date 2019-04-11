@@ -63,9 +63,9 @@ int main()
         if (pc.readable()) {
             command = pc.getc();
             if (command == 'p') {
-                //pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
+                pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
                 //pc.printf("%f,%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
-                pc.printf("%.2fms\n",dt*1000.0f);
+                //pc.printf("%.2fms\n",dt*1000.0f);
             }
         }
     }
