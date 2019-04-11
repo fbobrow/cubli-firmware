@@ -6,6 +6,19 @@
 #include "modules/triad.h"
 #include "utils/matrix.h"
 
+#define b_ax 0.0671f
+#define b_ay 0.0846f
+#define b_az -0.5557f
+#define f_ax 1.0080f
+#define f_ay 1.0060f
+#define f_az 0.9930f
+#define b_mx -20.6220f
+#define b_my 16.1000f
+#define b_mz 106.4630f
+#define f_mx 1.0611f
+#define f_my 1.0133f
+#define f_mz 0.9340f
+
 // Attitude estimator class
 class Estimator
 {
@@ -21,12 +34,6 @@ class Estimator
     ExtendedKalmanFilter ekf;
     //
     Triad triad;
-    //
-    float f_ax, f_ay, f_az;
-    float b_ax, b_ay, b_az;
-    //
-    float f_mx, f_my, f_mz;
-    float b_mx, b_my, b_mz;
     // Time interval
     float dt, dt_2;
 };

@@ -5,14 +5,14 @@ Triad::Triad()
 {
     //
     q = eye(4,1);
-    Matrix u_inertial(3,1), v_inertial(3,1);
-    u_inertial(1,1) = 0.0f;
-    u_inertial(2,1) = 0.0f;
-    u_inertial(3,1) = -1.0f;
-    v_inertial(1,1) = 16.730f;
-    v_inertial(2,1) = -6.598f;
-    v_inertial(3,1) = -14.140f;
-    NT = triad(u_inertial,v_inertial);
+    Matrix a_inertial(3,1), m_inertial(3,1);
+    a_inertial(1,1) = 0.0f;
+    a_inertial(2,1) = 0.0f;
+    a_inertial(3,1) = 9.81f;
+    m_inertial(1,1) = 16.730f;
+    m_inertial(2,1) = -6.598f;
+    m_inertial(3,1) = -14.140f;
+    NT = triad(a_inertial,m_inertial);
     NT_T = transpose(NT);
 }
 
@@ -31,6 +31,7 @@ Matrix Triad::triad(const Matrix& u, const Matrix &v)
     // 
     Matrix t1 = u/norm(u);
     Matrix t2 = cross(t1,v/norm(v));
+    t2 = t2/norm(t2);
     Matrix t3 = cross(t1,t2);
     //
     R(1,1) = t1(1,1);

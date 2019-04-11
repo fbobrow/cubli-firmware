@@ -2,18 +2,19 @@
 #include "src/utils/matrix.h"
 #include "src/drivers/lsm9ds1.h"
 
-#define f_ax 1.0016f
-#define f_ay 1.0046f
-#define f_az 0.9966f
-#define b_ax 0.1871f
-#define b_ay -0.0406f
-#define b_az -0.3522f
-#define f_mx 1.0f
-#define f_my 1.0f
-#define f_mz 1.0f
-#define b_mx 0.0f
-#define b_my 0.0f
-#define b_mz 0.0f
+
+#define b_ax -0.0671f
+#define b_ay -0.0846f
+#define b_az -0.5557f
+#define f_ax 1.0080f
+#define f_ay 1.0060f
+#define f_az 0.9930f
+#define b_mx -20.6220f
+#define b_my 16.1000f
+#define b_mz 106.4630f
+#define f_mx 1.0611f
+#define f_my 1.0133f
+#define f_mz 0.9340f
 
 // Objects
 DigitalOut led(LED1);
@@ -47,7 +48,7 @@ int main()
 {
     imu.init();  
     tic_blink.attach(&callback_blink, 0.5);
-    tic_imu.attach(&callback_imu, 1.0/50);
+    tic_imu.attach(&callback_imu, 1.0/20);
     int k = 1;
     while (true) 
     {
@@ -79,12 +80,14 @@ int main()
             m_list(k,2) = imu.my;
             m_list(k,3) = imu.mz;
             k++;
-            //pc.printf("%.2f\n",norm(m));
+            //pc.printf("%6.2f %6.2f %6.2f | %6.2f\n",g(1,1),g(2,1),g(3,1),norm(g));
+            pc.printf("%6.2f %6.2f %6.2f | %6.2f\n",a(1,1),a(2,1),a(3,1),norm(a));
+            //pc.printf("%6.2f %6.2f %6.2f | %6.2f\n",m(1,1),m(2,1),m(3,1),norm(m));
         }
         if (k > 100) 
         {
             k = 1;
-            for (int i = 1; i <= 100; i++) {
+            /*for (int i = 1; i <= 100; i++) {
                 for (int j = 1; j <= 3; j++) {
                     pc.printf("%.8f",m_list(i,j));
                     if (j < 3) {
@@ -93,7 +96,7 @@ int main()
                 }
                 pc.printf("\n");
             }
-            pc.printf("\n");
+            pc.printf("\n");*/
         }
     }
 }
