@@ -4,49 +4,47 @@
 #include "stdlib.h"
 #include "math.h"
 
-// Matrix class 
+// Matrix class
 class Matrix
 {
-public:
-    // Constructors
-    Matrix(int = 1, int = 1);
-    // Destructor 
-    ~Matrix();
-    // Assignment 
-    Matrix& operator=(const Matrix&);
-    // Cell data 
-    float& operator()(int, int);
-    // Parameters 
-    int rows, cols;
-    float **data;
-private:
-    // Memmory managment
-    void allocate_memmory();
-    void deallocate_memmory();
+    public:
+        // Constructor
+        Matrix(int r = 1, int c = 1);
+        // Destructor 
+        ~Matrix();
+        // Assignment 
+        Matrix& operator=(const Matrix& A);
+        // Cell data 
+        float& operator()(int r, int c);
+        const float operator()(int r, int c) const;
+        // Parameters 
+        int rows, cols;
+        float **data;
+    private:
+        // Memmory managment
+        void allocate_memmory();
+        void deallocate_memmory();
 };
 
 // Math operators 
-Matrix operator+(const Matrix&, const Matrix&);
-Matrix operator-(const Matrix&, const Matrix&);
-Matrix operator-(const Matrix&);
-Matrix operator*(const Matrix&, const Matrix&);
-Matrix operator*(float, const Matrix&);
-Matrix operator*(const Matrix&, float);
-Matrix operator/(const Matrix&, float);
+Matrix operator+(const Matrix& A, const Matrix& B);
+Matrix operator-(const Matrix& A, const Matrix& B);
+Matrix operator-(const Matrix& A);
+Matrix operator*(const Matrix& A, const Matrix& B);
+Matrix operator*(float k, const Matrix& B);
+Matrix operator*(const Matrix& A, float k);
+Matrix operator/(const Matrix& A, float k);
 
 // Matriz algebra 
-Matrix eye(int, int = 0);
-Matrix zeros(int, int = 0);
-Matrix transpose(const Matrix&);
-Matrix inverse(const Matrix&);
-float trace(const Matrix&);
+Matrix eye(int r, int c = 0);
+Matrix zeros(int r, int c = 0);
+Matrix transpose(const Matrix& A);
+Matrix inverse(const Matrix& A);
+float trace(const Matrix& A);
 
 // Vector algebra
-Matrix cross(const Matrix&, const Matrix&);
-float norm(const Matrix&);
-
-// Orientation algebra
-Matrix dcm2quat(const Matrix&);
+Matrix cross(const Matrix& u, const Matrix& v);
+float norm(const Matrix& u);
 
 #endif
 

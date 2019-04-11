@@ -168,8 +168,8 @@ void LSM9DS1::read_gyr()
     int16_t gz_raw = data[4] | ( data[5] << 8 );
     // Convert to SI units [rad/s]
     gx = gx_raw * g_res;
-    gy = -gy_raw * g_res;
-    gz = gz_raw * g_res;
+    gy = gy_raw * g_res;
+    gz = -gz_raw * g_res;
 }
 
 // Read accelerometer output data 
@@ -193,8 +193,8 @@ void LSM9DS1::read_acc()
     int16_t az_raw = data[4] | ( data[5] << 8 );
     // Convert to SI units [m/s^2]
     ax = -ax_raw * a_res;
-    ay = ay_raw * a_res;
-    az = -az_raw * a_res;
+    ay = -ay_raw * a_res;
+    az = az_raw * a_res;
 }
 
 // Read magnetometer output data 
@@ -218,6 +218,6 @@ void LSM9DS1::read_mag()
     int16_t mz_raw = data[4] | ( data[5] << 8 );
     // Convert to SI units [uT]
     mx = -mx_raw * m_res;
-    my = -my_raw * m_res;
-    mz = mz_raw * m_res;
+    my = my_raw * m_res;
+    mz = -mz_raw * m_res;
 }

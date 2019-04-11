@@ -2,46 +2,45 @@
 #define attitude_estimator_h
 
 #include "mbed.h"
-#include "drivers/lsm9ds1.h"
 #include "utils/matrix.h"
+#include "modules/ekf.h"
+#include "modules/triad.h"
+
+// Acelerometer bias and scale factor
+#define b_ax 0.0671f
+#define b_ay 0.0846f
+#define b_az -0.5557f
+#define f_ax 1.0080f
+#define f_ay 1.0060f
+#define f_az 0.9930f
+
+// Magnetometer bias and scale factor
+#define b_mx -20.6220f
+#define b_my 16.1000f
+#define b_mz 106.4630f
+#define f_mx 1.0611f
+#define f_my 1.0133f
+#define f_mz 0.9340f
+
+// Gyroscope and measured quaternion error covariance
+#define g_cov 2.7e-6f
+#define q_cov 1.5e-4f
 
 // Attitude estimator class
 class AttitudeEstimator
 {
   public:
     // Class constructor
-    AttitudeEstimator(float frequency);
-    // Initialize class
-    void init();
-    // Estimation step (predict and correct/update with extended Kalman filter)
-    void estimate();
-    // Quaternion orientation and angular velocity vectors
+    AttitudeEstimator(float freq);
+    // Update step
+    void update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz);
+    // Orientation quaternion and angular velocity vector
     Matrix q, omega;
   private:
-    //
-    void read();
-    //
-    void update_measurement();
-    //
-    void update_jacobian();
-    //
-    Matrix f(Matrix&);
-    //
-    Matrix h(Matrix&);
-    //
-    void update_estimated_states();
-    // IMU sensor object
-    LSM9DS1 imu;
-    // Time interval
-    float dt, dt_2;
-    // State and output vector
-    Matrix x, z;
-    // Matrices
-    Matrix A, B, H, P, Q, R, K;
-    // Gyroscope, accelerometer and magnetometer vectors
-    Matrix g, a, m;
-    //
-    Matrix t1, t2, t3, dcm;
+    // Extended Kalman Filter class
+    ExtendedKalmanFilter ekf;
+    // Triad class
+    Triad triad;
 };
 
 #endif

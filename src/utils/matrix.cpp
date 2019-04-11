@@ -1,5 +1,6 @@
 #include "matrix.h"
 
+// Constructor
 Matrix::Matrix(int r, int c)
 {
     // Set matrix size
@@ -15,39 +16,50 @@ Matrix::Matrix(int r, int c)
     }
 }
 
+// Destructor
 Matrix::~Matrix()
 {
     // Free memory
     deallocate_memmory();
 }
 
-Matrix& Matrix::operator=(const Matrix& m)
+// Assignment 
+Matrix& Matrix::operator=(const Matrix& A)
 {
-    if (this == &m) {
+    if (this == &A) {
         return *this;
     }
     // Re-allocate memmory (in case size is different)
-    if (rows != m.rows || cols != m.cols) {
+    if (rows != A.rows || cols != A.cols) {
         deallocate_memmory();
-        rows = m.rows;
-        cols = m.cols;
+        rows = A.rows;
+        cols = A.cols;
         allocate_memmory();
     }
     // Copy data
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            data[i][j] = m.data[i][j];
+            data[i][j] = A.data[i][j];
         }
     }
     return *this;
 }
 
+// Cell data 
 float& Matrix::operator()(int r, int c)
 {
     // Return cell data
     return data[r-1][c-1];
 }
 
+// Cell data 
+const float Matrix::operator()(int r, int c) const
+{
+    // Return cell data
+    return data[r-1][c-1];
+}
+
+// Memmory managment
 void Matrix::allocate_memmory()
 {
     data = (float **)malloc(rows * sizeof(float *));
@@ -58,6 +70,7 @@ void Matrix::allocate_memmory()
     }
 }
 
+// Memmory managment
 void Matrix::deallocate_memmory()
 {
     for (int i = 0; i < rows; i++) {
@@ -270,47 +283,4 @@ float norm(const Matrix& A)
         n += A.data[i][0]*A.data[i][0];
     }
     return sqrt(n);
-}
-
-Matrix dcm2quat(const Matrix& R)
-{
-    Matrix q(4, 1);
-    float tr = trace(R);
-    if (tr > 0.0f) {
-        float sqtrp1 = sqrt( tr + 1.0f);
-        q.data[0][0] = 0.5f*sqtrp1;
-        q.data[1][0] = (R.data[1][2] - R.data[2][1])/(2.0f*sqtrp1);
-        q.data[2][0] = (R.data[2][0] - R.data[0][2])/(2.0f*sqtrp1);
-        q.data[3][0] = (R.data[0][1] - R.data[1][0])/(2.0f*sqtrp1);
-    } else {
-        if ((R.data[1][1] > R.data[0][0]) && (R.data[1][1] > R.data[2][2])) {
-            float sqdip1 = sqrt(R.data[1][1] - R.data[0][0] - R.data[2][2] + 1.0f );
-            q.data[2][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0f ) {
-                sqdip1 = 0.5f/sqdip1;
-            }
-            q.data[0][0] = (R.data[2][0] - R.data[0][2])*sqdip1;
-            q.data[1][0] = (R.data[0][1] + R.data[1][0])*sqdip1;
-            q.data[3][0] = (R.data[1][2] + R.data[2][1])*sqdip1;
-        } else if (R.data[2][2] > R.data[0][0]) {
-            float sqdip1 = sqrt(R.data[2][2] - R.data[0][0] - R.data[1][1] + 1.0f );
-            q.data[3][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0f ) {
-                sqdip1 = 0.5f/sqdip1;
-            }
-            q.data[0][0] = (R.data[0][1] - R.data[1][0])*sqdip1;
-            q.data[1][0] = (R.data[2][0] + R.data[0][2])*sqdip1;
-            q.data[2][0] = (R.data[1][2] + R.data[2][1])*sqdip1;
-        } else {
-            float sqdip1 = sqrt(R.data[0][0] - R.data[1][1] - R.data[2][2] + 1.0f );
-            q.data[1][0] = 0.5f*sqdip1;
-            if ( sqdip1 != 0.0f ) {
-                sqdip1 = 0.5f/sqdip1;
-            }
-            q.data[0][0] = (R.data[1][2] - R.data[2][1])*sqdip1;
-            q.data[2][0] = (R.data[0][1] + R.data[1][0])*sqdip1;
-            q.data[3][0] = (R.data[2][0] + R.data[0][2])*sqdip1;
-        }
-    }
-    return q;
 }
