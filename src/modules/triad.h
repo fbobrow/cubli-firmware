@@ -4,23 +4,23 @@
 #include "mbed.h"
 #include "utils/matrix.h"
 
-// Attitude estimator class
+// Triad class
 class Triad
 {
   public:
-    // 
+    // Class constructor
     Triad();
-    // 
-    void update(const Matrix& u, const Matrix& v);
-    //
+    // Update step
+    void update(const Matrix& u_B, const Matrix& v_B);
+    // Orientation quaternion
     Matrix q;
   private:
-    //
+    // Triad method
     Matrix triad(const Matrix& u, const Matrix &v);
-    //
+    // Convert direct cossine matrix to quaternions
     Matrix dcm2quat(const Matrix& R);
-    //
-    Matrix NT, NT_T;
+    // Direct cossine matrix from inertial reference frame to triad reference frame
+    Matrix R_TI;
 };
 
 #endif

@@ -1,2 +1,2 @@
-// #include "programs/calibrate_imu.cpp"
-#include "programs/attitude_estimator.cpp"
+// #include "programs/main_calibrate.cpp"
+#include "programs/main_attitude.cpp"

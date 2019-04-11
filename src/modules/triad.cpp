@@ -1,39 +1,41 @@
 #include "triad.h"
 
-//
+// Class constructor
 Triad::Triad()
 {
-    //
+    // Initialize orientation quaternion
     q = eye(4,1);
-    Matrix a_inertial(3,1), m_inertial(3,1);
-    a_inertial(1,1) = 0.0f;
-    a_inertial(2,1) = 0.0f;
-    a_inertial(3,1) = 9.81f;
-    m_inertial(1,1) = 16.730f;
-    m_inertial(2,1) = -6.598f;
-    m_inertial(3,1) = -14.140f;
-    NT = triad(a_inertial,m_inertial);
-    NT_T = transpose(NT);
+    // Initialize direct cossine matrix from inertial reference frame to triad reference frame
+    Matrix u_I(3,1), v_I(3,1);
+    u_I(1,1) = 0.0f;
+    u_I(2,1) = 0.0f;
+    u_I(3,1) = 9.81f;
+    v_I(1,1) = 16.730f;
+    v_I(2,1) = -6.598f;
+    v_I(3,1) = -14.140f;
+    Matrix R_IT = triad(u_I,v_I);
+    R_TI = transpose(R_IT);
 }
 
-void Triad::update(const Matrix &u, const Matrix &v)
+// Update step
+void Triad::update(const Matrix &u_B, const Matrix &v_B)
 {
-    Matrix BT = triad(u,v);
-    Matrix BN = BT*NT_T;
-    q = dcm2quat(BN);
+    // Calculate direct cossine matrix from inertial reference frame to body fixed reference frame
+    Matrix R_BT = triad(u_B,v_B);
+    Matrix R_BI = R_BT*R_TI;
+    // Convert direct cossine matrix to quaternions
+    q = dcm2quat(R_BI);
 }
 
-//
+// Triad method
 Matrix Triad::triad(const Matrix& u, const Matrix &v)
 {
-    // 
-    Matrix R(3,3);
-    // 
+    // Calculate triad vectors
     Matrix t1 = u/norm(u);
-    Matrix t2 = cross(t1,v/norm(v));
-    t2 = t2/norm(t2);
+    Matrix t2 = cross(u,v)/norm(cross(u,v));
     Matrix t3 = cross(t1,t2);
-    //
+    // Calculate direct cossine matrix from triad vectors
+    Matrix R(3,3);
     R(1,1) = t1(1,1);
     R(2,1) = t1(2,1);
     R(3,1) = t1(3,1);
@@ -43,11 +45,11 @@ Matrix Triad::triad(const Matrix& u, const Matrix &v)
     R(1,3) = t3(1,1);
     R(2,3) = t3(2,1);
     R(3,3) = t3(3,1);
-    // 
+    // Return direct cossine matrix
     return R;
 }
 
-//
+// Convert direct cossine matrix to quaternions
 Matrix Triad::dcm2quat(const Matrix& R)
 {
     Matrix q(4,1);

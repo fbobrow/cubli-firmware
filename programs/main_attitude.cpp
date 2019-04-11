@@ -5,7 +5,7 @@
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
 LSM9DS1 imu(D4,D5);
-Estimator estimator(250);
+AttitudeEstimator att_est(250);
 
 // MATLAB comand
 char command;
@@ -13,13 +13,11 @@ char command;
 // Ticker
 Ticker tic_blink;
 Ticker tic_imu;
-Ticker tic_estimator;
 
 // Flags
 bool flag_blink = false;
 bool flag_imu = false;
-bool flag_estimator = false;
-
+bool flag_att_est = false;
 
 // Callbacks
 void callback_blink()
@@ -30,11 +28,8 @@ void callback_imu()
 {
     flag_imu = true;
 }
-void callback_estimator()
-{
-    flag_estimator = true;
-}
 
+// Debug timer
 Timer tim;
 float dt;
 
@@ -44,7 +39,6 @@ int main()
     imu.init();  
     tic_blink.attach(&callback_blink, 0.5);
     tic_imu.attach(&callback_imu, 1.0/250);
-    tic_estimator.attach(&callback_estimator, 1.0/250);
     tim.start();
     while (true) 
     {
@@ -55,24 +49,24 @@ int main()
         }
         if (flag_imu)
         {
-            flag_imu = false;
-        }
-        if (flag_estimator) 
-        {
-            flag_estimator = false;
             tim.reset();
+            flag_imu = false;
             imu.read();
-            estimator.update(imu.gx,imu.gy,imu.gz,imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
+            flag_att_est = true;
+        }
+        if (flag_att_est) 
+        {
+            flag_att_est = false;
+            att_est.update(imu.gx,imu.gy,imu.gz,imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
             dt = tim.read();
         }
         if (pc.readable()) {
             command = pc.getc();
             if (command == 'p') {
-                pc.printf("%f,%f,%f,%f\n",estimator.q(1,1),estimator.q(2,1),estimator.q(3,1),estimator.q(4,1));
-                //pc.printf("%f,%f,%f,%f,%f,%f,%f,%f,%f\n",imu.gx,imu.gy,imu.gz,imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
-                //pc.printf("%.2fms\n",dt*1000.0f);
+                //pc.printf("%f,%f,%f,%f\n",att_est.q(1,1),att_est.q(2,1),att_est.q(3,1),att_est.q(4,1));
+                //pc.printf("%f,%f,%f,%f\n",att_est.omega(1,1),att_est.omega(2,1),att_est.omega(3,1));
+                pc.printf("%.2fms\n",dt*1000.0f);
             }
         }
-        //pc.printf("%6.2f,%6.2f,%6.2f | %6.2f,%6.2f,%6.2f\n",imu.ax,imu.ay,imu.az,imu.mx,imu.my,imu.mz);
     }
 }
