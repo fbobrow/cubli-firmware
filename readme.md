@@ -12,19 +12,26 @@ It was developed with [ARM Mbed OS](https://www.mbed.com/en/platform/mbed-os/) o
 The source code is organized as follows:
 
 ```
-./                              | Root
- main.cpp                       | Main program source code
- + src                          | Source files
- |  + drivers                   | Drivers files
-    |   lsm9ds1.h               | LSM9DS1 IMU header
-    |   lsm9ds1.cpp             | LSM9DS1 IMU source code
- |  + modules                   | Modules files
-    |   attitude_estimator.h    | Attitude estimator header
-    |   attitude_estimator.cpp  | Attitude estimator source code
- |  + utils                     | Utility files
-    |   matrix.h                | Matrix class header
-    |   matrix.cpp              | Matrix class source code
- + mbed-os                      | ARM Mbed OS source files (automatically imported)
+./                             | Root
+ main.cpp                      | Main source code (call one of the programs)
+ + programs                    | Programs files
+ |   main_attitude.cpp         | Program that implements the attitude estimator
+ |   main_calibrate.cpp        | Program that calibrate sensors
+ + src                         | Source files
+ |  + drivers                  | Drivers files
+    |   lsm9ds1.h              | Inertial measurement unit (IMU) header
+    |   lsm9ds1.cpp            | Inertial measurement unit (IMU) source code
+ |  + modules                  | Modules files
+    |   attitude_estimator.h   | Attitude estimator header
+    |   attitude_estimator.cpp | Attitude estimator source code
+    |   ekf.h                  | Extended Kalman filter header
+    |   ekf.cpp                | Extended Kalman filter source code
+    |   triad.h                | Triad method header
+    |   triad.cpp              | Triad method source code
+ |  + utils                    | Utility files
+    |   matrix.h               | Matrix class header
+    |   matrix.cpp             | Matrix class source code
+ + mbed-os                     | ARM Mbed OS source files (automatically imported)
 ```
 
 ## Importing
