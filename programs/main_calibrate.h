@@ -3,17 +3,17 @@
 #include "src/drivers/lsm9ds1.h"
 
 
-#define b_ax -0.0671f
-#define b_ay -0.0846f
-#define b_az -0.5557f
-#define f_ax 1.0080f
-#define f_ay 1.0060f
+#define b_ay -0.0671f
+#define b_ax -0.0846f
+#define b_az 0.5557f
+#define f_ay 1.0080f
+#define f_ax 1.0060f
 #define f_az 0.9930f
-#define b_mx -20.6220f
-#define b_my 16.1000f
-#define b_mz 106.4630f
-#define f_mx 1.0611f
-#define f_my 1.0133f
+#define b_my -20.6220f
+#define b_mx 16.1000f
+#define b_mz -106.4630f
+#define f_my 1.0611f
+#define f_mx 1.0133f
 #define f_mz 0.9340f
 
 // Objects

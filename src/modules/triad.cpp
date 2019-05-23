@@ -9,10 +9,10 @@ Triad::Triad()
     Matrix u_I(3,1), v_I(3,1);
     u_I(1,1) = 0.0f;
     u_I(2,1) = 0.0f;
-    u_I(3,1) = 9.81f;
-    v_I(1,1) = 16.730f;
-    v_I(2,1) = -6.598f;
-    v_I(3,1) = -14.140f;
+    u_I(3,1) = -9.81f;
+    v_I(2,1) = 16.730f;
+    v_I(1,1) = -6.598f;
+    v_I(3,1) = 14.140f;
     Matrix R_IT = triad(u_I,v_I);
     R_TI = transpose(R_IT);
 }

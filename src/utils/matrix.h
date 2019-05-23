@@ -1,8 +1,8 @@
 #ifndef matrix_h
 #define matrix_h
 
-#include "stdlib.h"
-#include "math.h"
+#include "cstdlib"
+#include "cmath"
 
 // Matrix class
 class Matrix
