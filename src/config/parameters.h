@@ -8,6 +8,10 @@ const float freq_blink = 2.0f;
 const float freq_estimator = 250.0f;
 const float freq_controller = 50.0f;
 
+//
+const float stall_current = 0.5f; // 15.0f;
+const float no_load_speed = 6710.0f; // 6710.0f*(2.0f*3.141516f/60.0f);
+
 // Acelerometer bias and scale factor
 const float b_ay = 0.0671f;
 const float b_ax = 0.0846f;

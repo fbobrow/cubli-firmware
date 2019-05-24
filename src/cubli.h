@@ -2,6 +2,7 @@
 #include "config/pin_names.h"
 
 // Include drivers
+#include "drivers/escon.h"
 #include "drivers/lsm9ds1.h"
 
 // Include modules

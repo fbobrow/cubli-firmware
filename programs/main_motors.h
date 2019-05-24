@@ -4,10 +4,7 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
-
-DigitalOut m1_en(M2_EN);
-AnalogIn   m1_speed(M2_SPEED);
-PwmOut     m1_current(M2_CURRENT); 
+Escon m1(M1_EN,M1_SPEED,M1_CURRENT);
 
 // MATLAB comand
 char command;
@@ -28,10 +25,11 @@ void callback_blink()
 Timer tim;
 float dt;
 
+float i;
+
 // Main program
 int main()
 {
-    m1_current.period_ms(2);
     tic_blink.attach(&callback_blink, 1.0/freq_blink);
     tim.start();
     while (true) 
@@ -47,25 +45,18 @@ int main()
                 pc.printf("Hello world\n");
             }
             else if (command == 's') {
-                //pc.printf("Speed (rpm): %.1f\n",m1_speed.read()*27036.45-19833.35);
-                pc.printf("Speed (rpm): %.1f\n",m1_speed.read()*28674.49-18381.31);
-                //pc.printf("Speed (float): %.4f\n",m1_speed.read());
+                pc.printf("Speed (rpm): %.1f\n",m1.read());
             }
-            else if (command == 'f') {
-                m1_en = true;
-                m1_current = 1.0f;
+            else if (command == 'a') {
+                m1.set(0.0f);
             }
-            else if (command == 'h') {
-                m1_en = true;
-                m1_current = 0.5f;
-            }
-            else if (command == 'z') {
-                m1_en = true;
-                m1_current = 0.0f;
-            }
-            else if (command == 'd') {
-                m1_en = false;
-                m1_current = 0.0f;
+            else if (command == 'c') {
+                pc.printf("Current (A): \n");
+                while (!pc.readable())
+                {
+                }
+                pc.scanf("%f",&i);
+                m1.set(i);
             }
         }
     }
