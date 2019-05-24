@@ -4,8 +4,8 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
-LSM9DS1 imu(D4,D5);
-AttitudeEstimator att_est(250);
+LSM9DS1 imu(IMU_SDA,IMU_SCL);
+AttitudeEstimator att_est(freq_estimator);
 
 // MATLAB comand
 char command;
@@ -37,8 +37,8 @@ float dt;
 int main()
 {
     imu.init();  
-    tic_blink.attach(&callback_blink, 0.5);
-    tic_imu.attach(&callback_imu, 1.0/250);
+    tic_blink.attach(&callback_blink, 1.0/freq_blink);
+    tic_imu.attach(&callback_imu, 1.0/freq_estimator);
     tim.start();
     while (true) 
     {

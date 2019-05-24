@@ -2,6 +2,7 @@
 #define triad_h
 
 #include "mbed.h"
+#include "config/parameters.h"
 #include "utils/matrix.h"
 
 // Triad class

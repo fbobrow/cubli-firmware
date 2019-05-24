@@ -7,12 +7,12 @@ Triad::Triad()
     q = eye(4,1);
     // Initialize direct cossine matrix from inertial reference frame to triad reference frame
     Matrix u_I(3,1), v_I(3,1);
-    u_I(1,1) = 0.0f;
-    u_I(2,1) = 0.0f;
-    u_I(3,1) = -9.81f;
-    v_I(2,1) = 16.730f;
-    v_I(1,1) = -6.598f;
-    v_I(3,1) = 14.140f;
+    u_I(1,1) = ax_I;
+    u_I(2,1) = ay_I;
+    u_I(3,1) = az_I;
+    v_I(1,1) = mx_I;
+    v_I(2,1) = my_I;
+    v_I(3,1) = mz_I;
     Matrix R_IT = triad(u_I,v_I);
     R_TI = transpose(R_IT);
 }
