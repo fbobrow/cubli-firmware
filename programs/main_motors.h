@@ -4,7 +4,7 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
-Escon m1(M1_EN,M1_SPEED,M1_CURRENT);
+Escon m1(M2_EN,M2_SPEED,M2_CURRENT);
 
 // MATLAB comand
 char command;
@@ -27,6 +27,8 @@ float dt;
 
 float i;
 
+float speed;
+
 // Main program
 int main()
 {
@@ -45,7 +47,8 @@ int main()
                 pc.printf("Hello world\n");
             }
             else if (command == 's') {
-                pc.printf("Speed (rpm): %.1f\n",m1.read());
+                speed = m1.read();
+                pc.printf("Speed (rpm): %.3f\n",speed);
             }
             else if (command == 'a') {
                 m1.set(0.0f);
