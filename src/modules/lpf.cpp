@@ -12,5 +12,5 @@ LowPassFilter::LowPassFilter(float freq, float omega_c)
 // Update step
 void LowPassFilter::update(const Matrix &u)
 {
-    y = alpha*u+(1-alpha)*y;
+    y = u;//alpha*u+(1-alpha)*y;
 }

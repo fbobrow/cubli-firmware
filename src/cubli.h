@@ -7,3 +7,4 @@
 
 // Include modules
 #include "modules/attitude_estimator.h"
+#include "modules/speed_estimator.h"

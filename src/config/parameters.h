@@ -18,6 +18,9 @@ const float b_omega_1 = -3.4419f;
 const float b_omega_2 = -4.2238f;
 const float b_omega_3 = -3.8829f;
 
+//
+const float lpf_cut_off_frequency = 50.0f; 
+
 // Acelerometer bias and scale factor
 const float b_ay = 0.0671f;
 const float b_ax = 0.0846f;

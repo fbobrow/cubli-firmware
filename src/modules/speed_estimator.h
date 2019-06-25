@@ -14,7 +14,7 @@ class SpeedEstimator
     SpeedEstimator(float freq);
     // Update step
     void update(float omega_1, float omega_2, float omega_3);
-    // Orientation quaternion and angular velocity vector
+    // XXX
     Matrix omega;
   private:
     // Extended Kalman Filter class
