@@ -4,7 +4,9 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
-Escon m1(M2_EN,M2_SPEED,M2_CURRENT);
+Escon m1(M1_EN,M1_SPEED,M1_CURRENT);
+Escon m2(M2_EN,M2_SPEED,M2_CURRENT);
+Escon m3(M3_EN,M3_SPEED,M3_CURRENT);
 
 // MATLAB comand
 char command;
@@ -47,11 +49,12 @@ int main()
                 pc.printf("Hello world\n");
             }
             else if (command == 's') {
-                speed = m1.read();
-                pc.printf("Speed (rpm): %.3f\n",speed);
+                pc.printf("Speed (rpm): M1 %.0frpm | M2 %.0frpm | M3 %.0frpm\n",m1.read(),m2.read(),m3.read());
             }
             else if (command == 'a') {
                 m1.set(0.0f);
+                m2.set(0.0f);
+                m3.set(0.0f);
             }
             else if (command == 'c') {
                 pc.printf("Current (A): \n");
@@ -60,6 +63,8 @@ int main()
                 }
                 pc.scanf("%f",&i);
                 m1.set(i);
+                m2.set(i);
+                m3.set(i);
             }
         }
     }

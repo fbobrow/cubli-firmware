@@ -8,7 +8,7 @@ Escon::Escon(PinName PIN_EN, PinName PIN_SPEED, PinName PIN_CURRENT) : en(PIN_EN
 // Read speed
 float Escon::read()
 {
-    return speed.read();
+    return (speed.read()-0.5f)*(2.0f*no_load_speed);
 }
 
 // Set current
@@ -32,8 +32,7 @@ void Escon::set(float i)
         }
         else 
         {
-            //current = (i+stall_current)/(2.0f*stall_current);   
-            current = 0.5+i*(0.8f/(2.0f*stall_current)); 
+            current = 0.5f+i*(0.8f/(2.0f*stall_current)); 
         }
     }
 }
