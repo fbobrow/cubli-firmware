@@ -1,27 +1,27 @@
 #include "escon.h"
 
-Escon::Escon(PinName PIN_EN, PinName PIN_SPEED, PinName PIN_CURRENT) : en(PIN_EN), speed(PIN_SPEED), current(PIN_CURRENT)
+Escon::Escon(PinName PIN_ENABLE, PinName PIN_SPEED, PinName PIN_CURRENT) : enable(PIN_ENABLE), speed(PIN_SPEED), current(PIN_CURRENT)
 {
-    //current.period_ms(2);
+    current.period_ms(1);
 }
 
 // Read speed
-float Escon::read()
+float Escon::read_speed()
 {
     return (speed.read()-0.5f)*(2.0f*no_load_speed);
 }
 
 // Set current
-void Escon::set(float i)
+void Escon::set_current(float i)
 {
     if (i == 0.0f)
     {
-        en = false;
+        enable = false;
         current = 0.5f;   
     }
     else
     {
-        en = true;
+        enable = true;
         if(i > stall_current)
         {
             current = 0.9f;

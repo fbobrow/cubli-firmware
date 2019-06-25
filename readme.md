@@ -23,20 +23,31 @@ The source code is organized as follows:
  + programs                    | Programs files
  |   main_attitude.cpp         | Program that implements the attitude estimator
  |   main_calibrate.cpp        | Program that calibrate sensors
+ |   main_motors.cpp           | Program that tests motors and implements the speed estimator
  + src                         | Source files
+ |   cubli.h                   | Include all header files
+ |  + config                   | Configuration files
+    |   parameters.h           | Parameters (interrupt frequency, physical constants, etc.)
+    |   pin_names.h            | Pin names
  |  + drivers                  | Drivers files
-    |   lsm9ds1.h              | Inertial measurement unit (IMU) header
-    |   lsm9ds1.cpp            | Inertial measurement unit (IMU) source code
+    |   escon.h                | Motor servo controller [header]
+    |   escon.cpp              | Motor servo controller [source code]
+    |   lsm9ds1.h              | Inertial measurement unit (IMU) [header]
+    |   lsm9ds1.cpp            | Inertial measurement unit (IMU) [source code]
  |  + modules                  | Modules files
-    |   attitude_estimator.h   | Attitude estimator header
-    |   attitude_estimator.cpp | Attitude estimator source code
-    |   ekf.h                  | Extended Kalman filter header
-    |   ekf.cpp                | Extended Kalman filter source code
-    |   triad.h                | Triad method header
-    |   triad.cpp              | Triad method source code
+    |   attitude_estimator.h   | Attitude estimator [header]
+    |   attitude_estimator.cpp | Attitude estimator [source code]
+    |   ekf.h                  | Extended Kalman filter [header]
+    |   ekf.cpp                | Extended Kalman filter [source code]
+    |   lpf.h                  | Low pass filter [header]
+    |   lpf.cpp                | Low pass filter [source code]
+    |   speed_estimator.h      | Speed estimator [header]
+    |   speed_estimator.cpp    | Speed estimator [source code]
+    |   triad.h                | Triad method [header]
+    |   triad.cpp              | Triad method [source code]
  |  + utils                    | Utility files
-    |   matrix.h               | Matrix class header
-    |   matrix.cpp             | Matrix class source code
+    |   matrix.h               | Matrix class [header]
+    |   matrix.cpp             | Matrix class [source code]
  + mbed-os                     | ARM Mbed OS source files (automatically imported)
 ```
 

@@ -9,14 +9,14 @@ class Escon
 {
   public:
     // Class constructor
-    Escon(PinName PIN_EN, PinName PIN_SPEED, PinName PIN_CURRENT);
+    Escon(PinName PIN_ENABLE, PinName PIN_SPEED, PinName PIN_CURRENT);
     // Read speed
-    float read();
+    float read_speed();
     // Set current
-    void set(float i);
+    void set_current(float i);
   private:
     // Objects
-    DigitalOut en;
+    DigitalOut enable;
     AnalogIn   speed;
     PwmOut     current; 
 };

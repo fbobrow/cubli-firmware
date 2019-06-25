@@ -8,9 +8,15 @@ const float freq_blink = 2.0f;
 const float freq_estimator = 250.0f;
 const float freq_controller = 50.0f;
 
-//
-const float stall_current = 15.0f; // 15.0f;
-const float no_load_speed = 6710.0f; // 6710.0f*(2.0f*3.141516f/60.0f);
+// Motor constants 
+const float stall_current = 15.0f;                     // A
+const float no_load_speed = 6710.0f*(3.141516f/30.0f); // rpm -> rad/s
+const float torque_constant = 33.5e-3;                 // Nm/A
+
+// Motor bias
+const float b_omega_1 = -3.4419f;
+const float b_omega_2 = -4.2238f;
+const float b_omega_3 = -3.8829f;
 
 // Acelerometer bias and scale factor
 const float b_ay = 0.0671f;
