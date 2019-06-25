@@ -6,9 +6,14 @@ Escon::Escon(PinName PIN_ENABLE, PinName PIN_SPEED, PinName PIN_CURRENT) : enabl
 }
 
 // Read speed
-float Escon::read_speed()
+void Escon::read()
 {
-    return (speed.read()-0.5f)*(2.0f*no_load_speed);
+    omega = (speed.read()-0.5f)*(2.0f*no_load_speed);
+}
+
+void Escon::set_torque(float tau)
+{
+    set_current(tau/torque_constant);
 }
 
 // Set current

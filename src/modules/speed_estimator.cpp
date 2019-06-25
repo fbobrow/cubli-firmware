@@ -1,7 +1,7 @@
 #include "speed_estimator.h"
 
 // Class constructor
-SpeedEstimator::SpeedEstimator(float freq) : lpf(freq,10.0f)
+SpeedEstimator::SpeedEstimator(float freq) : lpf(freq,lpf_cut_off_frequency)
 {
     // Initialize xxx
     omega = zeros(3,1);

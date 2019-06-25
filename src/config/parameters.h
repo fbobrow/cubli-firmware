@@ -14,12 +14,12 @@ const float no_load_speed = 6710.0f*(3.141516f/30.0f); // rpm -> rad/s
 const float torque_constant = 33.5e-3;                 // Nm/A
 
 // Motor bias
-const float b_omega_1 = -3.4419f;
-const float b_omega_2 = -4.2238f;
-const float b_omega_3 = -3.8829f;
+const float b_omega_1 = -3.5077f;   // rad/s
+const float b_omega_2 = -4.0757f;   // rad/s
+const float b_omega_3 = -3.9992f;   // rad/s 
 
 //
-const float lpf_cut_off_frequency = 50.0f; 
+const float lpf_cut_off_frequency = 100.0f; 
 
 // Acelerometer bias and scale factor
 const float b_ay = 0.0671f;

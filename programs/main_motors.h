@@ -5,9 +5,9 @@
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
 AnalogIn analog(A6);
-Escon m1(M1_ENABLE,M1_SPEED,M1_CURRENT);
-Escon m2(M2_ENABLE,M2_SPEED,M2_CURRENT);
-Escon m3(M3_ENABLE,M3_SPEED,M3_CURRENT);
+Escon motor_1(M1_ENABLE,M1_SPEED,M1_CURRENT);
+Escon motor_2(M2_ENABLE,M2_SPEED,M2_CURRENT);
+Escon motor_3(M3_ENABLE,M3_SPEED,M3_CURRENT);
 SpeedEstimator spe_est(freq_estimator);
 
 // MATLAB comand
@@ -36,9 +36,7 @@ void callback_motors()
 Timer tim;
 float dt;
 
-float i;
-
-float speed;
+float i, tau;
 
 // Main program
 int main()
@@ -62,21 +60,24 @@ int main()
         {
             flag_spe_est = false;
             analog.read();
-            spe_est.update(m1.read_speed(),m2.read_speed(),m3.read_speed());
-            pc.printf("%6.2f\n",spe_est.omega(1,1));
+            motor_1.read();
+            motor_2.read();
+            motor_3.read();
+            spe_est.update(motor_1.omega,motor_2.omega,motor_3.omega);
+            //pc.printf("%6.2f\t%6.2f\t%6.2f\n",motor_1.omega,motor_2.omega,motor_3.omega);
         }
         if (pc.readable()) {
             command = pc.getc();
-            if (command == 't') {
+            if (command == 'h') {
                 pc.printf("Hello world\n");
             }
             else if (command == 's') {
                 pc.printf("Speed (rad/s): %6.2f | %6.2f | %6.2f\n",spe_est.omega(1,1),spe_est.omega(2,1),spe_est.omega(3,1));
             }
             else if (command == 'a') {
-                m1.set_current(0.0f);
-                m2.set_current(0.0f);
-                m3.set_current(0.0f);
+                motor_1.set_current(0.0f);
+                motor_2.set_current(0.0f);
+                motor_3.set_current(0.0f);
             }
             else if (command == 'c') {
                 pc.printf("Current (A): \n");
@@ -84,9 +85,19 @@ int main()
                 {
                 }
                 pc.scanf("%f",&i);
-                m1.set_current(i);
-                //m2.set_current(i);
-                //m3.set_current(i);
+                motor_1.set_current(i);
+                motor_2.set_current(i);
+                motor_3.set_current(i);
+            }
+            else if (command == 't') {
+                pc.printf("Torque (Nm): \n");
+                while (!pc.readable())
+                {
+                }
+                pc.scanf("%f",&tau);
+                motor_1.set_torque(tau);
+                motor_2.set_torque(tau);
+                motor_3.set_torque(tau);
             }
         }
     }
