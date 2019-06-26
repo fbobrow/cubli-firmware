@@ -41,6 +41,7 @@ float i, tau;
 // Main program
 int main()
 {
+    analog.read();
     tic_blink.attach(&callback_blink, 1.0/freq_blink);
     tic_motors.attach(&callback_motors, 1.0/freq_estimator);
     tim.start();
@@ -59,7 +60,6 @@ int main()
         if (flag_spe_est) 
         {
             flag_spe_est = false;
-            analog.read();
             motor_1.read();
             motor_2.read();
             motor_3.read();
