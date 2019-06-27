@@ -85,8 +85,8 @@ int main()
                 {
                 }
                 pc.scanf("%f",&i);
-                motor_1.set_current(i);
-                motor_2.set_current(i);
+                //motor_1.set_current(i);
+                //motor_2.set_current(i);
                 motor_3.set_current(i);
             }
             else if (command == 't') {
