@@ -64,7 +64,6 @@ int main()
             motor_2.read();
             motor_3.read();
             spe_est.update(motor_1.omega,motor_2.omega,motor_3.omega);
-            //pc.printf("%6.2f\t%6.2f\t%6.2f\n",motor_1.omega,motor_2.omega,motor_3.omega);
         }
         if (pc.readable()) {
             command = pc.getc();
@@ -85,8 +84,8 @@ int main()
                 {
                 }
                 pc.scanf("%f",&i);
-                //motor_1.set_current(i);
-                //motor_2.set_current(i);
+                motor_1.set_current(i);
+                motor_2.set_current(i);
                 motor_3.set_current(i);
             }
             else if (command == 't') {
