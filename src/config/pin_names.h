@@ -3,7 +3,7 @@
 
 #include "mbed.h"
 
-// Motor pins
+// Motor controller (ESCON) pins
 const PinName M1_ENABLE = A3; 
 const PinName M2_ENABLE = D11;
 const PinName M3_ENABLE = A0; 
@@ -14,7 +14,7 @@ const PinName M1_CURRENT = A5;
 const PinName M2_CURRENT = D10;
 const PinName M3_CURRENT = A2;
 
-// I2C pins
+// IMU (LSM9DS1) pins
 const PinName IMU_SDA = D4; 
 const PinName IMU_SCL = D5;
 

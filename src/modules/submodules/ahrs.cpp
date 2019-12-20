@@ -1,7 +1,7 @@
-#include "attitude_estimator.h"
+#include "ahrs.h"
 
 // Class constructor
-AttitudeEstimator::AttitudeEstimator(float freq) : ekf(freq,g_cov,q_cov)
+AttitudeHeadingReferenceSystem::AttitudeHeadingReferenceSystem(float freq) : ekf(freq,g_cov,q_cov)
 {
     // Initialize quaternion and angular velocity vector
     q = eye(4,1);
@@ -9,7 +9,7 @@ AttitudeEstimator::AttitudeEstimator(float freq) : ekf(freq,g_cov,q_cov)
 }
 
 // Update step
-void AttitudeEstimator::update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz)
+void AttitudeHeadingReferenceSystem::update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz)
 {
     // Gyroscope, accelerometer and magnetometer vectors 
     Matrix g(3,1), a(3,1), m(3,1);

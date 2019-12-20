@@ -2,6 +2,7 @@
 #define lpf_h
 
 #include "mbed.h"
+
 #include "utils/matrix.h"
 
 // Low pass filter class

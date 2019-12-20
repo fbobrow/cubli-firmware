@@ -2,7 +2,8 @@
 #define ekf_h
 
 #include "mbed.h"
-#include "utils/matrix.h"
+
+#include "src/utils/matrix.h"
 
 // Extended Kalman Filter class
 class ExtendedKalmanFilter

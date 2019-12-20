@@ -3,15 +3,39 @@
 
 #include "cmath"
 
+const float pi = 3.141516;
+const float g = 9.80665;    // Accelation of gravity [m/s^2]
+
+// Motor parameters
+const float Ra = 1.03;                       // Armature resistance []
+const float La = 0.572e-3;                   // Armature inductance [H]
+const float Km = 33.5e-3;                    // Torque constant [N.m/A]
+const float ia_max = 15.0;                   // Stall current [A]
+const float omega_nl = 6710.0*(2.0*pi/60.0); // No load speed [rpm -> rad/]
+
+// Reaction wheel friction parameters
+const float tau_c = 2.5e-3; // Coulomb friction torque [N.m]
+const float b = 1.05e-5;    // Rotational viscuous friction coefficient [N.m.s/rad]
+const float kd = 1.7e-8;    // Rotational drag coefficient [N.m.s^2/rad^2]
+
 // Interrupt frequencies
-const float freq_blink = 2.0f;
+const float f = 200.0;
+const float dt = 1/200.0;
+const int dt_us = (int) dt*1e6;
+
+// Controller gains
+const float kps = 0.0;
+const float kds = 0.0;
+const float kpw = 0.0;
+const float kdw = 0.0;
+
+// Estimator gains
+const float lpw = 0.0;
+const float ldw = 10.0;
+
+const float freq_blink = 1.0f;
 const float freq_estimator = 250.0f;
 const float freq_controller = 50.0f;
-
-// Motor constants 
-const float stall_current = 15.0f;                     // A
-const float no_load_speed = 6710.0f*(3.141516f/30.0f); // rpm -> rad/s
-const float torque_constant = 33.5e-3;                 // Nm/A
 
 // Motor bias
 const float b_omega_1 = -3.5077f;   // rad/s

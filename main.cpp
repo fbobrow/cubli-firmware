@@ -1,6 +1,6 @@
-//#include "programs/main_analog.h"
+#include "programs/main_analog.h"
 //#include "programs/main_attitude.h"
 //#include "programs/main_calibrate.h"
-#include "programs/main_calibrate_motors.h"
+//#include "programs/main_calibrate_motors.h"
 //#include "programs/main_control.h"
 //#include "programs/main_motors.h"

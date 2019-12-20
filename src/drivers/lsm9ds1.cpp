@@ -70,7 +70,7 @@ bool LSM9DS1::test_i2c()
 void LSM9DS1::setup_gyr(gyr_scale g_scale)
 {
     // Register address and data that will be writed
-    char reg_data[2] = {CTRL_REG1_G, (0b011 << 5) | (g_scale << 3) | 0b000};
+    char reg_data[2] = {CTRL_REG1_G, (uint8_t) ((0b011 << 5) | (g_scale << 3) | 0b000)};
     
     // Point to register address and write data
     i2c.write(LSM9DS1_ADDRESS_ACC_GYR, reg_data, 2);
@@ -88,14 +88,14 @@ void LSM9DS1::setup_gyr(gyr_scale g_scale)
             break;
     }
     // Convert resolution to SI (mdps / bit -> rad/s / bit)
-    g_res = (g_res*1.0e-3f)*PI/180.0f;
+    g_res = (g_res*1.0e-3f)*pi/180.0f;
 }
 
 // Setup accelerometer configurations (full-scale range) 
 void LSM9DS1::setup_acc(acc_scale a_scale)
 {
     // Register address and data that will be writed
-    char reg_data[2] = {CTRL_REG6_XL, (0b011 << 5) | (a_scale << 3) | 0b000};
+    char reg_data[2] = {CTRL_REG6_XL, (uint8_t) ((0b011 << 5) | (a_scale << 3) | 0b000)};
     
     // Point to register address and write data
     i2c.write(LSM9DS1_ADDRESS_ACC_GYR, reg_data, 2);
@@ -116,14 +116,14 @@ void LSM9DS1::setup_acc(acc_scale a_scale)
             break;
     }
     // Convert resolution to SI (mg / bit -> m/s^2 / bit)
-    a_res = (a_res*1.0e-3f)*GRAVITY;
+    a_res = (a_res*1.0e-3f)*g;
 }
 
 // Setup magnetometer configurations (full-scale range) 
 void LSM9DS1::setup_mag(mag_scale m_scale)
 {
     // Register address and data that will be writed
-    char cmd[4] = {CTRL_REG1_M, 0x10, m_scale << 5, 0 };
+    char cmd[4] = {CTRL_REG1_M, 0x10, (uint8_t) (m_scale << 5), 0 };
 
     // Write the data to the mag control registers
     i2c.write(LSM9DS1_ADDRESS_MAG, cmd, 4);

@@ -1,10 +1,10 @@
 // Include configurations
-#include "config/pin_names.h"
+#include "src/config/pin_names.h"
 
 // Include drivers
-#include "drivers/escon.h"
-#include "drivers/lsm9ds1.h"
+#include "src/drivers/escon.h"
+#include "src/drivers/lsm9ds1.h"
 
 // Include modules
-#include "modules/attitude_estimator.h"
-#include "modules/speed_estimator.h"
+#include "src/modules/attitude_estimator.h"
+#include "src/modules/speed_estimator.h"
