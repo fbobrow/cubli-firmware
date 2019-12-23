@@ -12,22 +12,22 @@ class WheelEstimator
 {
   public:
     // Class constructor
-    WheelEstimator();
+    WheelEstimator(PinName PIN_SPEED);
     //
-    void calibrate();
+    void init();
     // Predict step
     void predict();
     // Update step
     void correct();
     // XXX
-    float theta, omega;
+    float theta, omega, omega_m;
   private:
-    //
+    // Motor hall sensor object
     Hall hall;
     //
     float omega_bias;
     //
-    float alpha;
+    void calibrate();
 };
 
 #endif

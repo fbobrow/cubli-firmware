@@ -1,21 +1,18 @@
 #include "ekf.h"
 
 // Class constructor
-ExtendedKalmanFilter::ExtendedKalmanFilter(float freq, float u_var, float z_var)
+EKF::EKF()
 {
     // Initialize state vector x and error covariance matrix P
     x = eye(7,1);
     P = eye(7);
     // Initialize state noise covariance matrix Q and measurement noise covariance matrix R
-    Q = u_var*eye(3);
-    R = z_var*eye(4);
-    // Initialize time interval dt and dt/2 (to avoid double arithmetic)
-    dt = 1.0f/freq;
-    dt_2 = dt/2.0f;
+    Q = g_cov*eye(3);
+    R = q_cov*eye(4);
 }
 
 // Prediction step
-void ExtendedKalmanFilter::predict(const Matrix& u)
+void EKF::predict(const Matrix& u)
 {
     // Compute state transition matrix A = jacob(f,x) and input matrix B = jacob(f,u)
     Matrix A = jacob_f_x(x,u);
@@ -28,7 +25,7 @@ void ExtendedKalmanFilter::predict(const Matrix& u)
 }
 
 // Correction step
-void ExtendedKalmanFilter::correct(const Matrix& z)
+void EKF::correct(const Matrix& z)
 {
     // Compute measurement matrix H = jacob(h,x)
     Matrix H = jacob_h_x(x);
@@ -42,7 +39,7 @@ void ExtendedKalmanFilter::correct(const Matrix& z)
 }
 
 // State transition function x_dot = f(x,u)
-Matrix ExtendedKalmanFilter::f(const Matrix& x0, const Matrix& u0)
+Matrix EKF::f(const Matrix& x0, const Matrix& u0)
 {
     // Declare f(x,u)
     Matrix f(7,1);
@@ -60,7 +57,7 @@ Matrix ExtendedKalmanFilter::f(const Matrix& x0, const Matrix& u0)
 }
 
 // Measurement function z = h(x)
-Matrix ExtendedKalmanFilter::h(const Matrix& x0)
+Matrix EKF::h(const Matrix& x0)
 {
     // Declare h(x)
     Matrix h(4,1);
@@ -74,7 +71,7 @@ Matrix ExtendedKalmanFilter::h(const Matrix& x0)
 }
 
 // State transition matrix A = jacob(f,x)
-Matrix ExtendedKalmanFilter::jacob_f_x(const Matrix& x0, const Matrix& u0)
+Matrix EKF::jacob_f_x(const Matrix& x0, const Matrix& u0)
 {
     // Declare A
     Matrix A(7,7);
@@ -123,7 +120,7 @@ Matrix ExtendedKalmanFilter::jacob_f_x(const Matrix& x0, const Matrix& u0)
 }
 
 // Input matrix B = jacob(f,u)
-Matrix ExtendedKalmanFilter::jacob_f_u(const Matrix& x0, const Matrix& u0)
+Matrix EKF::jacob_f_u(const Matrix& x0, const Matrix& u0)
 {
     // Declare B
     Matrix B(7,3);
@@ -150,7 +147,7 @@ Matrix ExtendedKalmanFilter::jacob_f_u(const Matrix& x0, const Matrix& u0)
 }
 
 // Measurement matrix H = jacob(h,x)
-Matrix ExtendedKalmanFilter::jacob_h_x(const Matrix& x0)
+Matrix EKF::jacob_h_x(const Matrix& x0)
 {
     // Declare H
     Matrix H(4,7);
@@ -164,7 +161,7 @@ Matrix ExtendedKalmanFilter::jacob_h_x(const Matrix& x0)
 }
 
 // Normalize quaternion state q = q/norm(q)
-void ExtendedKalmanFilter::norm_quat()
+void EKF::norm_quat()
 {
     // Auxiliary variable to avoid double arithmetic
     float q_norm = 1.0f/sqrt(x(1,1)*x(1,1)+x(2,1)*x(2,1)+x(3,1)*x(3,1)+x(4,1)*x(4,1));

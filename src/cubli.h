@@ -1,10 +1,11 @@
 // Include configurations
 #include "src/config/pin_names.h"
 
-// Include drivers
-#include "src/drivers/escon.h"
+// Include actuator drivers
+#include "src/drivers/hall.h"
 #include "src/drivers/lsm9ds1.h"
+#include "src/drivers/motor.h"
 
 // Include modules
-#include "src/modules/attitude_estimator.h"
-#include "src/modules/speed_estimator.h"
+#include "src/modules/submodules/ahrs.h"
+#include "src/modules/submodules/we.h"

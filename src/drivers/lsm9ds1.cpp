@@ -116,7 +116,7 @@ void LSM9DS1::setup_acc(acc_scale a_scale)
             break;
     }
     // Convert resolution to SI (mg / bit -> m/s^2 / bit)
-    a_res = (a_res*1.0e-3f)*g;
+    a_res = (a_res*1.0e-3f)*gravity;
 }
 
 // Setup magnetometer configurations (full-scale range) 
@@ -217,7 +217,7 @@ void LSM9DS1::read_mag()
     int16_t my_raw = data[2] | ( data[3] << 8 );
     int16_t mz_raw = data[4] | ( data[5] << 8 );
     // Convert to SI units [uT]
-    mx = -my_raw * m_res;
-    my = mx_raw * m_res;
+    mx = my_raw * m_res;
+    my = -mx_raw * m_res;
     mz = mz_raw * m_res;
 }

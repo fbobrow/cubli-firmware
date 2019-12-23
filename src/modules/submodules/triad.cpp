@@ -54,36 +54,36 @@ Matrix Triad::dcm2quat(const Matrix& R)
 {
     Matrix q(4,1);
     float t = trace(R);
-    if (t > 0.0f) {
-        float sqtrp1 = sqrt(t+1.0f);
-        q(1,1) = 0.5f*sqtrp1;
-        q(2,1) = (R(2,3)-R(3,2))/(2.0f*sqtrp1);
-        q(3,1) = (R(3,1)-R(1,3))/(2.0f*sqtrp1);
-        q(4,1) = (R(1,2)-R(2,1))/(2.0f*sqtrp1);
+    if (t > 0.0) {
+        float sqtrp1 = sqrt(t+1.0);
+        q(1,1) = 0.5*sqtrp1;
+        q(2,1) = (R(2,3)-R(3,2))/(2.0*sqtrp1);
+        q(3,1) = (R(3,1)-R(1,3))/(2.0*sqtrp1);
+        q(4,1) = (R(1,2)-R(2,1))/(2.0*sqtrp1);
     } else {
         if ((R(2,2) > R(1,1)) && (R(2,2) > R(3,3))) {
-            float sqdip1 = sqrt(R(2,2)-R(1,1)-R(3,3)+1.0f);
-            q(3,1) = 0.5f*sqdip1;
-            if (sqdip1 != 0.0f) {
-                sqdip1 = 0.5f/sqdip1;
+            float sqdip1 = sqrt(R(2,2)-R(1,1)-R(3,3)+1.0);
+            q(3,1) = 0.5*sqdip1;
+            if (sqdip1 != 0.0) {
+                sqdip1 = 0.5/sqdip1;
             }
             q(1,1) = (R(3,1)-R(1,3))*sqdip1;
             q(2,1) = (R(1,2)+R(2,1))*sqdip1;
             q(4,1) = (R(2,3)+R(3,2))*sqdip1;
         } else if (R(3,3) > R(1,1)) {
-            float sqdip1 = sqrt(R(3,3)-R(1,1)-R(2,2)+1.0f);
-            q(4,1) = 0.5f*sqdip1;
-            if (sqdip1 != 0.0f) {
-                sqdip1 = 0.5f/sqdip1;
+            float sqdip1 = sqrt(R(3,3)-R(1,1)-R(2,2)+1.0);
+            q(4,1) = 0.5*sqdip1;
+            if (sqdip1 != 0.0) {
+                sqdip1 = 0.5/sqdip1;
             }
             q(1,1) = (R(1,2)-R(2,1))*sqdip1;
             q(2,1) = (R(3,1)+R(1,3))*sqdip1;
             q(3,1) = (R(2,3)+R(3,2))*sqdip1;
         } else {
-            float sqdip1 = sqrt(R(1,1)-R(2,2)-R(3,3)+1.0f);
-            q(2,1) = 0.5f*sqdip1;
-            if (sqdip1 != 0.0f) {
-                sqdip1 = 0.5f/sqdip1;
+            float sqdip1 = sqrt(R(1,1)-R(2,2)-R(3,3)+1.0);
+            q(2,1) = 0.5*sqdip1;
+            if (sqdip1 != 0.0) {
+                sqdip1 = 0.5/sqdip1;
             }
             q(1,1) = (R(2,3)-R(3,2))*sqdip1;
             q(3,1) = (R(1,2)+R(2,1))*sqdip1;

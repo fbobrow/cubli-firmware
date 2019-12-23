@@ -4,24 +4,31 @@
 #include "mbed.h"
 
 #include "src/config/parameters.h"
+#include "src/config/pin_names.h"
+#include "src/drivers/lsm9ds1.h"
 #include "src/utils/matrix.h"
 #include "src/modules/submodules/ekf.h"
 #include "src/modules/submodules/triad.h"
 
 // Attitude and heading eference system
-class AttitudeHeadingReferenceSystem
+class AHRS
 {
   public:
     // Class constructor
-    AttitudeHeadingReferenceSystem(float freq);
+    AHRS();
+    // Class initializer
+    void init();
     // Update step
-    void update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz);
+    void update();
     // Orientation quaternion and angular velocity vector
     Matrix q, omega;
+    Matrix a, m;
   private:
-    // Extended Kalman Filter class
-    ExtendedKalmanFilter ekf;
-    // Triad class
+    // IMU object
+    LSM9DS1 imu;
+    // Extended Kalman filter object
+    EKF ekf;
+    // Triad object
     Triad triad;
 };
 

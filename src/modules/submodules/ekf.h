@@ -3,14 +3,15 @@
 
 #include "mbed.h"
 
+#include "src/config/parameters.h"
 #include "src/utils/matrix.h"
 
 // Extended Kalman Filter class
-class ExtendedKalmanFilter
+class EKF
 {
   public:
     // Class constructor
-    ExtendedKalmanFilter(float freq, float u_var, float z_var);
+    EKF();
     // Prediction and correction steps
     void predict(const Matrix& u);
     void correct(const Matrix& z);
@@ -28,8 +29,6 @@ class ExtendedKalmanFilter
     void norm_quat();
     // State noise covariance matrix Q and measurement noise covariance matrix R
     Matrix Q, R;
-    // Time interval dt and dt/2 (to avoid double arithmetic)
-    float dt, dt_2;
 };
 
 #endif
