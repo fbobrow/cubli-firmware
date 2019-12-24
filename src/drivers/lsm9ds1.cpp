@@ -116,7 +116,7 @@ void LSM9DS1::setup_acc(acc_scale a_scale)
             break;
     }
     // Convert resolution to SI (mg / bit -> m/s^2 / bit)
-    a_res = (a_res*1.0e-3f)*gravity;
+    a_res = (a_res*1.0e-3f)*g;
 }
 
 // Setup magnetometer configurations (full-scale range) 

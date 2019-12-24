@@ -22,7 +22,6 @@ class AHRS
     void update();
     // Orientation quaternion and angular velocity vector
     Matrix q, omega;
-    Matrix a, m;
   private:
     // IMU object
     LSM9DS1 imu;

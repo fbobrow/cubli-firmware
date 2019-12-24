@@ -1,30 +1,29 @@
 #include "mbed.h"
-#include "src/modules/submodules/ahrs.h"
+#include "cubli.h"
 
 // Objects
+DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX,NULL,230400);
 AHRS ahrs;
+Ticker tic, tic_blink;
 
-// MATLAB comand
-char command;
-
-// Ticker
-Ticker tic;
-
-// Flags
+// Interrupt flags and callback functions
 bool flag = false;
+bool flag_blink = false;
+void callback() { flag = true; }
+void callback_blink() { flag_blink = true; }
 
-// Callbacks
-void callback()
-{
-    flag = true;
-}
+// Serial commands
+char command;
 
 // Main program
 int main()
 {
+    // Initializations
     ahrs.init();  
     tic.attach_us(&callback, dt_us);
+    tic_blink.attach_us(&callback_blink, 1e6);
+    // Endless loop
     while (true) 
     {
         if (flag)
@@ -32,11 +31,15 @@ int main()
             flag = false;
             ahrs.update();
         }
+        if (flag_blink) 
+        {
+            flag_blink = false;
+            led = !led;
+        }
         if (pc.readable()) {
             command = pc.getc();
             if (command == 'p') {
                 pc.printf("%f,%f,%f,%f\n",ahrs.q(1,1),ahrs.q(2,1),ahrs.q(3,1),ahrs.q(4,1));
-                //pc.printf("%f,%f,%f,%f,%f,%f\n",ahrs.a(1,1),ahrs.a(2,1),ahrs.a(3,1),ahrs.m(1,1),ahrs.m(2,1),ahrs.m(3,1));
             }
         }
     }

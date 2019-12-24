@@ -8,7 +8,7 @@ Motor motor(M1_ENABLE,M1_CURRENT);
 WheelEstimator we(M1_SPEED);
 Ticker tic, tic_blink, tic_print;
 
-// Interrupt flag and callback functions
+// Interrupt flags and callback functions
 bool flag = false;
 bool flag_blink = false;
 bool flag_print = false;
@@ -34,7 +34,7 @@ int main()
         if (flag) 
         {
             flag = false;
-            we.predict();
+            we.predict(tau);
             we.correct();
         }
         if (flag_blink) 
@@ -45,38 +45,40 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("%.2f\t%.2f\n",we.omega_m,we.omega);
+            pc.printf("%.2f\n",we.omega);
         }
         if (pc.readable()) 
         {
             command = pc.getc();
             if (command == 'r') 
             {
-                pc.printf("Ready!\n");
+                pc.printf("\nReady!\n");
             }
             else if (command == 'c') 
             {
-                pc.printf("Current (A): ");
+                pc.printf("\nCurrent (A): ");
                 while (!pc.readable())
                 {
                 }
                 pc.scanf("%f",&i);
-                pc.printf("%.2f\n",i);
+                pc.printf("%.1f\n\n",i);
                 motor.set_current(i);
             }
             else if (command == 't') 
             {
-                pc.printf("Torque (N.m): ");
+                pc.printf("\nTorque (N.m): ");
                 while (!pc.readable())
                 {
                 }
                 pc.scanf("%f",&tau);
-                pc.printf("%.2f\n",tau);
+                pc.printf("%.3f\n\n",tau);
                 motor.set_torque(tau);
             }
             else if (command == ' ') 
             {
-                pc.printf("Aborting...\n\n");
+                pc.printf("\nAborting...\n\n");
+                i = 0.0;
+                tau = 0.0;
                 motor.set_current(0.0);
             }
         }
