@@ -66,7 +66,7 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("ts:%6.2f    ws:%6.2f    tw:%6.2f    ow:%6.2f    i:%6.2f \n",theta_s,omega_s,theta_w,omega_w,tau/Km);
+            pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\n",theta_s,omega_s,theta_w,omega_w,tau/Km);
         }
     }
 }

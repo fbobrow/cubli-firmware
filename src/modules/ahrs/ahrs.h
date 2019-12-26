@@ -7,8 +7,8 @@
 #include "src/config/pin_names.h"
 #include "src/drivers/lsm9ds1.h"
 #include "src/utils/matrix.h"
-#include "src/modules/submodules/ekf.h"
-#include "src/modules/submodules/triad.h"
+#include "src/modules/ahrs/ekf.h"
+#include "src/modules/ahrs/triad.h"
 
 // Attitude and heading eference system
 class AHRS
