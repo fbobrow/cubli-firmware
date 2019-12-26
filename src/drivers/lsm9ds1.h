@@ -83,6 +83,13 @@ class LSM9DS1
         // Read sensor data
         void read();
         
+        // Read gyroscope data
+        void read_gyr();
+        // Read accelerometer data
+        void read_acc();
+        // Read magnetometer data
+        void read_mag();
+        
         // Gyroscope data in x, y and z axis [rad/s]
         float gx, gy, gz;
         // Accelerometer data x, y and z axis [m/s^2]
@@ -106,13 +113,6 @@ class LSM9DS1
         void setup_acc(acc_scale a_scale = ACC_SCALE_2G);
         // Setup magnetometer configurations (full-scale range)
         void setup_mag(mag_scale m_scale = MAG_SCALE_4G);
-        
-        // Read gyroscope data
-        void read_gyr();
-        // Read accelerometer data
-        void read_acc();
-        // Read magnetometer data
-        void read_mag();
         
         // Gyroscope resolution [rad/s / bit]
         float g_res;

@@ -7,8 +7,6 @@
 #include "src/drivers/motor.h"
 
 // Include submodules
-#include "src/modules/submodules/ahrs.h"
-#include "src/modules/submodules/we.h"
-#include "src/modules/submodules/lqr.h"
-#include "src/modules/submodules/fbl.h"
-#include "src/modules/submodules/attitude_estimator.h"
+#include "src/modules/wheel_estimator.h"
+#include "src/modules/attitude_estimator.h"
+#include "src/modules/controller.h"

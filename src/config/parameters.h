@@ -3,6 +3,7 @@
 
 #include "cmath"
 
+// Physical 
 const float pi = 3.141516;
 const float g = 9.80665;    // Accelation of gravity [m/s^2]
 
@@ -26,9 +27,17 @@ const float d = 0.1061;
 
 // Interrupt frequencies
 const float f = 500.0;
+const float f_blink = 1.0;
+const float f_print = 10.0;
 const float dt = 1.0/f;
-const float dt_2 = dt/2.0;
+const float dt_blink = 1.0/f_blink;
+const float dt_print = 1.0/f_print;
 const int dt_us = dt*1e6;
+const int dt_blink_us = dt_blink*1e6;
+const int dt_print_us = dt_print*1e6;
+
+const float dt_2 = dt/2.0;
+const float dt2_2 = pow(dt,2)/2.0; 
 
 // Controller gains
 const float alpha = 0.07;
@@ -40,8 +49,10 @@ const float kpw = pow(alpha,2)*pow(wn,4)*I_w/(m_c*d*g);
 const float kdw = 2.0*alpha*pow(wn,3)*(1.0+alpha*zeta)*I_w/(m_c*d*g);
 
 // Estimator gains
+const float lps = 1.0;
+const float lds = 500.0;
 const float lpw = 0.0;
-const float ldw = 10.0;
+const float ldw = 50.0;
 
 const float freq_blink = 1.0f;
 const float freq_estimator = 250.0f;

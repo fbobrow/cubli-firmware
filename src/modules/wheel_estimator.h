@@ -1,5 +1,5 @@
-#ifndef we_h
-#define we_h
+#ifndef wheel_estimator_h
+#define wheel_estimator_h
 
 #include "mbed.h"
 
@@ -7,20 +7,18 @@
 #include "src/config/pin_names.h"
 #include "src/drivers/hall.h"
 
-// Speed estimator class
+// Wheel estimator class
 class WheelEstimator
 {
   public:
     // Constructor
-    WheelEstimator(PinName PIN_SPEED);
+    WheelEstimator(PinName PIN_SPEED = M1_SPEED);
     // Initializer
     void init();
-    // Predict step
-    void predict(float tau);
-    // Correct step
-    void correct();
+    // Estimate step
+    void estimate(float tau = 0.0);
     // Angular displacement (rad) and angular velocity (rad/s) estimations
-    float omega_w, theta_w;
+    float theta_w, omega_w;
   private:
     // Motor hall sensor object
     Hall hall;
@@ -28,6 +26,10 @@ class WheelEstimator
     float b_omega_w;
     // Angular velocity bias calibration 
     void calibrate();
+    // Predict step
+    void predict(float tau);
+    // Correct step
+    void correct();
 };
 
 #endif

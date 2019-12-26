@@ -4,13 +4,11 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX, NULL, 230400);
-Motor motor(M1_ENABLE,M1_CURRENT);
-WheelEstimator we(M1_SPEED);
+Motor motor;
+WheelEstimator whe_est;
 AttitudeEstimator att_est;
+Controller cont;
 Ticker tic, tic_blink, tic_print;
-
-FeedbackLinearization fbl;
-LinearQuadraticRegulator lqr;
 
 // Interrupt flags and callback functions
 bool flag = false;
@@ -25,41 +23,32 @@ float theta_s_r = 45.0*pi/180;
 float theta_s, omega_s, theta_w, omega_w;
 float tau;
 
-Timer tim;
-float delta_t;
-
 // Main program
 int main() 
 {
     // Initializations
-    we.init();
+    whe_est.init();
     att_est.init();  
     tic.attach_us(&callback, dt_us);
-    tic_blink.attach_us(&callback_blink, 1e6);
-    tic_print.attach_us(&callback_print, 1e5);
-    tim.start();
+    tic_blink.attach_us(&callback_blink, dt_blink_us);
+    tic_print.attach_us(&callback_print, dt_print_us);
     // Endless loop
     while (true) 
     {
         if (flag) 
         {
-            delta_t = tim.read();
-            tim.reset();
             flag = false;
-            we.predict(tau);
-            we.correct();
-            att_est.estimate();
+            whe_est.estimate(tau);
+            att_est.estimate(tau,whe_est.omega_w);
             theta_s = pi/4-att_est.theta_s;
             omega_s = -att_est.omega_s;
-            theta_w = -we.theta_w;
-            omega_w = -we.omega_w;
-
-            lqr.regulate(theta_s, omega_s, theta_w, omega_w);
-            fbl.linearize(lqr.u, theta_s, omega_w);
+            theta_w = -whe_est.theta_w;
+            omega_w = -whe_est.omega_w;
+            cont.control(theta_s, omega_s, theta_w, omega_w);
 
             if (abs(theta_s) <= 5.0*pi/180.0)
             {
-                tau = -fbl.tau;
+                tau = -cont.tau;
             }
             else 
             {
@@ -77,7 +66,7 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("Theta_s:%6.2f | Omega_s:%6.2f | Theta_w:%6.2f | Omega_w:%6.2f | Torque:%6.3f | Dt:%6.3f\n",theta_s,omega_s,theta_w,omega_w,tau,delta_t);
+            pc.printf("ts:%6.2f    ws:%6.2f    tw:%6.2f    ow:%6.2f    i:%6.2f \n",theta_s,omega_s,theta_w,omega_w,tau/Km);
         }
     }
 }

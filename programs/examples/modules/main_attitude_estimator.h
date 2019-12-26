@@ -4,7 +4,7 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX, NULL, 230400);
-AttitudeEstimator att_est;
+AttitudeEstimator att_est(IMU_SDA,IMU_SCL);
 Ticker tic, tic_blink, tic_print;
 
 // Interrupt flags and callback functions
@@ -21,15 +21,16 @@ int main()
     // Initializations
     att_est.init();
     tic.attach_us(&callback, dt_us);
-    tic_blink.attach_us(&callback_blink, 1e6);
-    tic_print.attach_us(&callback_print, 1e4);
+    tic_blink.attach_us(&callback_blink, dt_blink_us);
+    tic_print.attach_us(&callback_print, dt_print_us);
     // Endless loop
     while (true) 
     {
         if (flag) 
         {
             flag = false;
-            att_est.estimate();
+            att_est.predict();
+            att_est.correct();
         }
         if (flag_blink) 
         {
@@ -39,7 +40,7 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("%.4f\t%.4f\n",att_est.theta_s_m,att_est.theta_s);
+            pc.printf("%.2f\n",att_est.theta_s);
         }
     }
 }

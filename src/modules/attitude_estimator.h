@@ -7,19 +7,18 @@
 #include "src/config/pin_names.h"
 #include "src/drivers/lsm9ds1.h"
 
-// Speed estimator class
+// Attitude estimator class
 class AttitudeEstimator
 {
   public:
     // Constructor
-    AttitudeEstimator();
+    AttitudeEstimator(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
     // Initializer
     void init();
     // Estimate step
-    void estimate();
+    void estimate(float tau = 0.0, float omega_w = 0.0);
     // Angular displacement (rad) and angular velocity (rad/s) estimations
     float theta_s, omega_s;
-    float theta_s_m, omega_s_m;
   private:
     // Motor hall sensor object
     LSM9DS1 imu;
@@ -27,6 +26,10 @@ class AttitudeEstimator
     float b_omega_s;
     // Angular velocity bias calibration 
     void calibrate();
+    // Predict step
+    void predict(float tau, float omega_w);
+    // Correct step
+    void correct();
 };
 
 #endif
