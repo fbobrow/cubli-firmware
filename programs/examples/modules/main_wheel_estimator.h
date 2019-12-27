@@ -3,7 +3,7 @@
 
 // Objects
 DigitalOut led(LED1);
-Serial pc(SERIAL_TX, SERIAL_RX, NULL, 230400);
+Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
 Motor motor(M1_ENABLE,M1_CURRENT);
 WheelEstimator whe_est(M1_SPEED);
 Ticker tic, tic_blink, tic_print;
@@ -34,8 +34,7 @@ int main()
         if (flag) 
         {
             flag = false;
-            whe_est.predict(tau);
-            whe_est.correct();
+            whe_est.estimate(tau);
         }
         if (flag_blink) 
         {

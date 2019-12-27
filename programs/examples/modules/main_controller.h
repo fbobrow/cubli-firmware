@@ -3,7 +3,7 @@
 
 // Objects
 DigitalOut led(LED1);
-Serial pc(SERIAL_TX, SERIAL_RX, NULL, 230400);
+Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
 Motor motor;
 WheelEstimator whe_est;
 AttitudeEstimator att_est;
@@ -19,7 +19,6 @@ void callback_blink() { flag_blink = true; }
 void callback_print() { flag_print = true; }
 
 //
-float theta_s_r = 45.0*pi/180;
 float theta_s, omega_s, theta_w, omega_w;
 float tau;
 
@@ -39,13 +38,12 @@ int main()
         {
             flag = false;
             whe_est.estimate(tau);
-            att_est.estimate(tau,whe_est.omega_w);
-            theta_s = pi/4-att_est.theta_s;
+            att_est.estimate(tau,-whe_est.omega_w);
+            theta_s = 45*pi/180.0-att_est.theta_s;
             omega_s = -att_est.omega_s;
             theta_w = -whe_est.theta_w;
             omega_w = -whe_est.omega_w;
             cont.control(theta_s, omega_s, theta_w, omega_w);
-
             if (abs(theta_s) <= 5.0*pi/180.0)
             {
                 tau = -cont.tau;
@@ -54,9 +52,7 @@ int main()
             {
                 tau = 0.0;
             }
-
             motor.set_torque(tau);
-
         }
         if (flag_blink) 
         {

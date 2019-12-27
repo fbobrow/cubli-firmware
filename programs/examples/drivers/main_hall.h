@@ -3,7 +3,7 @@
 
 // Objects
 DigitalOut led(LED1);
-Serial pc(SERIAL_TX, SERIAL_RX, NULL, 230400);
+Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
 Hall hall(M1_SPEED);
 Ticker tic_blink, tic_print;
 
