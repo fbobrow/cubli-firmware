@@ -1,3 +1,5 @@
+#include <cmath>
+
 // Include configurations
 #include "src/config/pin_names.h"
 
@@ -9,4 +11,6 @@
 // Include submodules
 #include "src/modules/wheel_estimator.h"
 #include "src/modules/attitude_estimator.h"
+#include "src/modules/attitude_estimator2.h"
+#include "src/modules/madgwick.h"
 #include "src/modules/controller.h"

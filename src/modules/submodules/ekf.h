@@ -19,12 +19,12 @@ class EKF
     Matrix x, P;
   private:
     // State transition function x_dot = f(x,u) and measurement function z = h(x)
-    Matrix f(const Matrix& x0, const Matrix& u0);
-    Matrix h(const Matrix& x0);
+    Matrix f(const Matrix& x, const Matrix& u);
+    Matrix h(const Matrix& x);
     // State transition matrix A = jacob(f,x), input matrix B = jacob(f,u) and measurement matrix H = jacob(h,x)
-    Matrix jacob_f_x(const Matrix& x0, const Matrix& u0);
-    Matrix jacob_f_u(const Matrix& x0, const Matrix& u0);
-    Matrix jacob_h_x(const Matrix& x0);
+    Matrix jacob_f_x(const Matrix& x, const Matrix& u);
+    Matrix jacob_f_u(const Matrix& x, const Matrix& u);
+    Matrix jacob_h_x(const Matrix& x);
     // Normalize quaternion state q = q/norm(q)
     void norm_quat();
     // State noise covariance matrix Q and measurement noise covariance matrix R

@@ -1,7 +1,7 @@
 #include "wheel_estimator.h"
 
 // Constructor
-WheelEstimator::WheelEstimator(PinName PIN_SPEED) : hall(M1_SPEED)
+WheelEstimator::WheelEstimator(PinName PIN_SPEED) : hall(PIN_SPEED)
 {
     theta_w = 0.0;
     omega_w = 0.0;

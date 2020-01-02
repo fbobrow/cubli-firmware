@@ -4,9 +4,10 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
-Motor motor;
-WheelEstimator whe_est;
-AttitudeEstimator att_est;
+Motor motor(M2_ENABLE,M2_CURRENT);
+WheelEstimator whe_est(M2_SPEED);
+//AttitudeEstimator att_est;
+Madgwick att_est;
 Controller cont;
 Ticker tic, tic_blink, tic_print;
 
@@ -21,6 +22,9 @@ void callback_print() { flag_print = true; }
 //
 float theta_s, omega_s, theta_w, omega_w;
 float tau;
+
+float q0, q1, q2, q3;
+float theta_x, theta_y, theta_z;
 
 // Main program
 int main() 
@@ -38,15 +42,27 @@ int main()
         {
             flag = false;
             whe_est.estimate(tau);
-            att_est.estimate(tau,-whe_est.omega_w);
-            theta_s = 45*pi/180.0-att_est.theta_s;
-            omega_s = -att_est.omega_s;
-            theta_w = -whe_est.theta_w;
-            omega_w = -whe_est.omega_w;
+            //att_est.estimate(tau,-whe_est.omega_w);
+            att_est.estimate();
+
+            q0 = att_est.q0;
+            q1 = att_est.q1;
+            q2 = att_est.q2;
+            q3 = att_est.q3;
+            theta_z = atan2(2.0*(q1*q2+q0*q3),q0*q0+q1*q1-q2*q2-q3*q3);
+            theta_y = asin(-2.0*(q1*q3-q0*q2));
+            theta_x = atan2(2.0*(q2*q3+q0*q1),q0*q0-q1*q1-q2*q2+q3*q3);
+
+            //theta_s = 45*pi/180.0-att_est.theta_s;
+            theta_s = 44*pi/180.0+theta_y;
+            //omega_s = -att_est.omega_s;
+            omega_s = att_est.omega_y;
+            theta_w = whe_est.theta_w;
+            omega_w = whe_est.omega_w;
             cont.control(theta_s, omega_s, theta_w, omega_w);
             if (abs(theta_s) <= 5.0*pi/180.0)
             {
-                tau = -cont.tau;
+                tau = cont.tau;
             }
             else 
             {

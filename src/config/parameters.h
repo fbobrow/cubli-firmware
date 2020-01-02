@@ -28,7 +28,7 @@ const float l = 0.15;                       // Cubli side length [m]
 const float d = l*sqrt(2.0)/2.0;            // Distance from pivot point to center of mass [m]
 
 // Interrupt frequencies
-const float f = 200.0;                      // Controller interrupt frequency [Hz]
+const float f = 500.0;                      // Controller interrupt frequency [Hz]
 const float f_blink = 1.0;                  // Led blink interrupt frequency [Hz]
 const float f_print = 10.0;                 // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;
@@ -59,6 +59,10 @@ const float ldw = 50.0;
 
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
 
+// Gyroscope bias
+const float b_gx = 0.0994;
+const float b_gy = 0.0089;
+const float b_gz = 0.0289;
 
 // Acelerometer bias and scale factor
 const float b_ax = -0.0664;
@@ -91,6 +95,7 @@ const float mz_I = 14.204;
 
 // Gyroscope and measured quaternion error covariance
 const float g_cov = 2.7e-6f;
+const float a_cov = 2.7e-4f;
 const float q_cov = 1.5e-4f;
 
 #endif
