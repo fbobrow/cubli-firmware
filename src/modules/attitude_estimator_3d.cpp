@@ -1,7 +1,7 @@
-#include "attitude_estimator2.h"
+#include "attitude_estimator_3d.h"
 
 // Constructor
-AttitudeEstimator2::AttitudeEstimator2(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
+AttitudeEstimator3D::AttitudeEstimator3D(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
 {
     // Initialize quaternion and angular velocity vector
     q = eye(4,1);
@@ -9,14 +9,14 @@ AttitudeEstimator2::AttitudeEstimator2(PinName PIN_SDA, PinName PIN_SCL) : imu(P
 }
 
 // Class initializer
-void AttitudeEstimator2::init()
+void AttitudeEstimator3D::init()
 {
     // Initialize IMU object
     imu.init();
 }
 
 // Update step
-void AttitudeEstimator2::estimate()
+void AttitudeEstimator3D::estimate()
 {
     // Read IMU data
     imu.read();

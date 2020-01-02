@@ -1,5 +1,5 @@
-#ifndef attitude_estimator2_h
-#define attitude_estimator2_h
+#ifndef attitude_estimator_3d_h
+#define attitude_estimator_3d_h
 
 #include "mbed.h"
 
@@ -10,11 +10,11 @@
 #include "src/modules/submodules/ekf.h"
 
 // Attitude estimator class
-class AttitudeEstimator2
+class AttitudeEstimator3D
 {
   public:
     // Constructor
-    AttitudeEstimator2(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
+    AttitudeEstimator3D(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
     // Class initializer
     void init();
     // Update step

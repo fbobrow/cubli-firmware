@@ -1,5 +1,5 @@
-#ifndef attitude_estimator_h
-#define attitude_estimator_h
+#ifndef attitude_estimator_2d_h
+#define attitude_estimator_2d_h
 
 #include "mbed.h"
 
@@ -8,11 +8,11 @@
 #include "src/drivers/lsm9ds1.h"
 
 // Attitude estimator class
-class AttitudeEstimator
+class AttitudeEstimator2D
 {
   public:
     // Constructor
-    AttitudeEstimator(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
+    AttitudeEstimator2D(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
     // Initializer
     void init();
     // Estimate step

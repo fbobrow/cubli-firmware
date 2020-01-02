@@ -1,5 +1,5 @@
-#ifndef madgwick_h
-#define madgwick_h
+#ifndef attitude_estimator_madgwick_h
+#define attitude_estimator_madgwick_h
 
 #include "mbed.h"
 
@@ -8,11 +8,11 @@
 #include "src/drivers/lsm9ds1.h"
 
 // Attitude estimator class
-class Madgwick
+class AttitudeEstimatorMadgwick
 {
   public:
     // Constructor
-    Madgwick(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
+    AttitudeEstimatorMadgwick(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
     // Initializer
     void init();
     // Estimate step

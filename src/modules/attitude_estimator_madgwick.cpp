@@ -1,7 +1,7 @@
-#include "madgwick.h"
+#include "attitude_estimator_madgwick.h"
 
 // Constructor
-Madgwick::Madgwick(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
+AttitudeEstimatorMadgwick::AttitudeEstimatorMadgwick(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
 {
     q0 = 1.0;
     q1 = 0.0;
@@ -16,14 +16,28 @@ Madgwick::Madgwick(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
 }
 
 // Initializer
-void Madgwick::init()
+void AttitudeEstimatorMadgwick::init()
 {
     imu.init();
     calibrate();
 }
 
+// Angular velocity bias calibration 
+void AttitudeEstimatorMadgwick::calibrate()
+{
+    // Calculate angular velocity bias by averaging 200 samples durint 1 second
+    for(int i = 0; i<200;i++)
+    {
+        imu.read();
+        b_omega_x += imu.gx/200.0;
+        b_omega_y += imu.gy/200.0;
+        b_omega_z += imu.gz/200.0;
+        wait_us(dt_us);
+    }
+}
+
 // Estimate step
-void Madgwick::estimate()
+void AttitudeEstimatorMadgwick::estimate()
 {   
     //
     imu.read();
@@ -77,7 +91,7 @@ void Madgwick::estimate()
     s3 /= s_norm;
 
     // Apply feedback step
-    float beta = 5.0*dt;
+    float beta = 0.01;
     q0_dot -= beta*s0;
     q1_dot -= beta*s1;
     q3_dot -= beta*s2;
@@ -96,18 +110,4 @@ void Madgwick::estimate()
 	q2 /= q_norm;
 	q3 /= q_norm;
     
-}
-
-// Angular velocity bias calibration 
-void Madgwick::calibrate()
-{
-    // Calculate angular velocity bias by averaging 200 samples durint 1 second
-    for(int i = 0; i<200;i++)
-    {
-        imu.read();
-        b_omega_x += imu.gx/200.0;
-        b_omega_y += imu.gy/200.0;
-        b_omega_z += imu.gz/200.0;
-        wait_us(dt_us);
-    }
 }

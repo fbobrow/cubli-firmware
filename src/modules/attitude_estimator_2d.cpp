@@ -1,28 +1,21 @@
-#include "attitude_estimator.h"
+#include "attitude_estimator_2d.h"
 
 // Constructor
-AttitudeEstimator::AttitudeEstimator(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
+AttitudeEstimator2D::AttitudeEstimator2D(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
 {
     theta_s = 0.0;
     omega_s = 0.0;
 }
 
 // Initializer
-void AttitudeEstimator::init()
+void AttitudeEstimator2D::init()
 {
     imu.init();
     calibrate();
 }
 
-// Estimate step
-void AttitudeEstimator::estimate(float tau, float omega_w)
-{
-    predict(tau,omega_w);
-    correct();
-}
-
 // Angular velocity bias calibration 
-void AttitudeEstimator::calibrate()
+void AttitudeEstimator2D::calibrate()
 {
     // Calculate angular velocity bias by averaging 200 samples durint 1 second
     for(int i = 0; i<200;i++)
@@ -33,8 +26,15 @@ void AttitudeEstimator::calibrate()
     }
 }
 
+// Estimate step
+void AttitudeEstimator2D::estimate(float tau, float omega_w)
+{
+    predict(tau,omega_w);
+    correct();
+}
+
 // Predict step
-void AttitudeEstimator::predict(float tau, float omega_w)
+void AttitudeEstimator2D::predict(float tau, float omega_w)
 {
     // Calculate friction torque
     float sign;
@@ -55,7 +55,7 @@ void AttitudeEstimator::predict(float tau, float omega_w)
 }
 
 // Correct step
-void AttitudeEstimator::correct()
+void AttitudeEstimator2D::correct()
 {
     // Get angular velocity measurement
     imu.read();

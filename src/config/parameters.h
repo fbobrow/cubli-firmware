@@ -13,7 +13,7 @@ const float Ra = 1.03;                      // Armature resistance []
 const float La = 0.572e-3;                  // Armature inductance [H]
 const float Km = 33.5e-3;                   // Torque constant [N.m/A]
 const float ia_max = 15.0;                  // Stall current [A]
-const float omega_nl = 6710.0*(2.0*pi/60.0);// No load speed [rpm -> rad/]
+const float omega_nl = 6710.0*(2.0*pi/60.0);// No load speed [rpm -> rad/s]
 
 // Reaction wheel friction parameters
 const float tau_c = 2.46e-3;                // Coulomb friction torque [N.m]
@@ -28,7 +28,7 @@ const float l = 0.15;                       // Cubli side length [m]
 const float d = l*sqrt(2.0)/2.0;            // Distance from pivot point to center of mass [m]
 
 // Interrupt frequencies
-const float f = 500.0;                      // Controller interrupt frequency [Hz]
+const float f = 250.0;                      // Controller interrupt frequency [Hz]
 const float f_blink = 1.0;                  // Led blink interrupt frequency [Hz]
 const float f_print = 10.0;                 // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;

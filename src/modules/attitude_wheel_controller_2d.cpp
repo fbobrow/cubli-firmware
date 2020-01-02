@@ -1,27 +1,27 @@
-#include "controller.h"
+#include "attitude_wheel_controller_2d.h"
 
 // Constructor
-Controller::Controller()
+AttitudeWheelController2D::AttitudeWheelController2D()
 {
     tau = 0.0;
     u = 0.0;
 }
 
 // Control step
-void Controller::control(float theta_s, float omega_s, float theta_w, float omega_w)
+void AttitudeWheelController2D::control(float theta_s, float omega_s, float theta_w, float omega_w)
 {
     state_regulator(theta_s,omega_s,theta_w,omega_w);
     feedback_linearization(theta_s,omega_w);
 }   
 
 // State regulator step
-void Controller::state_regulator(float theta_s, float omega_s, float theta_w, float omega_w)
+void AttitudeWheelController2D::state_regulator(float theta_s, float omega_s, float theta_w, float omega_w)
 {
     u = kps*(0.0-theta_s)+kds*(0.0-omega_s)+kpw*(0.0-theta_w)+kdw*(0.0-omega_w);
 }   
 
 // Feedback linearization step
-void Controller::feedback_linearization(float theta_s, float omega_w)
+void AttitudeWheelController2D::feedback_linearization(float theta_s, float omega_w)
 {
     // Calculate friction torque
     float sign;

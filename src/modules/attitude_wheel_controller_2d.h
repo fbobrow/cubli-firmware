@@ -1,16 +1,16 @@
-#ifndef controller_h
-#define controller_h
+#ifndef attitude_wheel_controller_2d_h
+#define attitude_wheel_controller_2d_h
 
 #include "mbed.h"
 
 #include "src/config/parameters.h"
 
 // Speed estimator class
-class Controller
+class AttitudeWheelController2D
 {
   public:
     // Constructor
-    Controller();
+    AttitudeWheelController2D();
     // Control step
     void control(float theta_s, float omega_s, float theta_w, float omega_w);
     // Torque

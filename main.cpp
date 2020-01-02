@@ -9,4 +9,4 @@
 //#include "programs/examples/modules/main_attitude_estimator.h"
 //#include "programs/examples/modules/main_attitude_estimator2.h"
 //#include "programs/examples/modules/main_madgwick.h"
-#include "programs/examples/modules/main_controller.h"
+#include "programs/examples/modules/main_attitude_wheel_controller_2d.h"
