@@ -6,7 +6,7 @@
 
 // Modules example programs
 //#include "programs/examples/modules/main_wheel_estimator.h"
-//#include "programs/examples/modules/main_attitude_estimator.h"
-//#include "programs/examples/modules/main_attitude_estimator2.h"
-//#include "programs/examples/modules/main_madgwick.h"
+//#include "programs/examples/modules/main_attitude_estimator_2d.h"
+//#include "programs/examples/modules/main_attitude_estimator_3d.h"
+//#include "programs/examples/modules/main_attitude_estimator_madgwick.h"
 #include "programs/examples/modules/main_attitude_wheel_controller_2d.h"

@@ -55,12 +55,12 @@ int main()
 
             /*theta_s = 45*pi/180.0-att_est.theta_s;
             omega_s = -att_est.omega_s;*/
-            theta_s = 44*pi/180.0-theta_x;
+            theta_s = 44.5*pi/180.0-theta_x;
             omega_s = -att_est.omega_x;
             theta_w = -whe_est.theta_w;
             omega_w = -whe_est.omega_w;
             cont.control(theta_s, omega_s, theta_w, omega_w);
-            if (abs(theta_s) <= 5.0*pi/180.0)
+            if (abs(theta_s) <= 7.5*pi/180.0)
             {
                 tau = -cont.tau;
             }

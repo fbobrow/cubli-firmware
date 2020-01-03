@@ -7,7 +7,6 @@
 #include "src/config/pin_names.h"
 #include "src/drivers/lsm9ds1.h"
 #include "src/utils/matrix.h"
-#include "src/modules/submodules/ekf.h"
 
 // Attitude estimator class
 class AttitudeEstimator3D
@@ -20,12 +19,28 @@ class AttitudeEstimator3D
     // Update step
     void estimate();
     // Orientation quaternion and angular velocity vector
-    Matrix q, omega, P;
+    float q0, q1, q2, q3, omega_x, omega_y, omega_z;
   private:
     // IMU object
     LSM9DS1 imu;
-    // Extended Kalman filter object
-    EKF ekf;
+    // Angular velocity (rad/s) bias
+    float b_omega_x, b_omega_y, b_omega_z;
+    // Angular velocity bias calibration 
+    void calibrate();
+    // 
+    void predict(const Matrix& u);
+    //
+    void correct(const Matrix& z);
+    // State transition function x_dot = f(x,u) and measurement function z = h(x)
+    Matrix f(const Matrix& x, const Matrix& u);
+    Matrix h(const Matrix& x);
+    // State transition matrix A = jacob(f,x), input matrix B = jacob(f,u) and measurement matrix H = jacob(h,x)
+    Matrix jacob_f_x(const Matrix& x, const Matrix& u);
+    Matrix jacob_f_u(const Matrix& x, const Matrix& u);
+    Matrix jacob_h_x(const Matrix& x);
+    // State noise covariance matrix Q and measurement noise covariance matrix R
+    Matrix x, P;
+    Matrix Q, R;
 };
 
 #endif
