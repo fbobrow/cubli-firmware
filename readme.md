@@ -7,11 +7,16 @@ It was developed with [ARM Mbed OS](https://www.mbed.com/en/platform/mbed-os/) o
 * 256 KB Flash
 * 64 KB SRAM
 
-For attitude estimation it utilizes the [SparkFun 9Dof Sensor Stick](https://www.sparkfun.com/products/13944) inertial measurement unit (IMU) composed by the [ST LSM9DS1](https://www.st.com/en/mems-and-sensors/lsm9ds1.html) motion-sensing system-in-a-chip:
+For Cubli attitude estimation it utilizes the [SparkFun 9Dof Sensor Stick](https://www.sparkfun.com/products/13944) inertial measurement unit (IMU) composed by the [ST LSM9DS1](https://www.st.com/en/mems-and-sensors/lsm9ds1.html) motion-sensing system-in-a-chip:
 * 3D gyroscope (±245/±500/±2000 dps)
 * 3D accelerometer (±2g/±4g/±8/±16 g)
-* 3D magnetometer (±4/±8/±12/±16 gauss)
 * I2C serial bus (100 kHz and 400 kHz)
+
+For reaction wheel estimation and control it utilizes the [Maxon EC 45 flat](https://www.maxongroup.com/maxon/view/product/339286) motor together with the [Maxon ESCON Module 50/5](https://www.maxongroup.com/maxon/view/product/control/4-Q-Servokontroller/438725) controller:
+* 24V/50W brushless motor with hall sensors
+* 50V/5A/250W 4-quadrant PWM controller
+
+All the remaining mechanical and electrical parts (structure, PCBs, etc.) were specific build and can be found in this other [repository](https://github.com/fbobrow/cubli-firmware).
 
 ## Source code
 
