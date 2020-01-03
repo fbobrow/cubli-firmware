@@ -35,7 +35,7 @@ void AttitudeWheelController2D::feedback_linearization(float theta_s, float omeg
     }
     float tau_f = sign*(tau_c+b*abs(omega_w)+kd*pow(omega_w,2));
     // Calculate torque
-    tau = m_c*g*d*sin(theta_s)+tau_f-(I_c-I_w)*u;
+    tau = m_c*g*l*sqrt(2.0)/2.0*sin(theta_s)+tau_f-I_c*u;
     // Saturation for safety
     if (tau > 0.1)
     {
