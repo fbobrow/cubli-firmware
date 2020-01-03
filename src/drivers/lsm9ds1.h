@@ -3,7 +3,7 @@
 
 #include "mbed.h"
 
-#include "src/config/parameters.h"
+#include "src/utils/parameters.h"
 
 // LSM9DS1 I2C bus address
 #define LSM9DS1_ADDRESS_ACC_GYR 0x6B << 1 // (0xD6) Shift 1 bit left because mbed utilizes 8-bit addresses and not 7-bit 

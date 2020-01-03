@@ -31,7 +31,7 @@ int main()
         {
             flag_print = false;
             hall.read();
-            pc.printf("Speed (rad/s): %.2f\n",hall.omega);
+            pc.printf("Speed [rad/s]: %6.2f\n",hall.omega);
         }
     }
 }

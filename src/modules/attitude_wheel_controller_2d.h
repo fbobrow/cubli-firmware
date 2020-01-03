@@ -3,7 +3,7 @@
 
 #include "mbed.h"
 
-#include "src/config/parameters.h"
+#include "src/utils/parameters.h"
 
 // Speed estimator class
 class AttitudeWheelController2D

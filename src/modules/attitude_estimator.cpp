@@ -1,7 +1,7 @@
-#include "attitude_estimator_madgwick.h"
+#include "attitude_estimator.h"
 
 // Constructor
-AttitudeEstimatorMadgwick::AttitudeEstimatorMadgwick(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
+AttitudeEstimator::AttitudeEstimator(PinName PIN_SDA, PinName PIN_SCL) : imu(PIN_SDA,PIN_SCL)
 {
     // Set initial quaternion
     q0 = 1.0;
@@ -19,7 +19,7 @@ AttitudeEstimatorMadgwick::AttitudeEstimatorMadgwick(PinName PIN_SDA, PinName PI
 }
 
 // Initializer
-void AttitudeEstimatorMadgwick::init()
+void AttitudeEstimator::init()
 {
     // Initialize IMU sensor object
     imu.init();
@@ -28,7 +28,7 @@ void AttitudeEstimatorMadgwick::init()
 }
 
 // Angular velocity bias calibration 
-void AttitudeEstimatorMadgwick::calibrate()
+void AttitudeEstimator::calibrate()
 {
     // Calculate angular velocity bias by averaging 200 samples during 1 second
     for(int i = 0; i<200;i++)
@@ -42,7 +42,7 @@ void AttitudeEstimatorMadgwick::calibrate()
 }
 
 // Estimate step
-void AttitudeEstimatorMadgwick::estimate()
+void AttitudeEstimator::estimate()
 {   
     // Read IMU data
     imu.read();
@@ -80,11 +80,10 @@ void AttitudeEstimatorMadgwick::estimate()
     s2 /= s_norm;
     s3 /= s_norm;
     // Apply feedback step
-    float beta = 0.01;
-    q0_dot -= beta*s0;
-    q1_dot -= beta*s1;
-    q3_dot -= beta*s2;
-    q4_dot -= beta*s3;
+    q0_dot -= lds*dt*s0;
+    q1_dot -= lds*dt*s1;
+    q3_dot -= lds*dt*s2;
+    q4_dot -= lds*dt*s3;
 	// Integrate quaternion time derivative
 	q0 += q0_dot*dt;
 	q1 += q1_dot*dt;

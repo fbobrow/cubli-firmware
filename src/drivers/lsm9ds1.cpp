@@ -28,7 +28,7 @@ void LSM9DS1::read()
     // Read accelerometer and gyroscope data
     read_acc();
     read_gyr();
-    read_mag();
+    //read_mag();
 }
 
 // Setup I2C bus 

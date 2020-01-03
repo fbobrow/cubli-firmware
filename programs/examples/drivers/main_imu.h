@@ -4,43 +4,36 @@
 // Objects
 DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
-AttitudeEstimator att_est(IMU_SDA,IMU_SCL);
-Ticker tic, tic_blink, tic_print;
+LSM9DS1 imu(IMU_SDA,IMU_SCL);
+Ticker tic_blink, tic_print;
 
 // Interrupt flags and callback functions
-bool flag = false;
 bool flag_blink = false;
-void callback() { flag = true; }
+bool flag_print = false;
 void callback_blink() { flag_blink = true; }
-
-// Serial commands
-char command;
+void callback_print() { flag_print = true; }
 
 // Main program
 int main() 
 {
     // Initializations
-    att_est.init();
-    tic.attach_us(&callback, dt_us);
+    imu.init();
     tic_blink.attach_us(&callback_blink, dt_blink_us);
+    tic_print.attach_us(&callback_print, dt_print_us);
     // Endless loop
     while (true) 
     {
-        if (flag) 
-        {
-            flag = false;
-            att_est.estimate();
-        }
         if (flag_blink) 
         {
             flag_blink = false;
             led = !led;
         }
-        if (pc.readable()) {
-            command = pc.getc();
-            if (command == 'p') {
-                pc.printf("%.4f\n",att_est.theta_s);
-            }
+        if (flag_print) 
+        {
+            flag_print = false;
+            imu.read();
+            pc.printf("Acc [m/s^2]: %6.2f %6.2f %6.2f\n",imu.ax,imu.ay,imu.az);
+            pc.printf("Gyr [rad/s]: %6.2f %6.2f %6.2f\n\n",imu.gx,imu.gy,imu.gz);
         }
     }
 }

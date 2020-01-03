@@ -49,7 +49,7 @@ void WheelEstimator::predict(float tau)
     // Calculate angular acceleration
     float omega_w_dot = (1.0/I_w)*(-tau_f+tau);
     // Predict angular displacement and angular velocity
-    theta_w = theta_w+omega_w*dt+omega_w_dot*dt2_2;
+    theta_w = theta_w+omega_w*dt+omega_w_dot*dt*dt/2.0;
     omega_w = omega_w+omega_w_dot*dt;
 }
 

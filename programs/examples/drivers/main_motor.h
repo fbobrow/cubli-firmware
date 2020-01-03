@@ -37,7 +37,7 @@ int main()
             }
             else if (command == 'c') 
             {
-                pc.printf("Current (A): ");
+                pc.printf("Current [A]: ");
                 while (!pc.readable())
                 {
                 }
@@ -47,7 +47,7 @@ int main()
             }
             else if (command == 't') 
             {
-                pc.printf("Torque (N.m): ");
+                pc.printf("Torque [N.m]: ");
                 while (!pc.readable())
                 {
                 }
