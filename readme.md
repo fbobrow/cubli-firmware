@@ -16,7 +16,7 @@ For reaction wheel estimation and control it utilizes the [Maxon EC 45 flat](htt
 * 24V/50W brushless motor with hall sensors
 * 50V/5A/250W 4-quadrant PWM controller
 
-All the remaining mechanical and electrical parts (structure, PCBs, etc.) were specific build and can be found in this other [repository](https://github.com/fbobrow/cubli-firmware).
+All the remaining mechanical and electrical parts (aluminuim structure, PCBs, etc.) were tailor-made in [Autodesk Fusion 360](https://www.autodesk.com/products/fusion-360/overview) and [Autodesk Eagle](https://www.autodesk.com/products/eagle/overview) and can be found in this other [repository](https://github.com/fbobrow/cubli-firmware).
 
 ## Source code
 
