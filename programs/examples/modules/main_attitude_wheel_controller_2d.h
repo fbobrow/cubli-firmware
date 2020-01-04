@@ -56,11 +56,21 @@ int main()
             omega_s = -att_est.omega_x;
             theta_w = -whe_est.theta_w;
             omega_w = -whe_est.omega_w;
+            /*theta_s = 41.7*pi/180.0+theta_y;
+            omega_s = att_est.omega_y;
+            theta_w = whe_est.theta_w;
+            omega_w = whe_est.omega_w;*/
+            /*theta_s = 45.0*pi/180.0-theta_z;
+            omega_s = -att_est.omega_z;
+            theta_w = -whe_est.theta_w;
+            omega_w = -whe_est.omega_w;*/
             // Control torque
             cont.control(theta_s, omega_s, theta_w, omega_w);
             if (abs(theta_s) <= 5.0*pi/180.0)
             {
                 tau = -cont.tau;
+                //tau = cont.tau;
+                //tau = -cont.tau;
             }
             else 
             {

@@ -21,10 +21,26 @@ void callback_print() { flag_print = true; }
 //
 float phi, sign;
 float tau_1, tau_2, tau_3;
-float q0r = 0.8881;
+
+// Quaternion reference
+
+//Vertex
+/*float q0r = 0.8881;
 float q1r = 0.3251;
 float q2r = -0.3251;
-float q3r = 0.0;
+float q3r = 0.0000;*/
+
+// Edge (x axis)
+float q0r = 0.9239;
+float q1r = 0.3827;
+float q2r = 0.0000;
+float q3r = 0.0000;
+
+// Edge (y axis)
+/*float q0r = 0.9239;
+float q1r = 0.0000;
+float q2r = 0.3827;
+float q3r = 0.0000;*/
 
 // Main program
 int main() 
@@ -54,7 +70,7 @@ int main()
             {
                 phi = -phi;
             }
-            if (abs(phi) <= 10.0*pi/180.0)
+            if (abs(phi) <= 5.0*pi/180.0)
             {
                 tau_1 = cont.tau_1;
                 tau_2 = cont.tau_2;
@@ -66,9 +82,9 @@ int main()
                 tau_2 = 0.0;
                 tau_3 = 0.0;
             }
-            motor_1.set_torque(tau_1);
-            motor_2.set_torque(tau_2);
-            motor_3.set_torque(tau_3);
+            //motor_1.set_torque(tau_1);
+            //motor_2.set_torque(tau_2);
+            //motor_3.set_torque(tau_3);
         }
         if (flag_blink) 
         {
@@ -79,6 +95,7 @@ int main()
         {
             flag_print = false;
             pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\n",phi,tau_1/Km,tau_2/Km,tau_3/Km);
+            //pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\n",att_est.q0,att_est.q1,att_est.q2,att_est.q3);
         }
     }
 }

@@ -8,5 +8,5 @@
 // Modules example programs
 //#include "programs/examples/modules/main_wheel_estimator.h"
 //#include "programs/examples/modules/main_attitude_estimator.h"
-#include "programs/examples/modules/main_attitude_wheel_controller_2d.h"
-//#include "programs/examples/modules/main_attitude_wheel_controller_3d.h"
+//#include "programs/examples/modules/main_attitude_wheel_controller_2d.h"
+#include "programs/examples/modules/main_attitude_wheel_controller_3d.h"
