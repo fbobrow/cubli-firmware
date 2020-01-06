@@ -14,21 +14,30 @@ AttitudeWheelController3D::AttitudeWheelController3D()
 }
 
 // Control step
-void AttitudeWheelController3D::control(float q0r, float q1r, float q2r, float q3r, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController3D::control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
-    state_regulator(q0r,q1r,q2r,q3r,q0,q1,q2,q3,omega_x,omega_y,omega_z,theta_1,theta_2,theta_3,omega_1,omega_2,omega_3);
+    state_regulator(qr0,qr1,qr2,qr3,q0,q1,q2,q3,omega_x,omega_y,omega_z,theta_1,theta_2,theta_3,omega_1,omega_2,omega_3);
     feedback_linearization(q0,q1,q2,q3,omega_x,omega_y,omega_z,omega_1,omega_2,omega_3);
 }   
 
 // State regulator step
-void AttitudeWheelController3D::state_regulator(float q0r, float q1r, float q2r, float q3r, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController3D::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
     // State regulator step (with auxiliary variables to avoid double arithmetic) 
     float _2_kps_omegas_4 = 2.0*(kps - (omega_x*omega_x + omega_y*omega_y + omega_z*omega_z)/4.0);
-    float q0rq0_q1rq1_q2rq2_q3rq3 = q0r*q0 + q1r*q1 + q2r*q2 + q3r*q3;
-    u_1 = _2_kps_omegas_4*(q1r*q0 - q0r*q1 - q3r*q2 + q2r*q3)/q0rq0_q1rq1_q2rq2_q3rq3 - kds*omega_x - kpw*theta_1 - kdw*omega_1;
-    u_2 = _2_kps_omegas_4*(q2r*q0 + q3r*q1 - q0r*q2 - q1r*q3)/q0rq0_q1rq1_q2rq2_q3rq3 - kds*omega_y - kpw*theta_2 - kdw*omega_2;
-    u_3 = _2_kps_omegas_4*(q3r*q0 - q2r*q1 + q1r*q2 - q0r*q3)/q0rq0_q1rq1_q2rq2_q3rq3 - kds*omega_z - kpw*theta_3 - kdw*omega_3;
+    qe0 = q0*qr0 + q1*qr1 + q2*qr2 + q3*qr3;
+    qe1 = q0*qr1 - q1*qr0 - q2*qr3 + q3*qr2;
+    qe2 = q0*qr2 - q2*qr0 + q1*qr3 - q3*qr1;
+    qe3 = q0*qr3 - q1*qr2 + q2*qr1 - q3*qr0;
+    float qe_norm = sqrt(qe0*qe0+qe1*qe1+qe2*qe2+qe3*qe3);
+    qe0 /= qe_norm;
+    qe1 /= qe_norm;
+    qe2 /= qe_norm;
+    qe3 /= qe_norm;  
+    u_1 = _2_kps_omegas_4*(qe1)/qe0 - kds*omega_x - kpw*theta_1 - kdw*omega_1;
+    u_2 = _2_kps_omegas_4*(qe2)/qe0 - kds*omega_y - kpw*theta_2 - kdw*omega_2;
+    u_3 = _2_kps_omegas_4*(qe3)/qe0 - kds*omega_z - kpw*theta_3 - kdw*omega_3;
+    
 }  
 
 // Feedback linearization step

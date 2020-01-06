@@ -18,29 +18,34 @@ void callback() { flag = true; }
 void callback_blink() { flag_blink = true; }
 void callback_print() { flag_print = true; }
 
-//
-float phi;
-float tau_1, tau_2, tau_3;
-
 // Quaternion reference
 
 //Vertex
-float q0r = 0.9036;
-float q1r = 0.3029;
-float q2r = -0.3029;
-float q3r = 0.0000;
+float qr0 = 0.9036;
+float qr1 = 0.3029;
+float qr2 = -0.3029;
+float qr3 = 0.0000;
 
 // Edge (x axis)
-/*float q0r = 0.9239;
-float q1r = 0.3827;
-float q2r = 0.0000;
-float q3r = 0.0000;*/
+/*float qr0 = 0.9239;
+float qr1 = 0.3827;
+float qr2 = 0.0000;
+float qr3 = 0.0000;*/
 
 // Edge (y axis)
-/*float q0r = 0.9336;
-float q1r = 0.0000;
-float q2r = -0.3584;
-float q3r = 0.0000;*/
+/*float qr0 = 0.9336;
+float qr1 = 0.0000;
+float qr2 = -0.3584;
+float qr3 = 0.0000;*/
+
+// Quaternion error
+float phi;
+float phi_min = 10.0*pi/180.0;
+float phi_max = 10.0*pi/180.0;
+float phi_lim = phi_min;
+
+// Torques
+float tau_1, tau_2, tau_3;
 
 // Main program
 int main() 
@@ -63,16 +68,18 @@ int main()
             whe_est_2.estimate(tau_2);
             whe_est_3.estimate(tau_3);
             att_est.estimate();
-            cont.control(q0r,q1r,q2r,q3r,att_est.q0,att_est.q1,att_est.q2,att_est.q3,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w);
-            phi = 2.0*acos(q0r*att_est.q0 + q1r*att_est.q1 + q2r*att_est.q2 + q3r*att_est.q3);
-            if (abs(phi) <= 10.0*pi/180.0)
+            cont.control(qr0,qr1,qr2,qr3,att_est.q0,att_est.q1,att_est.q2,att_est.q3,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
+            phi = 2.0*acos(cont.qe0);
+            if (abs(phi) <= phi_lim)
             {
+                phi_lim = phi_max;
                 tau_1 = cont.tau_1;
                 tau_2 = cont.tau_2;
                 tau_3 = cont.tau_3;
             }
             else 
             {
+                phi_lim = phi_min;
                 tau_1 = 0.0;
                 tau_2 = 0.0;
                 tau_3 = 0.0;
@@ -89,8 +96,8 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\n",phi,tau_1/Km,tau_2/Km,tau_3/Km);
-            //pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\n",att_est.q0,att_est.q1,att_est.q2,att_est.q3);
+            pc.printf("%8.2f\t%8.2f\t%8.2f\t%8.2f\n",phi*180.0/pi,tau_1/Km,tau_2/Km,tau_3/Km);
+            //pc.printf("%8.2f\t%8.2f\t%8.2f\t%8.2f\n",cont.qe0,cont.qe1,cont.qe2,cont.qe3);
         }
     }
 }
