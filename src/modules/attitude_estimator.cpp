@@ -30,13 +30,14 @@ void AttitudeEstimator::init()
 // Angular velocity bias calibration 
 void AttitudeEstimator::calibrate()
 {
-    // Calculate angular velocity bias by averaging 200 samples during 1 second
-    for(int i = 0; i<200;i++)
+    // Calculate angular velocity bias by averaging f samples during 1 second
+    int n = f;
+    for(int i = 0; i<f;i++)
     {
         imu.read();
-        b_omega_x += imu.gx/200.0;
-        b_omega_y += imu.gy/200.0;
-        b_omega_z += imu.gz/200.0;
+        b_omega_x += imu.gx/f;
+        b_omega_y += imu.gy/f;
+        b_omega_z += imu.gz/f;
         wait_us(dt_us);
     }
 }

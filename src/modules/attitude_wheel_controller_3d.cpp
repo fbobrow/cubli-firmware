@@ -3,7 +3,7 @@
 // Constructor
 AttitudeWheelController3D::AttitudeWheelController3D()
 {
-    //
+    // 
     tau_1 = 0.0;
     tau_2 = 0.0;
     tau_3 = 0.0;
@@ -65,33 +65,7 @@ void AttitudeWheelController3D::feedback_linearization(float q0, float q1, float
     float tau_f_3 = sign_3*(tau_c + b*abs(omega_3) + kd*pow(omega_3,2));
     // Feedback linearization step (with auxiliary variables to avoid double arithmetic)     
     float g_l_ms_2_mw = g*l*(m_s + 2.0*m_w);
-    tau_1 = - I_c_pi*(omega_y - omega_z)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(- q0*q0 + 2.0*q0*q1 + q1*q1 + q2*q2 + 2.0*q2*q3 - q3*q3)/2.0 + tau_f_1 - I_c*u_1 - I_c_pi*(u_2 + u_3);
-    tau_2 = - I_c_pi*(omega_z - omega_x)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(q0*q0 + 2.0*q0*q2 - q1*q1 - 2.0*q1*q3 - q2*q2 + q3*q3)/2.0 + tau_f_2 - I_c*u_2 - I_c_pi*(u_1 + u_3);
-    tau_3 = - I_c_pi*(omega_x - omega_y)*(omega_x + omega_y + omega_z) - g_l_ms_2_mw*(q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_pi*(u_1 + u_2);  
-    
-    // Saturation for safety
-    if (tau_1 > 0.1)
-    {
-        tau_1 = 0.1;
-    } 
-    else if (tau_1 < -0.1)
-    {
-        tau_1 = -0.1;
-    }
-    if (tau_2 > 0.1)
-    {
-        tau_2 = 0.1;
-    } 
-    else if (tau_2 < -0.1)
-    {
-        tau_2 = -0.1;
-    }
-    if (tau_3 > 0.1)
-    {
-        tau_3 = 0.1;
-    } 
-    else if (tau_3 < -0.1)
-    {
-        tau_3 = -0.1;
-    }
+    tau_1 = - I_c_pi*(omega_y - omega_z)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c*u_1 - I_c_pi*(u_2 + u_3);
+    tau_2 = - I_c_pi*(omega_z - omega_x)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c*u_2 - I_c_pi*(u_1 + u_3);
+    tau_3 = - I_c_pi*(omega_x - omega_y)*(omega_x + omega_y + omega_z) - g_l_ms_2_mw*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_pi*(u_1 + u_2);  
 }         

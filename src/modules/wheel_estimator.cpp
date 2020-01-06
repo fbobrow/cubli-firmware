@@ -23,11 +23,12 @@ void WheelEstimator::estimate(float tau)
 // Angular velocity bias calibration 
 void WheelEstimator::calibrate()
 {
-    // Calculate angular velocity bias by averaging 200 samples durint 1 second
-    for(int i = 0; i<200;i++)
+    // Calculate angular velocity bias by averaging f samples durint 1 second
+    int n = f;
+    for(int i = 0; i<n;i++)
     {
         hall.read();
-        b_omega_w += hall.omega/200.0;
+        b_omega_w += hall.omega/n;
         wait_us(dt_us);
     }
 }

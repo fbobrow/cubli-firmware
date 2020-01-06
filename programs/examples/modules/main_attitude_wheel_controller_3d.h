@@ -19,27 +19,27 @@ void callback_blink() { flag_blink = true; }
 void callback_print() { flag_print = true; }
 
 //
-float phi, sign;
+float phi;
 float tau_1, tau_2, tau_3;
 
 // Quaternion reference
 
 //Vertex
-/*float q0r = 0.8881;
-float q1r = 0.3251;
-float q2r = -0.3251;
-float q3r = 0.0000;*/
-
-// Edge (x axis)
-float q0r = 0.9239;
-float q1r = 0.3827;
-float q2r = 0.0000;
+float q0r = 0.9036;
+float q1r = 0.3029;
+float q2r = -0.3029;
 float q3r = 0.0000;
 
-// Edge (y axis)
+// Edge (x axis)
 /*float q0r = 0.9239;
+float q1r = 0.3827;
+float q2r = 0.0000;
+float q3r = 0.0000;*/
+
+// Edge (y axis)
+/*float q0r = 0.9336;
 float q1r = 0.0000;
-float q2r = 0.3827;
+float q2r = -0.3584;
 float q3r = 0.0000;*/
 
 // Main program
@@ -65,12 +65,7 @@ int main()
             att_est.estimate();
             cont.control(q0r,q1r,q2r,q3r,att_est.q0,att_est.q1,att_est.q2,att_est.q3,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w);
             phi = 2.0*acos(q0r*att_est.q0 + q1r*att_est.q1 + q2r*att_est.q2 + q3r*att_est.q3);
-            sign = q1r*att_est.q0 - q0r*att_est.q1 - q3r*att_est.q2 + q2r*att_est.q3;
-            if (sign < 0)
-            {
-                phi = -phi;
-            }
-            if (abs(phi) <= 5.0*pi/180.0)
+            if (abs(phi) <= 10.0*pi/180.0)
             {
                 tau_1 = cont.tau_1;
                 tau_2 = cont.tau_2;
@@ -82,9 +77,9 @@ int main()
                 tau_2 = 0.0;
                 tau_3 = 0.0;
             }
-            //motor_1.set_torque(tau_1);
-            //motor_2.set_torque(tau_2);
-            //motor_3.set_torque(tau_3);
+            motor_1.set_torque(tau_1);
+            motor_2.set_torque(tau_2);
+            motor_3.set_torque(tau_3);
         }
         if (flag_blink) 
         {
