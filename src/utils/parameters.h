@@ -50,25 +50,28 @@ const int dt_print_us = dt_print*1e6;
 const float lds = 2.0;
 const float ldw = 50.0;
 
-// Quaternion reference (Cubli vertex fancing up minus phi_e - given center os mass may be disaligned)
+// Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
 const float phi_e = -4.0*pi/180.0;
 const float qr0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr3 =  0.0;
 
-/*// Quaternion reference (Cubli x-edge)
-const float qr0 = 0.9239;
-const float qr1 = 0.3827;
-const float qr2 = 0.0000;
-const float qr3 = 0.0000;
+// Quaternion reference (Cubli in x-edge minus phi_e - corresponding to center os mass disalignment)
+/*const float phi_e = 1.0*pi/180.0;
+const float qr0 = cos(phi_e/2.0 -     pi/8.0);
+const float qr1 = cos(phi_e/2.0 + 3.0*pi/8.0);
+const float qr2 = 0.0;
+const float qr3 = 0.0;*/
 
-// Quaternion reference (Cubli y-edge)
-const float qr0 = 0.9336;
-const float qr1 = 0.0000;
-const float qr2 = -0.3584;
-const float qr3 = 0.0000;*/
+// Quaternion reference (Cubli in y-edge minus phi_e - corresponding to center os mass disalignment)
+/*const float phi_e = 3.0*pi/180.0;
+const float qr0 = cos(phi_e/2.0 -     pi/8.0);
+const float qr1 = 0.0;
+const float qr2 = -cos(phi_e/2.0 + 3.0*pi/8.0);
+const float qr3 = 0.0;*/
 
+// 
 const float phi_min = 10.0*pi/180.0;
 const float phi_max = 10.0*pi/180.0;
 
