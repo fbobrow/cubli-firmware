@@ -3,6 +3,7 @@
 // Constructor
 WheelEstimator::WheelEstimator(PinName PIN_SPEED) : hall(PIN_SPEED)
 {
+    // Set initial angular displacement and angular velocity
     theta_w = 0.0;
     omega_w = 0.0;
 }

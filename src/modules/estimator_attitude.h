@@ -17,15 +17,17 @@ class AttitudeEstimator
     void init();
     // Estimate step
     void estimate();
-    // Rotation quaternion and angular velocity (rad/s) estimations
-    float q0, q1, q2, q3, omega_x, omega_y, omega_z;
+    // Rotation quaternion estimations
+    float q0, q1, q2, q3;
+    // Angular velocity (rad/s) estimations
+    float omega_x, omega_y, omega_z;
   private:
     // IMU sensor object
     LSM9DS1 imu;
-    // Angular velocity (rad/s) bias
-    float b_omega_x, b_omega_y, b_omega_z;
     // Angular velocity bias calibration
     void calibrate();
+    // Angular velocity (rad/s) bias
+    float b_omega_x, b_omega_y, b_omega_z;
 };
 
 #endif

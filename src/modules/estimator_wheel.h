@@ -22,14 +22,14 @@ class WheelEstimator
   private:
     // Motor hall sensor object
     Hall hall;
-    // Angular velocity (rad/s) bias
-    float b_omega_w;
     // Angular velocity bias calibration 
     void calibrate();
     // Predict step
     void predict(float tau);
     // Correct step
     void correct();
+    // Angular velocity (rad/s) bias
+    float b_omega_w;
 };
 
 #endif

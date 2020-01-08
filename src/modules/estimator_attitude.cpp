@@ -51,11 +51,11 @@ void AttitudeEstimator::estimate()
     omega_x = imu.gx-b_omega_x;
     omega_y = imu.gy-b_omega_y;
     omega_z = imu.gz-b_omega_z;
-    // Get linear accelration from gyroscope readings
+    // Get linear acceleration from accelerometer readings
     float ax = f_ax*(imu.ax-b_ax);
     float ay = f_ay*(imu.ay-b_ay);
     float az = f_az*(imu.az-b_az);
-    // Normalize accelerometer measurement
+    // Normalize linear acceleration
     float a_norm = sqrt(ax*ax+ay*ay+az*az);
     ax /= a_norm;
     ay /= a_norm;
@@ -74,7 +74,7 @@ void AttitudeEstimator::estimate()
     float s1 = (1.0 - az)*_2q1 + ax*_2q3 + ay*_2q0;
     float s2 = (1.0 - az)*_2q2 - ax*_2q0 + ay*_2q3;
     float s3 = (1.0 + az)*_2q3 + ax*_2q1 + ay*_2q2;
-    // Normalise step magnitude
+    // Normalise corrective step
     float s_norm = sqrt(s0*s0+s1*s1+s2*s2+s3*s3); 
     s0 /= s_norm;
     s1 /= s_norm;
