@@ -8,7 +8,6 @@
 #include "src/drivers/motor.h"
 
 // Include modules
-#include "src/modules/wheel_estimator.h"
-#include "src/modules/attitude_estimator.h"
-#include "src/modules/attitude_wheel_controller_2d.h"
-#include "src/modules/attitude_wheel_controller_3d.h"
+#include "src/modules/estimator_wheel.h"
+#include "src/modules/estimator_attitude.h"
+#include "src/modules/controller_attitude_wheel.h"

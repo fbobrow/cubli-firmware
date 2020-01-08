@@ -1,16 +1,16 @@
-#ifndef attitude_wheel_controller_3d_h
-#define attitude_wheel_controller_3d_h
+#ifndef controller_attitude_wheel_h
+#define controller_attitude_wheel_h
 
 #include "mbed.h"
 
 #include "src/utils/parameters.h"
 
-// Speed estimator class
-class AttitudeWheelController3D
+// Attitude and wheel controller class
+class AttitudeWheelController
 {
   public:
     // Constructor
-    AttitudeWheelController3D();
+    AttitudeWheelController();
     // Control step
     void control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3);
     // Quaternion erro

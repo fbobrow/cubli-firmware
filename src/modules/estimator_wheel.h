@@ -1,5 +1,5 @@
-#ifndef wheel_estimator_h
-#define wheel_estimator_h
+#ifndef estimator_wheel_h
+#define estimator_wheel_h
 
 #include "mbed.h"
 

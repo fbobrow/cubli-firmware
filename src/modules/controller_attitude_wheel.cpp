@@ -1,7 +1,7 @@
-#include "attitude_wheel_controller_3d.h"
+#include "controller_attitude_wheel.h"
 
 // Constructor
-AttitudeWheelController3D::AttitudeWheelController3D()
+AttitudeWheelController::AttitudeWheelController()
 {
     // 
     tau_1 = 0.0;
@@ -14,14 +14,14 @@ AttitudeWheelController3D::AttitudeWheelController3D()
 }
 
 // Control step
-void AttitudeWheelController3D::control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController::control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
     state_regulator(qr0,qr1,qr2,qr3,q0,q1,q2,q3,omega_x,omega_y,omega_z,theta_1,theta_2,theta_3,omega_1,omega_2,omega_3);
     feedback_linearization(q0,q1,q2,q3,omega_x,omega_y,omega_z,omega_1,omega_2,omega_3);
 }   
 
 // State regulator step
-void AttitudeWheelController3D::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
     // State regulator step (with auxiliary variables to avoid double arithmetic) 
     float _2_kps_omegas_4 = 2.0*(kps - (omega_x*omega_x + omega_y*omega_y + omega_z*omega_z)/4.0);
@@ -41,7 +41,7 @@ void AttitudeWheelController3D::state_regulator(float qr0, float qr1, float qr2,
 }  
 
 // Feedback linearization step
-void AttitudeWheelController3D::feedback_linearization(float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController::feedback_linearization(float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float omega_1, float omega_2, float omega_3)
 {
     // Calculate friction torque
     float sign_1, sign_2, sign_3;
@@ -69,12 +69,11 @@ void AttitudeWheelController3D::feedback_linearization(float q0, float q1, float
     {
         sign_3 = omega_3/abs(omega_3);
     }
-    float tau_f_1 = sign_1*(tau_c + b*abs(omega_1) + kd*pow(omega_1,2));
-    float tau_f_2 = sign_2*(tau_c + b*abs(omega_2) + kd*pow(omega_2,2));
-    float tau_f_3 = sign_3*(tau_c + b*abs(omega_3) + kd*pow(omega_3,2));
+    float tau_f_1 = sign_1*(tau_c + b*abs(omega_1) + kd*omega_1*omega_1);
+    float tau_f_2 = sign_2*(tau_c + b*abs(omega_2) + kd*omega_2*omega_2);
+    float tau_f_3 = sign_3*(tau_c + b*abs(omega_3) + kd*omega_3*omega_3);
     // Feedback linearization step (with auxiliary variables to avoid double arithmetic)     
-    float g_l_ms_2_mw = g*l*(m_s + 2.0*m_w);
-    tau_1 = - I_c_pi*(omega_y - omega_z)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c*u_1 - I_c_pi*(u_2 + u_3);
-    tau_2 = - I_c_pi*(omega_z - omega_x)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c*u_2 - I_c_pi*(u_1 + u_3);
-    tau_3 = - I_c_pi*(omega_x - omega_y)*(omega_x + omega_y + omega_z) - g_l_ms_2_mw*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_pi*(u_1 + u_2);  
+    tau_1 = - I_c_p*(omega_y - omega_z)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c*u_1 - I_c_p*(u_2 + u_3);
+    tau_2 = - I_c_p*(omega_z - omega_x)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c*u_2 - I_c_p*(u_1 + u_3);
+    tau_3 = - I_c_p*(omega_x - omega_y)*(omega_x + omega_y + omega_z) - g_l_ms_2_mw*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_p*(u_1 + u_2);  
 }         

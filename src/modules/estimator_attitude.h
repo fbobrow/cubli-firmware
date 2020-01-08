@@ -1,5 +1,5 @@
-#ifndef attitude_estimator_h
-#define attitude_estimator_h
+#ifndef estimator_attitude_h
+#define estimator_attitude_h
 
 #include "mbed.h"
 
@@ -12,7 +12,7 @@ class AttitudeEstimator
 {
   public:
     // Constructor
-    AttitudeEstimator(PinName PIN_SDA = IMU_SDA, PinName PIN_SCL = IMU_SCL);
+    AttitudeEstimator(PinName PIN_SDA, PinName PIN_SCL);
     // Initializer
     void init();
     // Estimate step

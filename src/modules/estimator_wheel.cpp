@@ -1,4 +1,4 @@
-#include "wheel_estimator.h"
+#include "estimator_wheel.h"
 
 // Constructor
 WheelEstimator::WheelEstimator(PinName PIN_SPEED) : hall(PIN_SPEED)

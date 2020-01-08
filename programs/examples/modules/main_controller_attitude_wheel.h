@@ -6,8 +6,8 @@ DigitalOut led(LED1);
 Serial pc(SERIAL_TX, SERIAL_RX, NULL, 115200);
 Motor motor_1(M1_ENABLE,M1_CURRENT), motor_2(M2_ENABLE,M2_CURRENT), motor_3(M3_ENABLE,M3_CURRENT);
 WheelEstimator whe_est_1(M1_SPEED), whe_est_2(M2_SPEED), whe_est_3(M3_SPEED);
-AttitudeEstimator att_est;
-AttitudeWheelController3D cont;
+AttitudeEstimator att_est(IMU_SDA,IMU_SCL);
+AttitudeWheelController cont;
 Ticker tic, tic_blink, tic_print;
 
 // Interrupt flags and callback functions
@@ -18,30 +18,8 @@ void callback() { flag = true; }
 void callback_blink() { flag_blink = true; }
 void callback_print() { flag_print = true; }
 
-// Quaternion reference
-
-//Vertex
-float qr0 = 0.9036;
-float qr1 = 0.3029;
-float qr2 = -0.3029;
-float qr3 = 0.0000;
-
-// Edge (x axis)
-/*float qr0 = 0.9239;
-float qr1 = 0.3827;
-float qr2 = 0.0000;
-float qr3 = 0.0000;*/
-
-// Edge (y axis)
-/*float qr0 = 0.9336;
-float qr1 = 0.0000;
-float qr2 = -0.3584;
-float qr3 = 0.0000;*/
-
 // Quaternion error
 float phi;
-float phi_min = 10.0*pi/180.0;
-float phi_max = 10.0*pi/180.0;
 float phi_lim = phi_min;
 
 // Torques
