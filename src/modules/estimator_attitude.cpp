@@ -30,8 +30,8 @@ void AttitudeEstimator::init()
 // Angular velocity bias calibration 
 void AttitudeEstimator::calibrate()
 {
-    // Calculate angular velocity bias by averaging f samples during 1 second
-    int n = f;
+    // Calculate angular velocity bias by averaging n samples during 0,5 seconds
+    int n = f/2;
     for(int i = 0; i<f;i++)
     {
         imu.read();
@@ -60,11 +60,11 @@ void AttitudeEstimator::estimate()
     ax /= a_norm;
     ay /= a_norm;
     az /= a_norm;   
-	// Calculate quaternion time derivative
-	float q0_dot = 0.5*(-q1*omega_x - q2*omega_y - q3*omega_z);
-	float q1_dot = 0.5*( q0*omega_x - q3*omega_y + q2*omega_z);
-	float q3_dot = 0.5*( q3*omega_x + q0*omega_y - q1*omega_z);
-	float q4_dot = 0.5*(-q2*omega_x + q0*omega_z + q1*omega_y);
+    // Calculate quaternion time derivative
+    float q0_dot = 0.5*(-q1*omega_x - q2*omega_y - q3*omega_z);
+    float q1_dot = 0.5*( q0*omega_x - q3*omega_y + q2*omega_z);
+    float q3_dot = 0.5*( q3*omega_x + q0*omega_y - q1*omega_z);
+    float q4_dot = 0.5*(-q2*omega_x + q0*omega_z + q1*omega_y);
     // Gradient decent algorithm corrective step (with auxiliary variables to avoid double arithmetic)
     float _2q0 = 2.0*q0;
     float _2q1 = 2.0*q1;
@@ -85,15 +85,15 @@ void AttitudeEstimator::estimate()
     q1_dot -= lds*dt*s1;
     q3_dot -= lds*dt*s2;
     q4_dot -= lds*dt*s3;
-	// Integrate quaternion time derivative
-	q0 += q0_dot*dt;
-	q1 += q1_dot*dt;
-	q2 += q3_dot*dt;
-	q3 += q4_dot*dt;
-	// Normalize quaternion
-	float q_norm = sqrt(q0*q0+q1*q1+q2*q2+q3*q3);
-	q0 /= q_norm;
-	q1 /= q_norm;
-	q2 /= q_norm;
-	q3 /= q_norm;   
+    // Integrate quaternion time derivative
+    q0 += q0_dot*dt;
+    q1 += q1_dot*dt;
+    q2 += q3_dot*dt;
+    q3 += q4_dot*dt;
+    // Normalize quaternion
+    float q_norm = sqrt(q0*q0+q1*q1+q2*q2+q3*q3);
+    q0 /= q_norm;
+    q1 /= q_norm;
+    q2 /= q_norm;
+    q3 /= q_norm;   
 }

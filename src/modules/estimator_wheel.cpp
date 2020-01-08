@@ -14,18 +14,11 @@ void WheelEstimator::init()
     calibrate();
 }
 
-// Estimate step
-void WheelEstimator::estimate(float tau)
-{
-    predict(tau);
-    correct();
-}
-
 // Angular velocity bias calibration 
 void WheelEstimator::calibrate()
 {
-    // Calculate angular velocity bias by averaging f samples durint 1 second
-    int n = f;
+    // Calculate angular velocity bias by averaging n samples durint 0,5 second
+    int n = f/2;
     for(int i = 0; i<n;i++)
     {
         hall.read();
@@ -34,19 +27,18 @@ void WheelEstimator::calibrate()
     }
 }
 
+// Estimate step
+void WheelEstimator::estimate(float tau)
+{
+    predict(tau);
+    correct();
+}
+
 // Predict step
 void WheelEstimator::predict(float tau)
 {
     // Calculate friction torque
-    float sign;
-    if (omega_w == 0.0)
-    {
-        sign = 0.0;
-    }
-    else
-    {
-        sign = omega_w/abs(omega_w);
-    }
+    float sign = (0.0<omega_w)-(omega_w<0.0);
     float tau_f = sign*(tau_c+b*abs(omega_w)+kd*pow(omega_w,2));
     // Calculate angular acceleration
     float omega_w_dot = (1.0/I_w)*(-tau_f+tau);
