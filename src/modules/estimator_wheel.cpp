@@ -30,8 +30,14 @@ void WheelEstimator::calibrate()
 // Estimate step
 void WheelEstimator::estimate(float tau)
 {
+    // Predict step
     predict(tau);
-    correct();
+
+    // Get angular velocity measurement from hall sensor
+    hall.read();
+    float omega_w_m = hall.omega-b_omega_w;
+    // Correct step
+    correct(omega_w_m);
 }
 
 // Predict step
@@ -43,17 +49,14 @@ void WheelEstimator::predict(float tau)
     // Calculate angular acceleration
     float omega_w_dot = (1.0/I_w)*(-tau_f+tau);
     // Predict angular displacement and angular velocity
-    theta_w = theta_w+omega_w*dt+omega_w_dot*dt*dt/2.0;
-    omega_w = omega_w+omega_w_dot*dt;
+    theta_w += omega_w*dt+omega_w_dot*dt*dt/2.0;
+    omega_w += omega_w_dot*dt;
 }
 
 // Correct step
-void WheelEstimator::correct()
+void WheelEstimator::correct(float omega_w_m)
 {
-    // Get angular velocity measurement
-    hall.read();
-    float omega_w_m = hall.omega-b_omega_w;
     // Correct angular velocity with measurement
-    omega_w = omega_w+ldw*dt*(omega_w_m-omega_w);
+    omega_w += ldw*dt*(omega_w_m-omega_w);
 }
             

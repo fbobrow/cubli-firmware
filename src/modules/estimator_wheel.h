@@ -27,7 +27,7 @@ class WheelEstimator
     // Predict step
     void predict(float tau);
     // Correct step
-    void correct();
+    void correct(float omega_w_m);
     // Angular velocity (rad/s) bias
     float b_omega_w;
 };
