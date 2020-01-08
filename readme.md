@@ -40,7 +40,7 @@ The source code is organized as follows:
     |   estimator_attitude.h/.cpp        | Attitude estimator [header / source code]
     |   controller_attitute_wheel.h/.cpp | Attitude and wheel controller [header / source code]
  |  + utils                              | Utility files
-    |   parameters.h                     | Parameters (interrupt frequency, physical constants, controller gains, etc.)
+    |   parameters.h                     | Parameters (physical constants, controller gains, etc.)
     |   pin_names.h                      | Pin names
  + mbed-os                               | ARM Mbed OS source files (automatically imported)
 ```
