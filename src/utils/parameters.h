@@ -36,7 +36,7 @@ const float I_c = I_s_xx+2*I_w_yy+l*l*(m_s/2.0+m_w); // Cubli moment of inertia 
 const float I_c_p = -l*l*(m_s+m_w)/4.0;              // Cubli product of inertia at pivot point [kg.m^2]
 
 // Interrupt frequencies
-const float f = 500.0;                      // Controller interrupt frequency [Hz]
+const float f = 1000.0;                      // Controller interrupt frequency [Hz]
 const float f_blink = 1.0;                  // Led blink interrupt frequency [Hz]
 const float f_print = 10.0;                 // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;

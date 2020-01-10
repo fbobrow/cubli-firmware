@@ -58,7 +58,8 @@ void AttitudeWheelController::feedback_linearization(float q0, float q1, float q
     float tau_f_2 = sign_2*(tau_c + b*abs(omega_2) + kd*omega_2*omega_2);
     float tau_f_3 = sign_3*(tau_c + b*abs(omega_3) + kd*omega_3*omega_3);
     // Feedback linearization step (with auxiliary variables to avoid double arithmetic)
-    tau_1 = - I_c_p*(omega_y - omega_z)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c*u_1 - I_c_p*(u_2 + u_3);
-    tau_2 = - I_c_p*(omega_z - omega_x)*(omega_x + omega_y + omega_z) + g_l_ms_2_mw*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c*u_2 - I_c_p*(u_1 + u_3);
-    tau_3 = - I_c_p*(omega_x - omega_y)*(omega_x + omega_y + omega_z) - g_l_ms_2_mw*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_p*(u_1 + u_2);  
+    float omega_x_omega_y_omega_z = omega_x + omega_y + omega_z;
+    tau_1 = - I_c_p*(omega_y - omega_z)*omega_x_omega_y_omega_z - I_w*(omega_3*omega_y - omega_2*omega_z) + g_l_ms_2_mw*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c*u_1 - I_c_p*(u_2 + u_3);
+    tau_2 = - I_c_p*(omega_z - omega_x)*omega_x_omega_y_omega_z - I_w*(omega_1*omega_z - omega_3*omega_x) + g_l_ms_2_mw*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c*u_2 - I_c_p*(u_1 + u_3);
+    tau_3 = - I_c_p*(omega_x - omega_y)*omega_x_omega_y_omega_z - I_w*(omega_2*omega_x - omega_1*omega_y) - g_l_ms_2_mw*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c*u_3 - I_c_p*(u_1 + u_2);  
 }         
