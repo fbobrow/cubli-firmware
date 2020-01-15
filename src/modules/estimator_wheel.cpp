@@ -45,9 +45,9 @@ void WheelEstimator::predict(float tau)
 {
     // Calculate friction torque
     float sign = (0.0<omega_w)-(omega_w<0.0);
-    float tau_f = sign*(tau_c+b*abs(omega_w)+kd*pow(omega_w,2));
+    float tau_f = sign*(tau_c+b*abs(omega_w)+cd*omega_w*omega_w);
     // Calculate angular acceleration
-    float omega_w_dot = (1.0/I_w)*(-tau_f+tau);
+    float omega_w_dot = (1.0/I_w_xx)*(-tau_f+tau);
     // Predict angular displacement and angular velocity
     theta_w += omega_w*dt+omega_w_dot*dt*dt/2.0;
     omega_w += omega_w_dot*dt;

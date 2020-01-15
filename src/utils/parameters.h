@@ -17,7 +17,7 @@ const float omega_nl = 6710.0*(2.0*pi/60.0);// No load speed [rpm -> rad/s]
 // Motor mechanical parameters
 const float tau_c = 2.46e-3;                // Coulomb friction torque [N.m]
 const float b = 1.06e-5;                    // Rotational viscuous friction coefficient [N.m.s/rad]
-const float kd = 1.70e-8;                   // Rotational drag coefficient [N.m.s^2/rad^2]
+const float cd = 1.70e-8;                   // Rotational drag coefficient [N.m.s^2/rad^2]
 
 // Structure parameters
 const float l = 0.15;                       // Structure side length [m]
@@ -30,10 +30,14 @@ const float I_w_xx = 1.25e-4;               // Reaction wheel moment of inertia 
 const float I_w_yy = 4.0e-5;                // Reaction wheel moment of inertia around y-z axis at center of mass [kg.m^2]
 
 // Cubli (structure + reaction wheels) parameters
-const float m_c = m_s+3*m_w;                         // Cubli total mass [kg]
-const float I_w = I_w_xx;                            // Reaction wheel moment of inertia
-const float I_c = I_s_xx+2*I_w_yy+l*l*(m_s/2.0+m_w); // Cubli moment of inertia around x-y-z axis at pivot point [kg.m^2]
-const float I_c_p = -l*l*(m_s+m_w)/4.0;              // Cubli product of inertia at pivot point [kg.m^2]
+const float m_c = m_s+3*m_w;                // Cubli total mass [kg]
+const float I_c_xx = I_s_xx+I_w_xx+2*I_w_yy+(m_s+2.0*m_w)*l*l/2.0; // Cubli moment of inertia around x-y-z axis at pivot point [kg.m^2]
+const float I_c_xy = -(m_s+m_w)*l*l/4.0;    // Cubli product of inertia at pivot point [kg.m^2]
+
+//
+const float m_c_bar = m_c - m_w;            //
+const float I_c_xx_bar = I_c_xx - I_w_xx;   //
+const float I_c_xy_bar = I_c_xy;            //
 
 // Interrupt frequencies
 const float f = 1000.0;                      // Controller interrupt frequency [Hz]
@@ -51,7 +55,7 @@ const float lds = 2.0;
 const float ldw = 50.0;
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
-const float phi_e = -4.0*pi/180.0;
+const float phi_e = -4*pi/180.0;
 const float qr0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
@@ -81,17 +85,30 @@ const float qs1 = -sqrt(2.0)/2.0*cos(acos(sqrt(3.0)/3.0)/2.0);
 const float qs2 =  sqrt(2.0)/2.0*cos(acos(sqrt(3.0)/3.0)/2.0);
 const float qs3 =  0.0;
                                    
-const float g_l_ms_2_mw = g*l*(m_s + 2.0*m_w);
-const float omega_n = sqrt(-g_l_ms_2_mw*(0.5+qs0*qs1-qs0*qs2+qs1*qs3+qs2*qs3-qs1*qs1-qs2*qs2)/(I_c-I_c_p));
+//
+const float m_c_bar_g_l = m_c_bar*g*l;
+const float omega_0 = sqrt(m_c_bar_g_l*(sqrt(3.0)/2.0)/(I_c_xx_bar-I_c_xy_bar));
+const float delta = m_c_bar_g_l*(sqrt(3.0)/2.0)/I_w_xx;
 
 // Controller gains
-const float alpha = 0.07;
+/*const float alpha = 0.05;
 const float zeta = sqrt(2.0)/2.0;
-const float wn = omega_n;//sqrt(m_c*g*l*sqrt(2.0)/2.0/I_c); 
-const float kps = pow(wn,2)*(1.0+pow(alpha,2)+4.0*alpha*zeta)-pow(alpha,2)*pow(wn,4)*I_c/(m_c*l*sqrt(2.0)/2.0*g);
-const float kds = 2.0*wn*(alpha+zeta)-2.0*alpha*pow(wn,3)*(1.0+alpha*zeta)*I_c/(m_c*l*sqrt(2.0)/2.0*g);
-const float kpw = pow(alpha,2)*pow(wn,4)*I_w/(m_c*l*sqrt(2.0)/2.0*g);
-const float kdw = 2.0*alpha*pow(wn,3)*(1.0+alpha*zeta)*I_w/(m_c*l*sqrt(2.0)/2.0*g);
+const float omega_n = omega_0;
+const float kpw = pow(alpha,2)*pow(zeta,2)*pow(omega_n,4)/delta;
+const float kdw = 2.0*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2))/delta;
+const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))-I_c_xx_bar/I_w_xx*kpw;
+const float kd = 2.0*zeta*omega_n*(1.0+alpha)-I_c_xx_bar/I_w_xx*kdw;*/
+
+
+const float zeta = sqrt(2.0)/2.0;
+const float omega_n = omega_0;
+const float zeta_w = sqrt(2.0)/2.0;
+const float omega_n_w = omega_0/10.0;
+const float kpw = (pow(omega_n,2)*pow(omega_n_w,2))/delta;
+const float kdw = (2.0*zeta_w*pow(omega_n,2)*omega_n_w + 2.0*zeta*omega_n*pow(omega_n_w,2))/delta;
+const float kp = (pow(omega_n,2) + 4.0*zeta_w*zeta*omega_n*omega_n_w + pow(omega_n_w,2))-I_c_xx_bar/I_w_xx*kpw;
+const float kd = (2.0*omega_n*zeta + 2.0*omega_n_w*zeta_w)-I_c_xx_bar/I_w_xx*kdw;
+
 
 // Acelerometer bias and scale factor
 const float b_ax = -0.0664;
