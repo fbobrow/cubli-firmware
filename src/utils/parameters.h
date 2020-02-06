@@ -3,6 +3,17 @@
 
 #include "cmath"
 
+// Interrupt frequencies
+const float f = 1000.0;                      // Controller interrupt frequency [Hz]
+const float f_blink = 1.0;                  // Led blink interrupt frequency [Hz]
+const float f_print = 10.0;                 // Serial print interrupt frequency [Hz]
+const float dt = 1.0/f;
+const float dt_blink = 1.0/f_blink;
+const float dt_print = 1.0/f_print;
+const int dt_us = dt*1e6;
+const int dt_blink_us = dt_blink*1e6;
+const int dt_print_us = dt_print*1e6;
+
 // Physical parameters
 const float pi = 3.141516;                 
 const float g = 9.80665;                    // Accelation of gravity [m/s^2]
@@ -39,30 +50,19 @@ const float m_c_bar = m_c - m_w;            //
 const float I_c_xx_bar = I_c_xx - I_w_xx;   //
 const float I_c_xy_bar = I_c_xy;            //
 
-// Interrupt frequencies
-const float f = 1000.0;                      // Controller interrupt frequency [Hz]
-const float f_blink = 1.0;                  // Led blink interrupt frequency [Hz]
-const float f_print = 10.0;                 // Serial print interrupt frequency [Hz]
-const float dt = 1.0/f;
-const float dt_blink = 1.0/f_blink;
-const float dt_print = 1.0/f_print;
-const int dt_us = dt*1e6;
-const int dt_blink_us = dt_blink*1e6;
-const int dt_print_us = dt_print*1e6;
-
 // Estimator gains
 const float lds = 2.0;
 const float ldw = 50.0;
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
-const float phi_e = -4*pi/180.0;
+const float phi_e = -0*pi/180.0;
 const float qr0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr3 =  0.0;
 
 // Quaternion reference (Cubli in x-edge minus phi_e - corresponding to center os mass disalignment)
-/*const float phi_e = 1.0*pi/180.0;
+/*const float phi_e = -5*pi/180.0;
 const float qr0 = cos(phi_e/2.0 -     pi/8.0);
 const float qr1 = cos(phi_e/2.0 + 3.0*pi/8.0);
 const float qr2 = 0.0;
@@ -77,7 +77,7 @@ const float qr3 = 0.0;*/
 
 // 
 const float phi_min = 10.0*pi/180.0;
-const float phi_max = 10.0*pi/180.0;
+const float phi_max = 30.0*pi/180.0;
 
 // Stable quaternion (Cubli vertex facing down)
 const float qs0 =                sin(acos(sqrt(3.0)/3.0)/2.0);
@@ -100,9 +100,9 @@ const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))-I_c_xx_bar/I
 const float kd = 2.0*zeta*omega_n*(1.0+alpha)-I_c_xx_bar/I_w_xx*kdw;*/
 
 
-const float zeta = sqrt(2.0)/2.0;
-const float omega_n = omega_0;
-const float zeta_w = sqrt(2.0)/2.0;
+const float zeta = /*1.0;*/sqrt(2.0)/2.0;
+const float omega_n = /*2.0*omega_0;*/1.5*omega_0;
+const float zeta_w = /*1.0;*/sqrt(2.0)/2.0;
 const float omega_n_w = omega_0/10.0;
 const float kpw = (pow(omega_n,2)*pow(omega_n_w,2))/delta;
 const float kdw = (2.0*zeta_w*pow(omega_n,2)*omega_n_w + 2.0*zeta*omega_n*pow(omega_n_w,2))/delta;

@@ -19,14 +19,14 @@ AttitudeWheelController::AttitudeWheelController()
 }
 
 // Control step
-void AttitudeWheelController::control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController::control(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_r_x, float omega_r_y, float omega_r_z, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
-    state_regulator(qr0,qr1,qr2,qr3,q0,q1,q2,q3,omega_x,omega_y,omega_z,theta_1,theta_2,theta_3,omega_1,omega_2,omega_3);
+    state_regulator(qr0,qr1,qr2,qr3,q0,q1,q2,q3,omega_r_x,omega_r_y,omega_r_z,omega_x,omega_y,omega_z,theta_1,theta_2,theta_3,omega_1,omega_2,omega_3);
     feedback_linearization(q0,q1,q2,q3,omega_x,omega_y,omega_z,omega_1,omega_2,omega_3);
 }   
 
 // State regulator step
-void AttitudeWheelController::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
+void AttitudeWheelController::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_r_x, float omega_r_y, float omega_r_z, float omega_x, float omega_y, float omega_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
     // Calculate quaternion error
     qe0 = q0*qr0 + q1*qr1 + q2*qr2 + q3*qr3;
@@ -41,9 +41,9 @@ void AttitudeWheelController::state_regulator(float qr0, float qr1, float qr2, f
     qe3 /= qe_norm;  
     // State regulator step (with auxiliary variables to avoid double arithmetic) 
     float _2_kp_omegas_4 = 2.0*(kp - (omega_x*omega_x + omega_y*omega_y + omega_z*omega_z)/4.0);
-    u_1 = _2_kp_omegas_4*(qe1)/qe0 - kd*omega_x - kpw*theta_1 - kdw*omega_1;
-    u_2 = _2_kp_omegas_4*(qe2)/qe0 - kd*omega_y - kpw*theta_2 - kdw*omega_2;
-    u_3 = _2_kp_omegas_4*(qe3)/qe0 - kd*omega_z - kpw*theta_3 - kdw*omega_3;
+    u_1 = _2_kp_omegas_4*(qe1)/qe0 + kd*(omega_r_x - omega_x) - kpw*theta_1 - kdw*omega_1;
+    u_2 = _2_kp_omegas_4*(qe2)/qe0 + kd*(omega_r_y - omega_y) - kpw*theta_2 - kdw*omega_2;
+    u_3 = _2_kp_omegas_4*(qe3)/qe0 + kd*(omega_r_z - omega_z) - kpw*theta_3 - kdw*omega_3;
     
 }  
 
@@ -61,5 +61,5 @@ void AttitudeWheelController::feedback_linearization(float q0, float q1, float q
     float omega_x_omega_y_omega_z = omega_x + omega_y + omega_z;
     tau_1 = - I_c_xy_bar*(omega_y - omega_z)*omega_x_omega_y_omega_z - I_w_xx*(omega_3*omega_y - omega_2*omega_z) + m_c_bar_g_l*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c_xx_bar*u_1 - I_c_xy_bar*(u_2 + u_3);
     tau_2 = - I_c_xy_bar*(omega_z - omega_x)*omega_x_omega_y_omega_z - I_w_xx*(omega_1*omega_z - omega_3*omega_x) + m_c_bar_g_l*(0.5 + q0*q2 - q1*q1 - q1*q3 - q2*q2) + tau_f_2 - I_c_xx_bar*u_2 - I_c_xy_bar*(u_1 + u_3);
-    tau_3 = - I_c_xy_bar*(omega_x - omega_y)*omega_x_omega_y_omega_z - I_w_xx*(omega_2*omega_x - omega_1*omega_y) - m_c_bar_g_l*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c_xx_bar*u_3 - I_c_xy_bar*(u_1 + u_2);  
+    tau_3 = - I_c_xy_bar*(omega_x - omega_y)*omega_x_omega_y_omega_z - I_w_xx*(omega_2*omega_x - omega_1*omega_y) - m_c_bar_g_l*(      q0*q1 + q0*q2 - q1*q3 + q2*q3) + tau_f_3 - I_c_xx_bar*u_3 - I_c_xy_bar*(u_1 + u_2);
 }         
