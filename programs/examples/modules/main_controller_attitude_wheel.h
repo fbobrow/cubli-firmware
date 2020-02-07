@@ -31,12 +31,26 @@ float qrt2 = qr2;
 float qrt3 = qr3;
 
 float qrt0_dot, qrt1_dot, qrt2_dot, qrt3_dot;
-
-float omega_r_max = 0.5;
-float omega_r = 0.0;
 float omega_r_x, omega_r_y, omega_r_z;
+float alpha_r_x, alpha_r_y, alpha_r_z;
+
+float pos_traj = 2.0*pi;
+float t_rest = 2.0;
+float t_traj = 20.0;
+
+float crackle_0 = 720.0*pos_traj/pow(t_traj,5);
+float snap_0 = 360.0*pos_traj/pow(t_traj,4);
+float jerk_0 = 60.0*pos_traj/pow(t_traj,3);
+
+float pos, vel, acc, jerk, snap, crackle;
 
 Timer tim;
+bool flag_tim = true;
+
+bool flag_traj_1 = true;
+bool flag_traj_2 = true;
+bool flag_traj_3 = true;
+bool flag_traj_4 = true;
 
 // Main program
 int main() 
@@ -60,7 +74,7 @@ int main()
             whe_est_2.estimate(tau_2);
             whe_est_3.estimate(tau_3);
             att_est.estimate();
-            cont.control(qrt0,qrt1,qrt2,qrt3,att_est.q0,att_est.q1,att_est.q2,att_est.q3,omega_r_x,omega_r_y,omega_r_z,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
+            cont.control(qrt0,qrt1,qrt2,qrt3,att_est.q0,att_est.q1,att_est.q2,att_est.q3,omega_r_x,omega_r_y,omega_r_z,att_est.omega_x,att_est.omega_y,att_est.omega_z,alpha_r_x,alpha_r_y,alpha_r_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
             phi = 2.0*acos(cont.qe0);
             if (abs(phi) <= phi_lim)
             {
@@ -69,33 +83,63 @@ int main()
                 tau_2 = cont.tau_2;
                 tau_3 = cont.tau_3;
 
-                if (tim.read() < 2.0)
+                if(flag_tim)
                 {
-                    omega_r += (omega_r_max/2.0)*dt;
-                }
-                else if ((tim.read() > 2) &&  (tim.read() <= 12))
-                {
-                    omega_r = omega_r_max;
-                }
-                else if ((tim.read() > 12) &&  (tim.read() <= 16))
-                {
-                    omega_r -= (omega_r_max/2.0)*dt;
-                }
-                else if ((tim.read() > 16) &&  (tim.read() <= 26))
-                {
-                    omega_r = -omega_r_max;
-                }
-                else if ((tim.read() > 26) &&  (tim.read() <= 28))
-                {
-                    omega_r += (omega_r_max/2.0)*dt;
-                }
-                else if (tim.read() > 28)
-                {
+                    flag_tim = false;
                     tim.reset();
                 }
-                omega_r_x = omega_r/sqrt(3.0);
-                omega_r_y = omega_r/sqrt(3.0);
-                omega_r_z = omega_r/sqrt(3.0);
+                if ((tim.read() > t_rest/2.0) && flag_traj_1)
+                {
+                    flag_traj_1 = false;
+                    crackle = crackle_0;
+                    snap = -snap_0;
+                    jerk = jerk_0;
+                }
+                if ((tim.read() > t_traj+t_rest/2.0) && flag_traj_2)
+                {
+                    flag_traj_2 = false;
+                    jerk = 0.0;
+                    snap = 0.0;
+                    crackle = 0.0;
+                    acc = 0.0;
+                    vel = 0.0;
+                }
+                if ((tim.read() > t_traj+3.0*t_rest/2.0) && flag_traj_3)
+                {
+                    flag_traj_3 = false;
+                    crackle = -crackle_0;
+                    snap = snap_0;
+                    jerk = -jerk_0;
+                }
+                if ((tim.read() > 2.0*t_traj+3.0*t_rest/2.0) && flag_traj_4)
+                {
+                    flag_traj_4 = false;
+                    jerk = 0.0;
+                    snap = 0.0;
+                    crackle = 0.0;
+                    acc = 0.0;
+                    vel = 0.0;
+                }
+                if (tim.read() > 2.0*t_traj+2.0*t_rest)
+                {
+                    tim.reset();
+                    flag_traj_1 = true;
+                    flag_traj_2 = true;
+                    flag_traj_3 = true;
+                    flag_traj_4 = true;
+                }
+
+                vel = vel + acc*dt + jerk*pow(dt,2)/2.0 + snap*pow(dt,3)/6.0 + crackle*pow(dt,4)/24.0;
+                acc = acc + jerk*dt + snap*pow(dt,2)/2.0 + crackle*pow(dt,3)/6.0;
+                jerk = jerk + snap*dt + crackle*pow(dt,2)/2.0;
+                snap = snap + crackle*dt; 
+
+                alpha_r_x = acc/sqrt(3.0);
+                alpha_r_y = acc/sqrt(3.0);
+                alpha_r_z = acc/sqrt(3.0);
+                omega_r_x = vel/sqrt(3.0);
+                omega_r_y = vel/sqrt(3.0);
+                omega_r_z = vel/sqrt(3.0);
                 qrt0_dot = 0.5*(-qrt1*omega_r_x - qrt2*omega_r_y - qrt3*omega_r_z);
                 qrt1_dot = 0.5*( qrt0*omega_r_x - qrt3*omega_r_y + qrt2*omega_r_z);
                 qrt2_dot = 0.5*( qrt3*omega_r_x + qrt0*omega_r_y - qrt1*omega_r_z);
@@ -124,7 +168,7 @@ int main()
         if (flag_print) 
         {
             flag_print = false;
-            pc.printf("%8.2f\n",omega_r);
+            //pc.printf("%8.2f\n",vel);
             //pc.printf("%8.2f\t%8.2f\t%8.2f\t%8.2f\n",phi*180.0/pi,tau_1/Km,tau_2/Km,tau_3/Km);
             //pc.printf("%5.2f %5.2f %5.2f %5.2f | %6.2f %6.2f %6.2f | %10.2f %10.2f %10.2f | %8.2f %8.2f %8.2f\n",cont.qe0,cont.qe1,cont.qe2,cont.qe3,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
             //pc.printf("%8.2f\t%8.2f\t%8.2f\t%8.2f\n",cont.qe0,cont.qe1,cont.qe2,cont.qe3);

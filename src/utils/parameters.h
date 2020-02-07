@@ -55,7 +55,7 @@ const float lds = 2.0;
 const float ldw = 50.0;
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
-const float phi_e = -0*pi/180.0;
+const float phi_e = -0.0*pi/180.0;
 const float qr0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qr2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
