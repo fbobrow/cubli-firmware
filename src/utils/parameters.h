@@ -91,13 +91,19 @@ const float omega_0 = sqrt(m_c_bar_g_l*(sqrt(3.0)/2.0)/(I_c_xx_bar-I_c_xy_bar));
 const float delta = m_c_bar_g_l*(sqrt(3.0)/2.0)/I_w_xx;
 
 // Controller gains
-const float alpha = 0.067;
+const float alpha = 0.05;
 const float zeta = sqrt(2.0)/2.0;
 const float omega_n = 1.5*omega_0;
+
 const float kpw = pow(alpha,2)*pow(zeta,2)*pow(omega_n,4)/delta;
 const float kdw = 2.0*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2))/delta;
-const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))-I_c_xx_bar/I_w_xx*kpw;
-const float kd = 2.0*zeta*omega_n*(1.0+alpha)-I_c_xx_bar/I_w_xx*kdw;
+const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))+I_c_xx_bar/I_w_xx*kpw;
+const float kd = 2.0*zeta*omega_n*(1.0+alpha)+I_c_xx_bar/I_w_xx*kdw;
+
+/*const float kpw = 0.0;
+const float kdw = alpha*zeta*pow(omega_n,3)/delta;
+const float kp = pow(omega_n,2)*(1.0+2.0*alpha*pow(zeta,2));
+const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+I_c_xx_bar/I_w_xx*kdw;*/
 
 // Controller gains
 /*const float zeta = 1.0;
@@ -121,7 +127,7 @@ const float f_ay = 1.0086;
 const float f_az = 0.9925;
 
 const float pos_traj = 2.0*pi;
-const float t_rest = 2.0;
+const float t_rest = 5.0;
 const float t_traj = 20.0;
 
 const float crackle_0 = 720.0*pos_traj/pow(t_traj,5);
