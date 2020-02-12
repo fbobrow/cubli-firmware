@@ -11,3 +11,4 @@
 #include "src/modules/estimator_wheel.h"
 #include "src/modules/estimator_attitude.h"
 #include "src/modules/controller_attitude_wheel.h"
+#include "src/modules/trajectory_attitude.h"
