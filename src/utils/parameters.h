@@ -5,12 +5,15 @@
 
 // Interrupt frequencies
 const float f = 1000.0;                  // Controller interrupt frequency [Hz]
+const float f_log = 50.0;                // Log data interrupt frequency [Hz]
 const float f_blink = 1.0;               // Led blink interrupt frequency [Hz]
 const float f_print = 10.0;              // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;
+const float dt_log = 1.0/f_print;
 const float dt_blink = 1.0/f_blink;
 const float dt_print = 1.0/f_print;
 const int dt_us = dt*1e6;
+const int dt_log_us = dt_log*1e6;
 const int dt_blink_us = dt_blink*1e6;
 const int dt_print_us = dt_print*1e6;
 
