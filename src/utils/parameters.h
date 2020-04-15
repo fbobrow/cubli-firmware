@@ -5,11 +5,11 @@
 
 // Interrupt frequencies
 const float f = 1000.0;                  // Controller interrupt frequency [Hz]
-const float f_log = 50.0;                // Log data interrupt frequency [Hz]
+const float f_log = 10.0;                // Log data interrupt frequency [Hz]
 const float f_blink = 1.0;               // Led blink interrupt frequency [Hz]
-const float f_print = 10.0;              // Serial print interrupt frequency [Hz]
+const float f_print = 0.2;              // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;
-const float dt_log = 1.0/f_print;
+const float dt_log = 1.0/f_log;
 const float dt_blink = 1.0/f_blink;
 const float dt_print = 1.0/f_print;
 const int dt_us = dt*1e6;
@@ -69,18 +69,23 @@ const float gamma = I_w_xx/(m_c_bar_g_l*(sqrt(3.0)/2.0));
 const float lds = 2.0;
 const float ldw = 50.0;
 
-// Controller gains
-const float alpha = 0.05;
+// Controller gains (speed+angle)
+const float alpha = 0.1; //0.05;
 const float zeta = sqrt(2.0)/2.0;
 const float omega_n = 1.5*omega_0;
 const float kpw = gamma*pow(alpha,2)*pow(zeta,2)*pow(omega_n,4);
 const float kdw = 2.0*gamma*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2));
 const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))+beta*kpw;
 const float kd = 2.0*zeta*omega_n*(1.0+alpha)+beta*kdw;
-/*const float kpw = 0.0;
-const float kdw = gamma*alpha*zeta*pow(omega_n,3);
-const float kp = pow(omega_n,2)*(1.0+2.0*alpha*pow(zeta,2));
-const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+beta*kdw;*/
+
+// Controller gains (speed)
+// const float alpha = 0.1;
+// const float zeta = sqrt(2.0)/2.0;
+// const float omega_n = 1.5*omega_0;
+// const float kpw = 0.0;
+// const float kdw = gamma*alpha*zeta*pow(omega_n,3);
+// const float kp = pow(omega_n,2)*(1.0+2.0*alpha*pow(zeta,2));
+// const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+beta*kdw; 
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
 const float phi_e = -0.0*pi/180.0;
@@ -90,18 +95,18 @@ const float qu2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qu3 =  0.0;
 
 // Quaternion reference (Cubli in x-edge minus phi_e - corresponding to center os mass disalignment)
-/*const float phi_e = -5*pi/180.0;
-const float qu0 = cos(phi_e/2.0 -     pi/8.0);
-const float qu1 = cos(phi_e/2.0 + 3.0*pi/8.0);
-const float qu2 = 0.0;
-const float qu3 = 0.0;*/
+// const float phi_e = -5*pi/180.0;
+// const float qu0 = cos(phi_e/2.0 -     pi/8.0);
+// const float qu1 = cos(phi_e/2.0 + 3.0*pi/8.0);
+// const float qu2 = 0.0;
+// const float qu3 = 0.0;
 
 // Quaternion reference (Cubli in y-edge minus phi_e - corresponding to center os mass disalignment)
-/*const float phi_e = 3.0*pi/180.0;
-const float qu0 = cos(phi_e/2.0 -     pi/8.0);
-const float qu1 = 0.0;
-const float qu2 = -cos(phi_e/2.0 + 3.0*pi/8.0);
-const float qu3 = 0.0;*/
+// const float phi_e = 3.0*pi/180.0;
+// const float qu0 = cos(phi_e/2.0 -     pi/8.0);
+// const float qu1 = 0.0;
+// const float qu2 = -cos(phi_e/2.0 + 3.0*pi/8.0);
+// const float qu3 = 0.0;
 
 // Minimum and maximum error limits (for control safety)
 const float phi_min = 10.0*pi/180.0;

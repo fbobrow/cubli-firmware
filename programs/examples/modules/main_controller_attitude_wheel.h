@@ -60,7 +60,7 @@ int main()
                     flag_tra = false;
                     att_tra.init();
                 }
-                //att_tra.generate();
+                att_tra.generate();
                 tau_1 = cont.tau_1;
                 tau_2 = cont.tau_2;
                 tau_3 = cont.tau_3;
