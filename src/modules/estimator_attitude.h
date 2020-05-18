@@ -30,8 +30,6 @@ class AttitudeEstimator
     void predict(float omega_x, float omega_y, float omega_z);
     // Correct step
     void correct(float ax, float ay, float az);
-    // Rotation quaternion time derivative estimations
-    float q0_dot, q1_dot, q2_dot, q3_dot;
     // Angular velocity (rad/s) bias
     float b_omega_x, b_omega_y, b_omega_z;
 };

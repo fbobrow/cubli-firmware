@@ -66,7 +66,7 @@ const float beta = I_c_xx_bar/I_w_xx;
 const float gamma = I_w_xx/(m_c_bar_g_l*(sqrt(3.0)/2.0));
                                
 // Estimator gains
-const float lds = 2.0;
+const float lds = 0.2;
 const float ldw = 50.0;
 
 // Controller gains (speed+angle)
