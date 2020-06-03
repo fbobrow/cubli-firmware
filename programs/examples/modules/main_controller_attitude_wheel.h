@@ -26,6 +26,10 @@ float phi_lim = phi_min;
 // Trajectory flag
 bool flag_tra = true;
 
+// Security flags
+bool flag_arm = false;
+bool flag_terminate = false;
+
 // Torques
 float tau_1, tau_2, tau_3;
 
@@ -52,8 +56,9 @@ int main()
             att_est.estimate();
             cont.control(att_tra.qr0,att_tra.qr1,att_tra.qr2,att_tra.qr3,att_est.q0,att_est.q1,att_est.q2,att_est.q3,att_tra.omega_r_x,att_tra.omega_r_y,att_tra.omega_r_z,att_est.omega_x,att_est.omega_y,att_est.omega_z,att_tra.alpha_r_x,att_tra.alpha_r_y,att_tra.alpha_r_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
             phi = 2.0*acos(cont.qe0);
-            if (abs(phi) <= phi_lim)
+            if ((abs(phi) <= phi_lim) && !flag_terminate)
             {
+                flag_arm = true;
                 phi_lim = phi_max;
                 if (flag_tra)
                 {
@@ -71,6 +76,10 @@ int main()
                 tau_1 = 0.0;
                 tau_2 = 0.0;
                 tau_3 = 0.0;
+                if(flag_arm)
+                {
+                    flag_terminate = true;
+                }
             }
             motor_1.set_torque(tau_1);
             motor_2.set_torque(tau_2);
@@ -88,6 +97,10 @@ int main()
             //pc.printf("%5.2f %5.2f %5.2f %5.2f | %6.2f %6.2f %6.2f | %10.2f %10.2f %10.2f | %8.2f %8.2f %8.2f\n",cont.qe0,cont.qe1,cont.qe2,cont.qe3,att_est.omega_x,att_est.omega_y,att_est.omega_z,whe_est_1.theta_w,whe_est_2.theta_w,whe_est_3.theta_w,whe_est_1.omega_w,whe_est_2.omega_w,whe_est_3.omega_w); 
             //pc.printf("%8.2f\t%8.2f\t%8.2f\t%8.2f\n",cont.qe0,cont.qe1,cont.qe2,cont.qe3);
             //pc.printf("%8.4f\t%8.4f\t%8.4f\t%8.4f\n",kp,kd,kpw,kdw);
+        }
+        if(flag_terminate)
+        {
+            led = true;
         }
     }
 }

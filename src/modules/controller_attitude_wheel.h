@@ -24,6 +24,7 @@ class AttitudeWheelController
     void feedback_linearization(float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float omega_1, float omega_2, float omega_3);
     // Linearized input
     float u_1, u_2, u_3;
+    
 
 };
 

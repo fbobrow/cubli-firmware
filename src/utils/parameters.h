@@ -7,7 +7,7 @@
 const float f = 1000.0;                  // Controller interrupt frequency [Hz]
 const float f_log = 10.0;                // Log data interrupt frequency [Hz]
 const float f_blink = 1.0;               // Led blink interrupt frequency [Hz]
-const float f_print = 0.2;              // Serial print interrupt frequency [Hz]
+const float f_print = 10.0;//0.2;              // Serial print interrupt frequency [Hz]
 const float dt = 1.0/f;
 const float dt_log = 1.0/f_log;
 const float dt_blink = 1.0/f_blink;
@@ -66,7 +66,7 @@ const float beta = I_c_xx_bar/I_w_xx;
 const float gamma = I_w_xx/(m_c_bar_g_l*(sqrt(3.0)/2.0));
                                
 // Estimator gains
-const float lds = 0.2;
+const float lds = 0.02;
 const float ldw = 50.0;
 
 // Controller gains (speed+angle)

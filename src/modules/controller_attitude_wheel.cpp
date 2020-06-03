@@ -28,27 +28,41 @@ void AttitudeWheelController::control(float qr0, float qr1, float qr2, float qr3
 // State regulator step
 void AttitudeWheelController::state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_r_x, float omega_r_y, float omega_r_z, float omega_x, float omega_y, float omega_z, float alpha_r_x, float alpha_r_y, float alpha_r_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3)
 {
-    // Calculate quaternion error
+    // Calculate rotation quaternion error
     qe0 = q0*qr0 + q1*qr1 + q2*qr2 + q3*qr3;
     qe1 = q0*qr1 - q1*qr0 - q2*qr3 + q3*qr2;
     qe2 = q0*qr2 - q2*qr0 + q1*qr3 - q3*qr1;
     qe3 = q0*qr3 - q1*qr2 + q2*qr1 - q3*qr0;
-    // Normalize quaternion error
+    // Normalize rotation quaternion error
     float qe_norm = sqrt(qe0*qe0+qe1*qe1+qe2*qe2+qe3*qe3);
     qe0 /= qe_norm;
     qe1 /= qe_norm;
     qe2 /= qe_norm;
-    qe3 /= qe_norm;  
+    qe3 /= qe_norm; 
+    // Auxiliary variables to avoid double arithmetic
+    float qe0qe1 = qe0*qe1;
+    float qe0qe2 = qe0*qe2;
+    float qe0qe3 = qe0*qe3;
+    float qe1qe1 = qe1*qe1;
+    float qe1qe2 = qe1*qe2;
+    float qe1qe3 = qe1*qe3;
+    float qe2qe2 = qe2*qe2;
+    float qe2qe3 = qe2*qe3;
+    float qe3qe3 = qe3*qe3;
     // Calculate angular velocity error
-    float omega_e_x = omega_r_x - omega_x;
-    float omega_e_y = omega_r_y - omega_y;
-    float omega_e_z = omega_r_z - omega_z;
-    // State regulator step (with auxiliary variables to avoid double arithmetic) 
-    float _2_kp_omegas_4 = 2.0*(kp - (omega_e_x*omega_e_x + omega_e_y*omega_e_y + omega_e_z*omega_e_z)/4.0);
-    u_1 = alpha_r_x + _2_kp_omegas_4*(qe1)/qe0 + kd*omega_e_x - kpw*theta_1 - kdw*omega_1;
-    u_2 = alpha_r_y + _2_kp_omegas_4*(qe2)/qe0 + kd*omega_e_y - kpw*theta_2 - kdw*omega_2;
-    u_3 = alpha_r_z + _2_kp_omegas_4*(qe3)/qe0 + kd*omega_e_z - kpw*theta_3 - kdw*omega_3;
-    
+    float omega_e_x = omega_r_x + 2.0*(omega_r_x*(- qe2qe2 - qe3qe3) + omega_r_y*(- qe0qe3 + qe1qe2) + omega_r_z*(  qe0qe2 + qe1qe3)) - omega_x;
+    float omega_e_y = omega_r_y + 2.0*(omega_r_x*(  qe0qe3 + qe1qe2) + omega_r_y*(- qe1qe1 - qe3qe3) + omega_r_z*(- qe0qe1 + qe2qe3)) - omega_y;
+    float omega_e_z = omega_r_z + 2.0*(omega_r_x*(- qe0qe2 + qe1qe3) + omega_r_y*(  qe0qe1 + qe2qe3) + omega_r_z*(- qe1qe1 - qe2qe2)) - omega_z;
+    // Auxiliary variable to avoid double arithmetic
+    float _2_kp_omega_e_omega_e_4 = 2.0*(kp - (omega_e_x*omega_e_x + omega_e_y*omega_e_y + omega_e_z*omega_e_z)/4.0);
+    // Calculate angular acceleration error
+    float alpha_e_x = _2_kp_omega_e_omega_e_4*(qe1)/qe0 + kd*omega_e_x - kpw*theta_1 - kdw*omega_1;
+    float alpha_e_y = _2_kp_omega_e_omega_e_4*(qe2)/qe0 + kd*omega_e_y - kpw*theta_2 - kdw*omega_2;
+    float alpha_e_z = _2_kp_omega_e_omega_e_4*(qe3)/qe0 + kd*omega_e_z - kpw*theta_3 - kdw*omega_3;
+    // Calculate angular acceleration
+    u_1 = alpha_e_x + alpha_r_x + 2.0*(alpha_r_x*(- qe2qe2 - qe3qe3) + alpha_r_y*(- qe0qe3 + qe1qe2) + alpha_r_z*(  qe0qe2 + qe1qe3)) + omega_e_y*omega_z - omega_e_z*omega_y;
+    u_2 = alpha_e_y + alpha_r_y + 2.0*(alpha_r_x*(  qe0qe3 + qe1qe2) + alpha_r_y*(- qe1qe1 - qe3qe3) + alpha_r_z*(- qe0qe1 + qe2qe3)) + omega_e_z*omega_x - omega_e_x*omega_z;
+    u_3 = alpha_e_z + alpha_r_z + 2.0*(alpha_r_x*(- qe0qe2 + qe1qe3) + alpha_r_y*(  qe0qe1 + qe2qe3) + alpha_r_z*(- qe1qe1 - qe2qe2)) + omega_e_x*omega_y - omega_e_y*omega_x;   
 }  
 
 // Feedback linearization step
