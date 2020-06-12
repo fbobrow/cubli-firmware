@@ -61,9 +61,9 @@ const float m_c_bar = m_c - m_w;
 const float I_c_xx_bar = I_c_xx - I_w_xx;
 const float I_c_xy_bar = I_c_xy;         
 const float m_c_bar_g_l = m_c_bar*g*l;
-const float omega_0 = sqrt(m_c_bar_g_l*(sqrt(3.0)/2.0)/(I_c_xx_bar-I_c_xy_bar));
-const float beta = I_c_xx_bar/I_w_xx;
-const float gamma = I_w_xx/(m_c_bar_g_l*(sqrt(3.0)/2.0));
+const float omega_0 = sqrt(m_c_bar_g_l*sqrt(3.0)/(I_c_xx_bar-I_c_xy_bar));
+const float gamma = (I_c_xx_bar+I_c_xy_bar)/I_w_xx;
+const float delta = m_c_bar_g_l*(sqrt(3.0)/2.0)/I_w_xx;
                                
 // Estimator gains
 const float lds = 0.02;
@@ -72,20 +72,20 @@ const float ldw = 50.0;
 // Controller gains (speed+angle)
 const float alpha = 0.1; //0.05;
 const float zeta = sqrt(2.0)/2.0;
-const float omega_n = 1.5*omega_0;
-const float kpw = gamma*pow(alpha,2)*pow(zeta,2)*pow(omega_n,4);
-const float kdw = 2.0*gamma*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2));
-const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))+beta*kpw;
-const float kd = 2.0*zeta*omega_n*(1.0+alpha)+beta*kdw;
+const float omega_n = omega_0;
+const float kpw = pow(alpha,2)*pow(zeta,2)*pow(omega_n,4)/delta;
+const float kdw = 2.0*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2))/delta;
+const float kp = pow(omega_n,2)*(1.0+alpha*pow(zeta,2)*(4.0+alpha))+gamma*kpw;
+const float kd = 2.0*zeta*omega_n*(1.0+alpha)+gamma*kdw;
 
 // Controller gains (speed)
 // const float alpha = 0.1;
 // const float zeta = sqrt(2.0)/2.0;
-// const float omega_n = 1.5*omega_0;
+// const float omega_n = omega_0;
 // const float kpw = 0.0;
-// const float kdw = gamma*alpha*zeta*pow(omega_n,3);
+// const float kdw = alpha*zeta*pow(omega_n,3)/delta;
 // const float kp = pow(omega_n,2)*(1.0+2.0*alpha*pow(zeta,2));
-// const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+beta*kdw; 
+// const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+gamma*kdw; 
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
 const float phi_e = -0.0*pi/180.0;
