@@ -93,6 +93,20 @@ const float qu0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qu1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qu2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
 const float qu3 =  0.0;
+// const float qu0 = 0.867245041540879;
+// const float qu1 = 0.364018905812823;
+// const float qu2 = -0.339517633306191;
+// const float qu3 = 0.010200529778271;
+const float qu0_qu0 = qu0*qu0;
+const float qu0_qu1 = qu0*qu1;
+const float qu0_qu2 = qu0*qu2;
+const float qu0_qu3 = qu0*qu3;
+const float qu1_qu1 = qu1*qu1;
+const float qu1_qu2 = qu1*qu2;
+const float qu1_qu3 = qu1*qu3;
+const float qu2_qu2 = qu2*qu2;
+const float qu2_qu3 = qu2*qu3;
+const float qu3_qu3 = qu3*qu3;
 
 // Quaternion reference (Cubli in x-edge minus phi_e - corresponding to center os mass disalignment)
 // const float phi_e = -5*pi/180.0;
@@ -113,11 +127,11 @@ const float phi_min = 10.0*pi/180.0;
 const float phi_max = 30.0*pi/180.0;
 
 // Trajectory parameters
-const float pos_traj = 2.0*pi;          // Trajectory path [rad]
+const float pos_traj = 2*pi;          // Trajectory path [rad]
 const float t_rest = 5.0;               // Rest time [s]
-const float t_traj = 20.0;              // Trajectory time [s]
-const float crackle_0 = 720.0*pos_traj/pow(t_traj,5);
-const float snap_0 = 360.0*pos_traj/pow(t_traj,4);
-const float jerk_0 = 60.0*pos_traj/pow(t_traj,3);
+const float t_traj = 20.0;               // Trajectory time [s]
+const float cra_0 = 720.0*pos_traj/pow(t_traj,5);
+const float sna_0 = 360.0*pos_traj/pow(t_traj,4);
+const float jer_0 =  60.0*pos_traj/pow(t_traj,3);
 
 #endif

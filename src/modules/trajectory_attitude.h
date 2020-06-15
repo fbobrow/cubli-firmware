@@ -25,7 +25,7 @@ class AttitudeTrajectory
     //
     Timer tim;
     //
-    float vel, acc, jerk, snap, crackle;
+    float pos, vel, acc, jer, sna, cra;
     //
     bool flag_rot1, flag_res1, flag_rot2, flag_res2;
 };
