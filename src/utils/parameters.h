@@ -70,8 +70,8 @@ const float lds = 0.02;
 const float ldw = 50.0;
 
 // Controller gains (speed+angle)
-const float alpha = 0.1; //0.05;
-const float zeta = sqrt(2.0)/2.0;
+const float alpha = 0.1;
+const float zeta = sqrt(2.0)/2.0; // 1.0;
 const float omega_n = omega_0;
 const float kpw = pow(alpha,2)*pow(zeta,2)*pow(omega_n,4)/delta;
 const float kdw = 2.0*alpha*zeta*pow(omega_n,3)*(1.0+alpha*pow(zeta,2))/delta;
@@ -127,7 +127,7 @@ const float phi_min = 10.0*pi/180.0;
 const float phi_max = 30.0*pi/180.0;
 
 // Trajectory parameters
-const float pos_traj = 2*pi;          // Trajectory path [rad]
+const float pos_traj = 2.0*pi;          // Trajectory path [rad]
 const float t_rest = 5.0;               // Rest time [s]
 const float t_traj = 20.0;               // Trajectory time [s]
 const float cra_0 = 720.0*pos_traj/pow(t_traj,5);
