@@ -88,15 +88,15 @@ const float kd = 2.0*zeta*omega_n*(1.0+alpha)+gamma*kdw;
 // const float kd = 2.0*zeta*omega_n*(1.0+alpha/2.0)+gamma*kdw; 
 
 // Quaternion reference (Cubli in vertex fancing up minus phi_e - corresponding to center os mass disalignment)
-const float phi_e = -0.0*pi/180.0;
-const float qu0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
-const float qu1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
-const float qu2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
-const float qu3 =  0.0;
-// const float qu0 = 0.867245041540879;
-// const float qu1 = 0.364018905812823;
-// const float qu2 = -0.339517633306191;
-// const float qu3 = 0.010200529778271;
+// const float phi_e = -0.0*pi/180.0;
+// const float qu0 =                cos(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
+// const float qu1 =  sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
+// const float qu2 = -sqrt(2.0)/2.0*sin(phi_e/2.0 + acos(sqrt(3.0)/3.0)/2.0);
+// const float qu3 =  0.0;
+const float qu0 = 0.8774;
+const float qu1 = 0.3530;
+const float qu2 = -0.3248;
+const float qu3 = 0.0070;
 const float qu0_qu0 = qu0*qu0;
 const float qu0_qu1 = qu0*qu1;
 const float qu0_qu2 = qu0*qu2;
@@ -129,7 +129,7 @@ const float phi_max = 30.0*pi/180.0;
 // Trajectory parameters
 const float pos_traj = 2.0*pi;          // Trajectory path [rad]
 const float t_rest = 5.0;               // Rest time [s]
-const float t_traj = 20.0;               // Trajectory time [s]
+const float t_traj = 20.0;              // Trajectory time [s]
 const float cra_0 = 720.0*pos_traj/pow(t_traj,5);
 const float sna_0 = 360.0*pos_traj/pow(t_traj,4);
 const float jer_0 =  60.0*pos_traj/pow(t_traj,3);
