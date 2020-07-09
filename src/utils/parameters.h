@@ -126,12 +126,16 @@ const float qu3_qu3 = qu3*qu3;
 const float phi_min = 10.0*pi/180.0;
 const float phi_max = 30.0*pi/180.0;
 
-// Trajectory parameters
+// Minimum jerk trajectory parameters
 const float pos_traj = 2.0*pi;          // Trajectory path [rad]
-const float t_rest = 5.0;               // Rest time [s]
+const float t_rest = 0.0;               // Rest time [s]
 const float t_traj = 20.0;              // Trajectory time [s]
 const float cra_0 = 720.0*pos_traj/pow(t_traj,5);
 const float sna_0 = 360.0*pos_traj/pow(t_traj,4);
 const float jer_0 =  60.0*pos_traj/pow(t_traj,3);
+
+// Sinusoidal trajectory parameters
+const float A_traj = pi/36.0/100.0;
+const float T_traj = 10.0/100.0;
 
 #endif

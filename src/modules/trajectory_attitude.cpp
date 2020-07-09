@@ -40,54 +40,68 @@ void AttitudeTrajectory::init()
 void AttitudeTrajectory::generate()
 {
     //
-    if ((tim.read() >= t_rest/2.0) && flag_rot1)
-    {
-        flag_rot1 = false;
-        jer =  jer_0;
-        sna = -sna_0;
-        cra =  cra_0;
-    }
-    if ((tim.read() >= t_traj+t_rest/2.0) && flag_res1)
-    {
-        flag_res1 = false;
-        pos = pos_traj;
-        vel = 0.0;
-        acc = 0.0;
-        jer = 0.0;
-        sna = 0.0;
-        cra = 0.0;
-    }
-    if ((tim.read() >= t_traj+3.0*t_rest/2.0) && flag_rot2)
-    {
-        flag_rot2 = false;
-        jer = -jer_0;
-        sna =  sna_0;
-        cra = -cra_0;
-    }
-    if ((tim.read() >= 2.0*t_traj+3.0*t_rest/2.0) && flag_res2)
-    {
-        flag_res2 = false;
-        pos = 0.0;
-        vel = 0.0;
-        acc = 0.0;
-        jer = 0.0;
-        sna = 0.0;
-        cra = 0.0;
-    }
-    if (tim.read() >= 2.0*t_traj+2.0*t_rest)
+    float t = tim.read();
+    
+    // // Minimum jerk trajectory algorithm
+    // if ((t >= t_rest/2.0) && flag_rot1)
+    // {
+    //     flag_rot1 = false;
+    //     jer =  jer_0;
+    //     sna = -sna_0;
+    //     cra =  cra_0;
+    // }
+    // if ((t >= t_traj+t_rest/2.0) && flag_res1)
+    // {
+    //     flag_res1 = false;
+    //     pos = pos_traj;
+    //     vel = 0.0;
+    //     acc = 0.0;
+    //     jer = 0.0;
+    //     sna = 0.0;
+    //     cra = 0.0;
+    // }
+    // if ((t >= t_traj+3.0*t_rest/2.0) && flag_rot2)
+    // {
+    //     flag_rot2 = false;
+    //     jer = -jer_0;
+    //     sna =  sna_0;
+    //     cra = -cra_0;
+    // }
+    // if ((t >= 2.0*t_traj+3.0*t_rest/2.0) && flag_res2)
+    // {
+    //     flag_res2 = false;
+    //     pos = 0.0;
+    //     vel = 0.0;
+    //     acc = 0.0;
+    //     jer = 0.0;
+    //     sna = 0.0;
+    //     cra = 0.0;
+    // }
+    // if (t >= 2.0*t_traj+2.0*t_rest)
+    // {
+    //     tim.reset();
+    //     flag_rot1 = true;
+    //     flag_res1 = true;
+    //     flag_rot2 = true;
+    //     flag_res2 = true;
+    // }
+    // pos += vel*dt + acc*pow(dt,2)/2.0 + jer*pow(dt,3)/6.0 + sna*pow(dt,4)/24.0 + cra*pow(dt,5)/120.0;
+    // vel += acc*dt + jer*pow(dt,2)/2.0 + sna*pow(dt,3)/6.0 + cra*pow(dt,4)/24.0;
+    // acc += jer*dt + sna*pow(dt,2)/2.0 + cra*pow(dt,3)/6.0;
+    // jer += sna*dt + cra*pow(dt,2)/2.0;
+    // sna += cra*dt; 
+
+    // Sinusoidal trajectory
+    if (t >= T_traj)
     {
         tim.reset();
-        flag_rot1 = true;
-        flag_res1 = true;
-        flag_rot2 = true;
-        flag_res2 = true;
     }
-    //
-    pos += vel*dt + acc*pow(dt,2)/2.0 + jer*pow(dt,3)/6.0 + sna*pow(dt,4)/24.0 + cra*pow(dt,5)/120.0;
-    vel += acc*dt + jer*pow(dt,2)/2.0 + sna*pow(dt,3)/6.0 + cra*pow(dt,4)/24.0;
-    acc += jer*dt + sna*pow(dt,2)/2.0 + cra*pow(dt,3)/6.0;
-    jer += sna*dt + cra*pow(dt,2)/2.0;
-    sna += cra*dt; 
+    pos =                     A_traj*sin((2*pi/T_traj)*t);
+    vel =       (2*pi/T_traj)*A_traj*cos((2*pi/T_traj)*t);
+    acc = -pow(2*pi/T_traj,2)*A_traj*sin((2*pi/T_traj)*t);
+    jer = -pow(2*pi/T_traj,3)*A_traj*cos((2*pi/T_traj)*t);
+    sna =  pow(2*pi/T_traj,4)*A_traj*sin((2*pi/T_traj)*t);
+    cra =  pow(2*pi/T_traj,5)*A_traj*cos((2*pi/T_traj)*t);
 
     // Euler angles and its time derivatives
     float phi = pos;
