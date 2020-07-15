@@ -72,9 +72,9 @@ void AttitudeWheelController::feedback_linearization(float q0, float q1, float q
     float sign_1 = (0.0<omega_1)-(omega_1<0.0); 
     float sign_2 = (0.0<omega_2)-(omega_2<0.0); 
     float sign_3 = (0.0<omega_3)-(omega_3<0.0); 
-    float tau_f_1 = sign_1*(tau_c + b*abs(omega_1) + cd*omega_1*omega_1);
-    float tau_f_2 = sign_2*(tau_c + b*abs(omega_2) + cd*omega_2*omega_2);
-    float tau_f_3 = sign_3*(tau_c + b*abs(omega_3) + cd*omega_3*omega_3);
+    float tau_f_1 = sign_1*(tau_c + bw*abs(omega_1) + cd*omega_1*omega_1);
+    float tau_f_2 = sign_2*(tau_c + bw*abs(omega_2) + cd*omega_2*omega_2);
+    float tau_f_3 = sign_3*(tau_c + bw*abs(omega_3) + cd*omega_3*omega_3);
     // Feedback linearization step (with auxiliary variables to avoid double arithmetic)
     float omega_x_omega_y_omega_z = omega_x + omega_y + omega_z;
     tau_1 = - I_c_xy_bar*(omega_y - omega_z)*omega_x_omega_y_omega_z - I_w_xx*(omega_3*omega_y - omega_2*omega_z) + m_c_bar_g_l*(0.5 - q0*q0 + q0*q1 - q3*q3 + q2*q3) + tau_f_1 - I_c_xx_bar*u_1 - I_c_xy_bar*(u_2 + u_3);
