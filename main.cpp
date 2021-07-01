@@ -7,4 +7,3 @@
 // #include "programs/examples/modules/main_estimator_wheel.h"
 // #include "programs/examples/modules/main_estimator_attitude.h"
 #include "programs/examples/modules/main_controller_attitude_wheel.h"
-// #include "programs/examples/modules/main_controller_attitude_wheel_log.h"

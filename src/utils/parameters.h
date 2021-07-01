@@ -76,7 +76,7 @@ const float lds = 0.02;
 const float ldw = 50.0;
 
 // Controller gains (speed+angle)
-const float alpha = 0.2;
+const float alpha = 0.1;
 const float zeta = sqrt(2.0)/2.0; // 1.0;
 const float omega_n = omega_n_0;
 const float kpw = pow(alpha,2)*pow(zeta,2)*pow(omega_n,4)/delta;
@@ -94,16 +94,6 @@ const float qu3 =  0.0;
 // const float qu1 = 0.3530;
 // const float qu2 = -0.3248;
 // const float qu3 = 0.0070;
-const float qu0_qu0 = qu0*qu0;
-const float qu0_qu1 = qu0*qu1;
-const float qu0_qu2 = qu0*qu2;
-const float qu0_qu3 = qu0*qu3;
-const float qu1_qu1 = qu1*qu1;
-const float qu1_qu2 = qu1*qu2;
-const float qu1_qu3 = qu1*qu3;
-const float qu2_qu2 = qu2*qu2;
-const float qu2_qu3 = qu2*qu3;
-const float qu3_qu3 = qu3*qu3;
 
 // Quaternion reference (Cubli in x-edge minus phi_e - corresponding to center os mass disalignment)
 // const float phi_e = -5*pi/180.0;
@@ -118,6 +108,18 @@ const float qu3_qu3 = qu3*qu3;
 // const float qu1 = 0.0;
 // const float qu2 = -cos(phi_e/2.0 + 3.0*pi/8.0);
 // const float qu3 = 0.0;
+
+//
+const float qu0_qu0 = qu0*qu0;
+const float qu0_qu1 = qu0*qu1;
+const float qu0_qu2 = qu0*qu2;
+const float qu0_qu3 = qu0*qu3;
+const float qu1_qu1 = qu1*qu1;
+const float qu1_qu2 = qu1*qu2;
+const float qu1_qu3 = qu1*qu3;
+const float qu2_qu2 = qu2*qu2;
+const float qu2_qu3 = qu2*qu3;
+const float qu3_qu3 = qu3*qu3;
 
 // Minimum and maximum error limits (for control safety)
 const float phi_min = 10.0*pi/180.0;
