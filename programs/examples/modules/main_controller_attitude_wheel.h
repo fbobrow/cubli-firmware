@@ -39,7 +39,7 @@ float tau_1, tau_2, tau_3;
 char command;
 
 // Log variables
-float log_data[256][16];
+float log_data[251][16]{};
 int i = 0;
 
 // Flash memmory
@@ -58,7 +58,7 @@ int main()
     tic.attach_us(&callback, dt_us);
     // tic_log.attach_us(&callback_log, dt_log_us);
     tic_blink.attach_us(&callback_blink, dt_blink_us);
-    tic_print.attach_us(&callback_print, dt_print_us);
+    tic_print.attach_us(&callback_print, dt_print_us);    
     // Endless loop
     while (true) 
     {
@@ -84,6 +84,12 @@ int main()
                 tau_1 = cont.tau_1;
                 tau_2 = cont.tau_2;
                 tau_3 = cont.tau_3;
+                // if ((i >= 5*f_log) && (i < 5.24*f_log))
+                // {
+                //     tau_1 = 0.05;
+                //     tau_2 = -0.05;
+                //     tau_3 = 0;
+                // }
                 if (flag_log)
                 {
                     flag_log = false;
@@ -104,25 +110,29 @@ int main()
                     log_data[i][14] = tau_2;
                     log_data[i][15] = tau_3;
                     i++;
-                    if (i>255)
+                    if (i>250)
                     {
                         flag_terminate = true;
-                        flash.init();
-                        flash.erase(addr, size);
-                        flash.program(log_data, addr, size);   
-                        flash.deinit(); 
                     }
                 }
             }
             else 
             {
-                phi_lim = phi_min;
+                // phi_lim = phi_min;
                 tau_1 = 0.0;
                 tau_2 = 0.0;
                 tau_3 = 0.0;
+                motor_1.set_torque(tau_1);
+                motor_2.set_torque(tau_2);
+                motor_3.set_torque(tau_3);
                 if(flag_arm)
                 {
+                    flag_arm = false;
                     flag_terminate = true;
+                    flash.init();
+                    flash.erase(addr, size);
+                    flash.program(log_data, addr, size);   
+                    flash.deinit(); 
                     tic_blink.detach();
                     led = true;
                 }
@@ -152,7 +162,7 @@ int main()
                 flash.init();
                 flash.read(log_data, addr, size);
                 flash.deinit();
-                for(int r=0;r<256;r++)
+                for(int r=0;r<251;r++)
                 {
                     for (int c=0;c<16;c++)
                     {

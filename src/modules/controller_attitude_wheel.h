@@ -22,6 +22,8 @@ class AttitudeWheelController
     void state_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_r_x, float omega_r_y, float omega_r_z, float omega_x, float omega_y, float omega_z, float alpha_r_x, float alpha_r_y, float alpha_r_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3);
     // Feedback linearization step
     void feedback_linearization(float q0, float q1, float q2, float q3, float omega_x, float omega_y, float omega_z, float omega_1, float omega_2, float omega_3);
+    // Linear regulator
+    void linear_regulator(float qr0, float qr1, float qr2, float qr3, float q0, float q1, float q2, float q3, float omega_r_x, float omega_r_y, float omega_r_z, float omega_x, float omega_y, float omega_z, float alpha_r_x, float alpha_r_y, float alpha_r_z, float theta_1, float theta_2, float theta_3, float omega_1, float omega_2, float omega_3);
     // Linearized input
     float u_1, u_2, u_3;
     
